@@ -2,7 +2,7 @@
 // BT NỀN MÓNG — config.js   (GV sửa file này mỗi học kỳ)
 // ═══════════════════════════════════════════════════════
 
-window.WORKER_URL = "bt-nen-mong.bm-cdnm.workers.dev";   // Dán URL Cloudflare Worker sau khi deploy
+window.WORKER_URL = "https://bt-nen-mong.bm-cdnm.workers.dev";
 
 window.MIN_ATTEMPT_PCT = 80;   // % số câu phải làm để được nộp
 
