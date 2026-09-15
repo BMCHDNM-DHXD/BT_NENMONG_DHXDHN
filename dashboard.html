@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — BT Nền Móng HUCE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root{
+  --P:#1565C0;--Pdk:#0D47A1;--Plt:#E3F2FD;
+  --G:#2E7D32;--Glt:#E8F5E9;--Gdk:#1B5E20;
+  --R:#C62828;--Rlt:#FFEBEE;
+  --A:#FF8F00;--Alt:#FFF8E1;
+  --bg:#EEF4FB;--sur:#fff;--brd:#BBDEFB;--muted:#546E7A;--text:#0A1929;
+  --sans:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+  --r:14px;--sh:0 2px 20px rgba(13,71,161,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh}
+
+/* HEADER */
+.hdr{
+  background:linear-gradient(135deg,var(--Pdk) 0%,#1976D2 100%);
+  color:#fff;box-shadow:0 2px 20px rgba(0,0,0,.2);
+}
+.hdr-in{
+  max-width:1280px;margin:0 auto;
+  padding:0 28px;height:64px;
+  display:flex;align-items:center;gap:14px;
+}
+.hdr-brand{display:flex;align-items:center;gap:11px;flex:1}
+.hdr-ico{
+  width:36px;height:36px;background:rgba(255,255,255,.15);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:19px;
+}
+.hdr-brand-txt h1{font-size:15px;font-weight:800;line-height:1.2}
+.hdr-brand-txt p{font-size:10.5px;color:rgba(255,255,255,.55)}
+.sv-pill{
+  display:flex;align-items:center;gap:9px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:24px;padding:5px 14px 5px 7px;
+}
+.sv-av{
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(255,255,255,.2);font-weight:800;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+}
+.sv-inf .name{font-size:13px;font-weight:700;line-height:1.2}
+.sv-inf .meta{font-size:10px;color:rgba(255,255,255,.6);font-family:var(--mono)}
+.btn-out{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.8);padding:6px 14px;border-radius:7px;
+  cursor:pointer;font-size:12px;font-family:var(--sans);font-weight:600;
+  display:flex;align-items:center;gap:5px;transition:.15s;
+}
+.btn-out:hover{background:rgba(255,255,255,.2);color:#fff}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,var(--Pdk) 0%,var(--P) 60%,#1E88E5 100%);
+  color:#fff;padding:56px 28px 52px;
+}
+.hero-in{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:40px;flex-wrap:wrap}
+.hero-txt{flex:1;min-width:260px}
+.hero-txt .eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
+  border-radius:20px;padding:4px 14px;font-size:11px;font-weight:700;
+  letter-spacing:.7px;text-transform:uppercase;margin-bottom:16px;
+}
+.hero-txt h2{font-size:clamp(26px,4vw,44px);font-weight:800;line-height:1.15;margin-bottom:10px}
+.hero-txt h2 span{color:#90CAF9}
+.hero-txt p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.75;max-width:480px}
+.hero-guide{
+  background:rgba(255,255,255,.1);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.2);border-radius:14px;
+  padding:22px 24px;min-width:260px;max-width:340px;flex-shrink:0;
+}
+.hero-guide h4{font-size:12.5px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:7px;opacity:.8;text-transform:uppercase;letter-spacing:.5px}
+.guide-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+.guide-row:last-child{margin-bottom:0}
+.g-badge{
+  width:26px;height:26px;border-radius:6px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;
+}
+.g-badge.a{background:#E8F5E9;color:#2E7D32}
+.g-badge.b{background:#E3F2FD;color:#1565C0}
+.g-badge.c{background:#FFEBEE;color:#C62828}
+.g-txt{font-size:12.5px;line-height:1.5}
+.g-txt strong{color:#fff}
+.g-txt span{color:rgba(255,255,255,.65)}
+
+/* MAIN */
+main{max-width:1280px;margin:0 auto;padding:32px 28px 80px}
+
+/* Overall progress */
+.overall-prog{
+  background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);
+  box-shadow:var(--sh);padding:18px 24px;margin-bottom:28px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.op-bar{flex:1;min-width:180px}
+.op-bar .lbl{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between}
+.op-track{height:10px;background:var(--Plt);border-radius:5px;overflow:hidden}
+.op-fill{height:100%;background:linear-gradient(90deg,var(--G),#66BB6A);border-radius:5px;transition:width .5s}
+.op-nums{display:flex;gap:16px;flex-wrap:wrap}
+.op-n{text-align:center}
+.op-n .v{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--Pdk);display:block}
+.op-n .k{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+/* CLO CARDS */
+.clo-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+  margin-bottom:28px;
+}
+@media(max-width:860px){.clo-grid{grid-template-columns:1fr}}
+
+.clo-card{
+  background:var(--sur);border:1.5px solid var(--brd);
+  border-radius:var(--r);box-shadow:var(--sh);
+  overflow:hidden;transition:.2s;text-decoration:none;color:inherit;
+  display:flex;flex-direction:column;
+}
+.clo-card:not(.locked):hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(13,71,161,.15);border-color:var(--P)}
+.clo-card.locked{opacity:.55;cursor:not-allowed;pointer-events:none}
+
+.cc-top{
+  padding:22px 22px 16px;
+  display:flex;gap:14px;
+}
+.cc-icon{
+  width:52px;height:52px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+}
+.cc-info{flex:1}
+.cc-info .clo-num{
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;
+  color:var(--muted);margin-bottom:4px;
+}
+.cc-info h3{font-size:17px;font-weight:800;color:var(--Pdk);margin-bottom:5px}
+.cc-info p{font-size:12.5px;color:var(--muted);line-height:1.5}
+
+/* Exercise chips A1-A6 */
+.cc-ex{
+  padding:12px 22px;
+  border-top:1px solid var(--Plt);
+  display:flex;flex-wrap:wrap;gap:6px;
+  background:#FAFCFF;
+}
+.ex-group{display:flex;gap:5px;align-items:center}
+.ex-label{font-size:10.5px;font-weight:700;color:var(--muted);margin-right:2px;text-transform:uppercase}
+.ex-chip{
+  font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:5px;
+  font-family:var(--mono);cursor:pointer;transition:.12s;text-decoration:none;
+  display:inline-block;
+}
+.ex-chip.a{background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9}
+.ex-chip.a:hover{background:#C8E6C9}
+.ex-chip.b{background:#E3F2FD;color:#1565C0;border:1px solid #BBDEFB}
+.ex-chip.b:hover{background:#BBDEFB}
+.ex-chip.c{background:#FFEBEE;color:#C62828;border:1px solid #FFCDD2}
+.ex-chip.c:hover{background:#FFCDD2}
+.ex-chip.done{opacity:.6;text-decoration:line-through}
+
+.cc-foot{
+  padding:12px 22px 18px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+}
+.status-badge{
+  font-size:11px;font-weight:700;padding:3px 10px;border-radius:5px;
+}
+.sb-open{background:var(--Glt);color:var(--Gdk)}
+.sb-lock{background:#ECEFF1;color:#607D8B}
+.cc-prog{font-size:11px;color:var(--muted);font-family:var(--mono)}
+
+/* INFO BOX */
+.info-row{
+  background:var(--Alt);border:1px solid #FFE0B2;border-radius:var(--r);
+  padding:14px 20px;font-size:13px;line-height:1.7;color:#4E342E;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.info-row i{font-size:20px;color:var(--A);flex-shrink:0;margin-top:2px}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="hdr-brand">
+      <div class="hdr-ico">🏗</div>
+      <div class="hdr-brand-txt">
+        <h1>BT Nền Móng Online</h1>
+        <p>Trường Đại học Xây dựng Hà Nội · BMCHDNM</p>
+      </div>
+    </div>
+    <div class="sv-pill" id="sv-pill">
+      <div class="sv-av" id="sv-av">?</div>
+      <div class="sv-inf">
+        <div class="name" id="sv-name">–</div>
+        <div class="meta" id="sv-meta">–</div>
+      </div>
+    </div>
+    <button class="btn-out" onclick="logout()"><i class="ti ti-logout"></i> Đổi SV</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in">
+    <div class="hero-txt">
+      <div class="eyebrow"><i class="ti ti-school"></i> Học phần Nền Móng</div>
+      <h2>Xin chào, <span id="sv-firstname">–</span>!</h2>
+      <p>Bộ số liệu của bạn được sinh từ <strong>STT <span id="hero-stt" style="font-family:'JetBrains Mono'">–</span></strong>. Mỗi CLO có <strong>6 dạng bài × 3 mức gợi ý</strong> (A → B → C). Làm theo thứ tự từ A đến C để hiểu sâu dần.</p>
+    </div>
+    <div class="hero-guide">
+      <h4><i class="ti ti-info-circle"></i> Hướng dẫn 3 dạng</h4>
+      <div class="guide-row">
+        <div class="g-badge a">A</div>
+        <div class="g-txt"><strong>Gợi ý đầy đủ</strong> <span>— công thức + số từ đề bài; chỉ cần tính và điền kết quả. Feedback ngay lập tức.</span></div>
+      </div>
+      <div class="guide-row">
+        <div class="g-badge b">B</div>
+        <div class="g-txt"><strong>Gợi ý công thức</strong> <span>— có công thức nhưng tự tìm số. Không hiện đúng/sai.</span></div>
+      </div>
+      <div class="guide-row">
+        <div class="g-badge c">C</div>
+        <div class="g-txt"><strong>Không gợi ý</strong> <span>— chỉ có đề bài, không công thức. Kết quả hiện sau khi nộp.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main>
+
+  <!-- Overall progress -->
+  <div class="overall-prog">
+    <div class="op-bar">
+      <div class="lbl"><span>Tiến độ tổng</span><span id="op-pct">0%</span></div>
+      <div class="op-track"><div class="op-fill" id="op-fill" style="width:0%"></div></div>
+    </div>
+    <div class="op-nums">
+      <div class="op-n"><span class="v" id="op-done">0</span><span class="k">Đã nộp</span></div>
+      <div class="op-n"><span class="v">18</span><span class="k">Tổng bài</span></div>
+      <div class="op-n"><span class="v" id="op-stt">–</span><span class="k">STT của bạn</span></div>
+    </div>
+  </div>
+
+  <!-- 4 CLO cards -->
+  <div class="clo-grid">
+
+    <!-- CLO 1 -->
+    <div class="clo-card" id="card-c1">
+      <div class="cc-top">
+        <div class="cc-icon" style="background:#E3F2FD">🗺</div>
+        <div class="cc-info">
+          <div class="clo-num">CLO 1 · Bloom C4 — Phân tích</div>
+          <h3>Phương Án Móng</h3>
+          <p>Phân tích địa chất 4 lớp → xác định trạng thái đất → chọn giải pháp nền móng phù hợp với tải trọng</p>
+        </div>
+      </div>
+      <div class="cc-ex" id="chips-c1"></div>
+      <div class="cc-foot">
+        <span class="status-badge sb-open" id="status-c1">Đang mở</span>
+        <span class="cc-prog" id="prog-c1">0 / 18 bài</span>
+      </div>
+    </div>
+
+    <!-- CLO 2 -->
+    <div class="clo-card locked" id="card-c2">
+      <div class="cc-top">
+        <div class="cc-icon" style="background:#F3E5F5">📐</div>
+        <div class="cc-info">
+          <div class="clo-num">CLO 2 · Bloom C4 — Phân tích</div>
+          <h3>Móng Nông</h3>
+          <p>Kiểm tra kích thước đáy móng, chiều cao móng, sức chịu tải nền</p>
+        </div>
+      </div>
+      <div class="cc-ex" id="chips-c2">
+        <span style="font-size:12px;color:var(--muted);font-style:italic">Chưa mở</span>
+      </div>
+      <div class="cc-foot">
+        <span class="status-badge sb-lock" id="status-c2">Chưa mở</span>
+        <span class="cc-prog">–</span>
+      </div>
+    </div>
+
+    <!-- CLO 3 -->
+    <div class="clo-card locked" id="card-c3">
+      <div class="cc-top">
+        <div class="cc-icon" style="background:#E8F5E9">🔩</div>
+        <div class="cc-info">
+          <div class="clo-num">CLO 3 · Bloom C4 — Phân tích</div>
+          <h3>Móng Cọc</h3>
+          <p>Sức chịu tải cọc đơn, kiểm tra nhóm cọc, so sánh phương pháp</p>
+        </div>
+      </div>
+      <div class="cc-ex" id="chips-c3">
+        <span style="font-size:12px;color:var(--muted);font-style:italic">Chưa mở</span>
+      </div>
+      <div class="cc-foot">
+        <span class="status-badge sb-lock" id="status-c3">Chưa mở</span>
+        <span class="cc-prog">–</span>
+      </div>
+    </div>
+
+    <!-- CLO 4 -->
+    <div class="clo-card locked" id="card-c4">
+      <div class="cc-top">
+        <div class="cc-icon" style="background:#FFF3E0">📋</div>
+        <div class="cc-info">
+          <div class="clo-num">CLO 4 · Bloom C2 — Hiểu</div>
+          <h3>Cấu Tạo Móng</h3>
+          <p>Yêu cầu cấu tạo TCVN, đọc hiểu bản vẽ chi tiết cấu tạo móng</p>
+        </div>
+      </div>
+      <div class="cc-ex" id="chips-c4">
+        <span style="font-size:12px;color:var(--muted);font-style:italic">Chưa mở</span>
+      </div>
+      <div class="cc-foot">
+        <span class="status-badge sb-lock" id="status-c4">Chưa mở</span>
+        <span class="cc-prog">–</span>
+      </div>
+    </div>
+
+  </div><!-- clo-grid -->
+
+  <div class="info-row">
+    <i class="ti ti-bulb"></i>
+    <div>
+      <strong>Mẹo làm bài:</strong> Bắt đầu với <strong>Dạng A</strong> để nắm công thức, sau đó làm <strong>Dạng B</strong> để luyện tự tra số, cuối cùng <strong>Dạng C</strong> để tự kiểm tra kiến thức. Kết quả nộp bài tự động qua hệ thống — không cần gửi email.
+    </div>
+  </div>
+
+</main>
+
+<script src="config.js" onerror="console.log('no config')"></script>
+<script src="assets/js/engine.js"></script>
+<script>
+var PATTERNS_C1 = ['T-T-T-T','X-T-T-T','T-X-T-T','X-X-T-T','T-T-X-T','X-X-X-T'];
+
+(function(){
+  var sv = getSV();
+  if (!sv) { location.href = 'index.html'; return; }
+
+  // Header
+  var firstName = sv.hoTen.split(' ').pop();
+  document.getElementById('sv-av').textContent   = sv.hoTen[0].toUpperCase();
+  document.getElementById('sv-name').textContent = sv.hoTen;
+  document.getElementById('sv-meta').textContent = sv.maSV + ' · ' + sv.lop + ' · STT ' + sv.stt;
+  document.getElementById('sv-firstname').textContent = firstName;
+  document.getElementById('hero-stt').textContent = sv.stt;
+  document.getElementById('op-stt').textContent = sv.stt;
+
+  // CLO1 chips (CLO2-4 chưa có file, disable)
+  var doneCount = 0;
+  var chipsC1 = document.getElementById('chips-c1');
+  var html = '';
+  ['A','B','C'].forEach(function(d,di){
+    html += '<div class="ex-group">';
+    html += '<span class="ex-label">' + d + '</span>';
+    for (var ex=1;ex<=6;ex++){
+      var key = 'nm_sub_C1-' + d + ex + '_' + sv.maSV;
+      var done = !!localStorage.getItem(key);
+      if(done) doneCount++;
+      html += '<a class="ex-chip ' + d.toLowerCase() + (done?' done':'')
+            + '" href="chuong-01/C1-' + d + '.html?ex=' + ex
+            + '" title="' + PATTERNS_C1[ex-1] + '">'
+            + d + ex + '</a>';
+    }
+    html += '</div>';
+  });
+  chipsC1.innerHTML = html;
+
+  // Progress CLO1
+  document.getElementById('prog-c1').textContent = doneCount + ' / 18 bài';
+
+  // Overall
+  document.getElementById('op-done').textContent = doneCount;
+  var pct = Math.round(doneCount / 18 * 100);
+  document.getElementById('op-pct').textContent = pct + '%';
+  document.getElementById('op-fill').style.width = pct + '%';
+
+  // Lịch
+  var schedule = window.CHAPTER_SCHEDULE || {};
+  ['c1','c2','c3','c4'].forEach(function(chId){
+    var cfg = schedule[chId];
+    var now = new Date();
+    var open = !cfg || (cfg.active!==false &&
+      (!cfg.open||new Date(cfg.open)<=now) &&
+      (!cfg.close||new Date(cfg.close)>=now));
+    var card = document.getElementById('card-'+chId);
+    var stat = document.getElementById('status-'+chId);
+    if(card) card.className = 'clo-card' + (open?'':' locked');
+    if(stat) { stat.textContent=open?'Đang mở':'Chưa mở'; stat.className='status-badge '+(open?'sb-open':'sb-lock'); }
+  });
+})();
+
+function logout(){
+  try{sessionStorage.removeItem('nm_sv_v1');}catch(e){}
+  location.href='index.html';
+}
+</script>
+</body>
+</html>

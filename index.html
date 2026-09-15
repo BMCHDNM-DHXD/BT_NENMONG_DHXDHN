@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đăng Nhập — BT Nền Móng HUCE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root{
+  --P:#1565C0;--Pdk:#0D47A1;--Plt:#E3F2FD;
+  --G:#2E7D32;--R:#C62828;--Rlt:#FFEBEE;
+  --text:#0A1929;--muted:#546E7A;
+  --sans:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--sans);
+  background:linear-gradient(135deg,#0A1929 0%,#0D47A1 55%,#1565C0 100%);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:16px;position:relative;overflow:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(circle at 15% 25%,rgba(21,101,192,.45) 0%,transparent 45%),
+    radial-gradient(circle at 85% 75%,rgba(13,71,161,.5) 0%,transparent 45%);
+  pointer-events:none;
+}
+.dots{
+  position:fixed;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:32px 32px;pointer-events:none;
+}
+.page{
+  width:100%;max-width:980px;
+  display:grid;grid-template-columns:1fr 420px;
+  border-radius:20px;overflow:hidden;
+  box-shadow:0 28px 90px rgba(0,0,0,.55);
+  position:relative;z-index:1;
+}
+@media(max-width:740px){.page{grid-template-columns:1fr}.left-panel{display:none}}
+
+/* LEFT */
+.left-panel{
+  background:linear-gradient(160deg,rgba(13,71,161,.75) 0%,rgba(21,101,192,.55) 100%);
+  backdrop-filter:blur(20px);
+  padding:52px 44px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  border-right:1px solid rgba(255,255,255,.1);
+}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:44px}
+.brand-ico{
+  width:50px;height:50px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.2);border-radius:13px;
+  display:flex;align-items:center;justify-content:center;font-size:26px;
+}
+.brand h1{font-size:16px;font-weight:800;color:#fff;line-height:1.25}
+.brand p{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px}
+.headline{flex:1;display:flex;flex-direction:column;justify-content:center}
+.headline h2{font-size:clamp(28px,3.5vw,40px);font-weight:800;color:#fff;line-height:1.15;margin-bottom:16px}
+.headline h2 span{color:#90CAF9}
+.headline p{font-size:14px;color:rgba(255,255,255,.7);line-height:1.85;margin-bottom:30px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:#fff;
+}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:32px}
+.sc{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;padding:14px;
+}
+.sc .n{font-family:var(--mono);font-size:26px;font-weight:700;color:#fff;display:block}
+.sc .l{font-size:10.5px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px}
+
+/* RIGHT */
+.right-panel{
+  background:#fff;padding:52px 44px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+@media(max-width:740px){.right-panel{padding:36px 28px}}
+.right-panel h3{font-size:24px;font-weight:800;color:var(--Pdk);margin-bottom:6px}
+.right-panel .sub{font-size:13px;color:var(--muted);margin-bottom:30px}
+.fld{margin-bottom:16px}
+.fld label{
+  display:block;font-size:11.5px;font-weight:700;color:var(--P);
+  margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;
+}
+.fld input,.fld select{
+  width:100%;padding:11px 14px;border:1.5px solid #CFD8DC;border-radius:9px;
+  font-size:13.5px;font-family:var(--sans);background:#FAFAFA;color:var(--text);transition:.15s;
+}
+.fld input:focus,.fld select:focus{
+  outline:none;border-color:var(--P);background:#fff;
+  box-shadow:0 0 0 3px rgba(21,101,192,.1);
+}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fld .hint{font-size:11px;color:var(--muted);margin-top:4px}
+.err-box{
+  background:var(--Rlt);color:var(--R);border-radius:8px;
+  padding:10px 14px;font-size:12.5px;margin-bottom:14px;
+  display:none;align-items:center;gap:7px;border-left:3px solid var(--R);
+}
+.err-box.show{display:flex}
+.btn-go{
+  width:100%;padding:13px;background:var(--P);color:#fff;
+  border:none;border-radius:10px;font-size:15px;font-family:var(--sans);
+  font-weight:700;cursor:pointer;transition:.18s;
+  display:flex;align-items:center;justify-content:center;gap:9px;margin-top:8px;
+  box-shadow:0 4px 16px rgba(21,101,192,.35);
+}
+.btn-go:hover{background:var(--Pdk);transform:translateY(-1px);box-shadow:0 6px 22px rgba(13,71,161,.42)}
+.note-txt{
+  font-size:11.5px;color:var(--muted);line-height:1.7;text-align:center;
+  background:#F5F7FA;border-radius:8px;padding:10px 14px;margin-top:16px;
+}
+</style>
+</head>
+<body>
+<div class="dots"></div>
+<div class="page">
+
+  <!-- LEFT: Branding -->
+  <div class="left-panel">
+    <div>
+      <div class="brand">
+        <div class="brand-ico">🏗</div>
+        <div>
+          <h1>BT Nền Móng Online</h1>
+          <p>Trường Đại học Xây dựng Hà Nội · BMCHDNM</p>
+        </div>
+      </div>
+      <div class="headline">
+        <h2>Bài Tập<br><span>Nền Móng</span><br>Online</h2>
+        <p>Hệ thống bài tập tự luận với bộ số liệu riêng sinh từ <strong style="color:#90CAF9">Số thứ tự (STT)</strong> của mỗi sinh viên. Làm bài, tự kiểm tra và nộp điểm tự động.</p>
+        <div class="chips">
+          <span class="chip"><i class="ti ti-key"></i> STT → số liệu riêng</span>
+          <span class="chip"><i class="ti ti-layers"></i> Dạng A · B · C</span>
+          <span class="chip"><i class="ti ti-certificate"></i> 4 CLO</span>
+          <span class="chip"><i class="ti ti-send"></i> Nộp tự động</span>
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="sc"><span class="n">6</span><span class="l">Dạng bài / CLO</span></div>
+      <div class="sc"><span class="n">A·B·C</span><span class="l">Cấp gợi ý</span></div>
+      <div class="sc"><span class="n">4</span><span class="l">CLO Bloom C4</span></div>
+      <div class="sc"><span class="n">STT</span><span class="l">Số liệu duy nhất</span></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form -->
+  <div class="right-panel">
+    <h3>Đăng nhập làm bài</h3>
+    <p class="sub">Nhập thông tin sinh viên để bắt đầu</p>
+
+    <div class="err-box" id="err-box">
+      <i class="ti ti-alert-circle"></i><span id="err-txt"></span>
+    </div>
+
+    <div class="fld">
+      <label>Họ và tên</label>
+      <input type="text" id="inp-name" placeholder="Nguyễn Văn An" autocomplete="name">
+    </div>
+    <div class="row2">
+      <div class="fld">
+        <label>Mã sinh viên</label>
+        <input type="text" id="inp-masv" placeholder="2021XXXXX">
+      </div>
+      <div class="fld">
+        <label>Số thứ tự (STT)</label>
+        <input type="number" id="inp-stt" placeholder="1" min="1" max="200" inputmode="numeric">
+        <div class="hint">Số trong danh sách lớp</div>
+      </div>
+    </div>
+    <div class="fld">
+      <label>Lớp học</label>
+      <select id="inp-lop"><option value="">-- Chọn lớp --</option></select>
+    </div>
+
+    <button class="btn-go" onclick="doLogin()">
+      <i class="ti ti-login"></i> Bắt đầu làm bài
+    </button>
+
+    <div class="note-txt">
+      Số thứ tự (STT) quyết định bộ số liệu của bạn.<br>
+      Cùng STT → cùng đề mỗi lần vào — hãy nhớ đúng STT của mình.
+    </div>
+  </div>
+</div>
+
+<script src="config.js" onerror="console.log('no config')"></script>
+<script src="assets/js/engine.js"></script>
+<script>
+(function(){
+  var sel = document.getElementById('inp-lop');
+  (window.CLASS_LIST||[]).forEach(function(c){
+    var o = document.createElement('option');
+    o.value=c.id; o.textContent=c.name; sel.appendChild(o);
+  });
+  // Auto-redirect nếu đã đăng nhập
+  if (getSV()) location.href = 'dashboard.html';
+})();
+
+function doLogin(){
+  var name = document.getElementById('inp-name').value.trim();
+  var masv = document.getElementById('inp-masv').value.trim();
+  var stt  = parseInt(document.getElementById('inp-stt').value);
+  var lop  = document.getElementById('inp-lop').value;
+  var err  = '';
+  if (!name)                    err = 'Vui lòng nhập họ và tên.';
+  else if (!masv)               err = 'Vui lòng nhập mã sinh viên.';
+  else if (!stt||stt<1||stt>200)err = 'STT phải là số từ 1 đến 200.';
+  else if (!lop)                err = 'Vui lòng chọn lớp học.';
+  var box = document.getElementById('err-box');
+  document.getElementById('err-txt').textContent = err;
+  box.className = err ? 'err-box show' : 'err-box';
+  if (err) return;
+  setSV({ hoTen:name, maSV:masv, stt:stt, lop:lop });
+  location.href = 'dashboard.html';
+}
+</script>
+</body>
+</html>

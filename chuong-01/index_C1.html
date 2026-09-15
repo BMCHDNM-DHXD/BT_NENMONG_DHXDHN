@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLO 1 — Phương Án Móng · BT Nền Móng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root{--P:#1565C0;--Pdk:#0D47A1;--Plt:#E3F2FD;--G:#2E7D32;--Glt:#E8F5E9;--Gdk:#1B5E20;
+      --R:#C62828;--Rlt:#FFEBEE;--A:#FF8F00;--Alt:#FFF8E1;--O:#E65100;--Olt:#FBE9E7;
+      --bg:#EEF4FB;--sur:#fff;--brd:#BBDEFB;--muted:#546E7A;--text:#0A1929;
+      --sans:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+      --r:12px;--sh:0 2px 16px rgba(13,71,161,.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh}
+
+.hdr{background:var(--Pdk);color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.hdr-in{max-width:860px;margin:0 auto;padding:0 20px;height:56px;display:flex;align-items:center;gap:12px}
+.hdr-back{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;font-weight:600;transition:.15s;padding:5px 10px;border-radius:7px}
+.hdr-back:hover{background:rgba(255,255,255,.12);color:#fff}
+.hdr-sep{color:rgba(255,255,255,.35);font-size:16px}
+.hdr-title{font-weight:700;font-size:15px;flex:1}
+.hdr-sv{font-size:11.5px;color:rgba(255,255,255,.65);font-family:var(--mono);text-align:right}
+
+.hero{background:linear-gradient(135deg,var(--Pdk) 0%,var(--P) 100%);color:#fff;padding:36px 20px 28px;text-align:center}
+.hero-in{max-width:660px;margin:0 auto}
+.clo-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:.6px;margin-bottom:14px}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:700;margin-bottom:8px}
+.hero p{font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.7;max-width:500px;margin:0 auto 20px}
+.stt-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:24px;padding:6px 18px;font-family:var(--mono);font-size:13px}
+.stt-pill strong{font-size:18px}
+
+main{max-width:860px;margin:0 auto;padding:24px 20px 72px}
+
+.intro-box{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);padding:18px 20px;margin-bottom:24px;box-shadow:var(--sh)}
+.intro-box h3{font-size:13px;font-weight:700;color:var(--Pdk);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:600px){.steps-grid{grid-template-columns:1fr 1fr}}
+.step-mini{text-align:center;padding:10px 6px}
+.step-mini .num{width:32px;height:32px;border-radius:50%;background:var(--Plt);color:var(--Pdk);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 6px}
+.step-mini .lbl{font-size:11px;color:var(--muted);line-height:1.4}
+
+/* ── Dạng section ─────────────────────────────────────────── */
+.dang-sec{background:var(--sur);border:1.5px solid var(--brd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:18px}
+.dang-sec-hd{padding:14px 18px 10px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--brd)}
+.dang-sec-hd .dbadge{font-family:var(--mono);font-size:20px;font-weight:700;min-width:52px}
+.dbadge.da{color:var(--G)}.dbadge.db{color:var(--P)}.dbadge.dc{color:var(--R)}
+.dang-sec-hd .dtitle{font-size:14px;font-weight:700;flex:1}
+.dang-sec-hd .dsub{font-size:11.5px;color:var(--muted)}
+.dang-sec-body{padding:14px 18px 16px}
+.ex-chips{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+@media(max-width:640px){.ex-chips{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:380px){.ex-chips{grid-template-columns:repeat(2,1fr)}}
+
+.ex-chip{display:flex;flex-direction:column;align-items:center;text-decoration:none;
+  background:#F8FBFF;border:1.5px solid var(--brd);border-radius:10px;
+  padding:10px 6px 8px;transition:.18s;position:relative;color:var(--text)}
+.ex-chip:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(13,71,161,.14)}
+.ex-chip .ec-num{font-family:var(--mono);font-size:15px;font-weight:700;margin-bottom:3px}
+.ex-chip .ec-pat{font-size:9.5px;color:var(--muted);font-family:var(--mono);letter-spacing:.3px;text-align:center;line-height:1.3}
+.ex-chip .ec-st{font-size:9px;margin-top:5px;font-weight:700;padding:1px 6px;border-radius:8px}
+.ex-chip.a{border-color:#A5D6A7}.ex-chip.a:hover{border-color:var(--G);background:var(--Glt)}
+.ex-chip.a .ec-num{color:var(--G)}
+.ex-chip.b{border-color:#90CAF9}.ex-chip.b:hover{border-color:var(--P);background:var(--Plt)}
+.ex-chip.b .ec-num{color:var(--P)}
+.ex-chip.c{border-color:#EF9A9A}.ex-chip.c:hover{border-color:var(--R);background:var(--Rlt)}
+.ex-chip.c .ec-num{color:var(--R)}
+.ex-chip.done{opacity:.75}
+.ex-chip.done .ec-st{background:var(--Glt);color:var(--Gdk)}
+.ex-chip:not(.done) .ec-st{background:var(--Plt);color:var(--Pdk)}
+
+.theory-box{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:16px}
+.theory-hd{background:var(--Alt);padding:12px 18px;border-bottom:1px solid #FFE0B2;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.theory-hd h3{font-size:13px;font-weight:700;color:var(--O);display:flex;align-items:center;gap:7px}
+.theory-body{padding:18px;display:none}
+.theory-body.open{display:block}
+.table-wrap{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th{background:var(--Pdk);color:#fff;padding:7px 10px;text-align:center;font-weight:700}
+td{padding:6px 10px;border-bottom:1px solid var(--brd);text-align:center;font-family:var(--mono);font-size:12px}
+tr:nth-child(even) td{background:#F8FBFF}
+.t-head2{background:var(--Plt);color:var(--Pdk);font-weight:700;font-family:var(--sans)}
+.kf{font-family:var(--mono);background:var(--Plt);color:var(--Pdk);padding:1px 5px;border-radius:4px;font-size:11.5px}
+.math{font-family:var(--mono);color:var(--Pdk)}
+p.note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6}
+.sect-title{font-size:12.5px;font-weight:700;color:var(--Pdk);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.5px}
+.dot-list{list-style:disc;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--text)}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a class="hdr-back" href="../index.html"><i class="ti ti-arrow-left"></i> Trang chủ</a>
+    <span class="hdr-sep">›</span>
+    <span class="hdr-title">CLO 1 — Phương Án Móng</span>
+    <div class="hdr-sv" id="hdr-sv"></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in">
+    <div class="clo-badge"><i class="ti ti-map"></i> CLO 1 · Bloom C4 — Phân tích</div>
+    <h1>Chọn Phương Án Nền Móng</h1>
+    <p>Phân tích hồ sơ địa chất 4 lớp đất → phân loại đất và trạng thái từng lớp → chọn giải pháp nền móng phù hợp với 3 cấp tải trọng.</p>
+    <div class="stt-pill"><i class="ti ti-key"></i> Số thứ tự của bạn: <strong id="stt-disp">–</strong></div>
+  </div>
+</section>
+
+<main>
+
+  <!-- Quy trình giải -->
+  <div class="intro-box">
+    <h3><i class="ti ti-list-numbers"></i> Quy trình giải bài (4 bước)</h3>
+    <div class="steps-grid">
+      <div class="step-mini"><div class="num">1</div><div class="lbl">Phân loại <b>tên đất</b> (tính A, B)<br>hoặc NSPT/qc</div></div>
+      <div class="step-mini"><div class="num">2</div><div class="lbl">Xác định <b>trạng thái</b> đất từng lớp</div></div>
+      <div class="step-mini"><div class="num">3</div><div class="lbl">Vẽ <b>hồ sơ địa chất</b> — phân loại tốt/xấu</div></div>
+      <div class="step-mini"><div class="num">4</div><div class="lbl">Chọn <b>phương án móng</b> theo tải trọng</div></div>
+    </div>
+  </div>
+
+  <!-- 18 bài tập — Dạng A/B/C × Pattern 1-6 -->
+  <div id="ex-sections"></div>
+
+  <!-- Lý thuyết tham khảo (ẩn/mở) -->
+  <div class="theory-box">
+    <div class="theory-hd" onclick="toggleTh()">
+      <h3><i class="ti ti-book"></i> Lý thuyết tham khảo — Phân loại đất &amp; chọn phương án</h3>
+      <i class="ti ti-chevron-down" id="th-icon"></i>
+    </div>
+    <div class="theory-body" id="th-body">
+
+      <div class="sect-title">1. Phân loại đất dính (Sét, Sét pha, Cát pha)</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Chỉ số dẻo A = w<sub>L</sub> – w<sub>P</sub></th><th>Tên đất</th></tr>
+          <tr><td class="t-head2">A &gt; 17</td><td>Sét</td></tr>
+          <tr><td class="t-head2">7 &lt; A ≤ 17</td><td>Sét pha</td></tr>
+          <tr><td class="t-head2">A ≤ 7</td><td>Cát pha</td></tr>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Độ sệt B = (w – w<sub>P</sub>) / A</th><th>Trạng thái</th><th>Đánh giá</th></tr>
+          <tr><td>B ≤ 0</td><td>Cứng</td><td style="color:var(--G);font-weight:700">Tốt (T)</td></tr>
+          <tr><td>0 &lt; B ≤ 0,25</td><td>Nửa cứng</td><td style="color:var(--G);font-weight:700">Tốt (T)</td></tr>
+          <tr><td>0,25 &lt; B ≤ 0,50</td><td>Dẻo cứng</td><td style="color:var(--G);font-weight:700">Tốt (T)</td></tr>
+          <tr><td>0,50 &lt; B ≤ 0,75</td><td>Dẻo mềm</td><td style="color:var(--G);font-weight:700">Tốt (T)</td></tr>
+          <tr><td>0,75 &lt; B ≤ 1,00</td><td>Dẻo chảy</td><td style="color:var(--R);font-weight:700">Xấu (X)</td></tr>
+          <tr><td>B &gt; 1,00</td><td>Chảy</td><td style="color:var(--R);font-weight:700">Xấu (X)</td></tr>
+        </table>
+      </div>
+
+      <div class="sect-title" style="margin-top:18px">2. Phân loại đất rời — theo NSPT</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Chỉ số NSPT (búa/30cm)</th><th>Trạng thái</th><th>Đánh giá</th></tr>
+          <tr><td>N &lt; 4</td><td>Rất rời</td><td style="color:var(--R);font-weight:700">Xấu (X)</td></tr>
+          <tr><td>4 ≤ N &lt; 10</td><td>Rời</td><td style="color:var(--R);font-weight:700">Xấu (X)</td></tr>
+          <tr><td>10 ≤ N &lt; 30</td><td>Chặt vừa</td><td style="color:var(--G);font-weight:700">Tốt (T)</td></tr>
+          <tr><td>30 ≤ N &lt; 50</td><td>Chặt</td><td style="color:var(--G);font-weight:700">Tốt (T)</td></tr>
+          <tr><td>N ≥ 50</td><td>Rất chặt</td><td style="color:var(--G);font-weight:700">Tốt (T)</td></tr>
+        </table>
+      </div>
+
+      <div class="sect-title" style="margin-top:18px">3. Phân loại đất rời — theo q<sub>c</sub> (CPT)</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Sức kháng mũi q<sub>c</sub> (MPa)</th><th>Trạng thái</th><th>Đánh giá</th></tr>
+          <tr><td>q<sub>c</sub> &lt; 4</td><td>Rất rời / Rời</td><td style="color:var(--R);font-weight:700">Xấu (X)</td></tr>
+          <tr><td>4 ≤ q<sub>c</sub> &lt; 12</td><td>Chặt vừa</td><td style="color:var(--G);font-weight:700">Tốt (T)</td></tr>
+          <tr><td>12 ≤ q<sub>c</sub> &lt; 20</td><td>Chặt</td><td style="color:var(--G);font-weight:700">Tốt (T)</td></tr>
+          <tr><td>q<sub>c</sub> ≥ 20</td><td>Rất chặt</td><td style="color:var(--G);font-weight:700">Tốt (T)</td></tr>
+        </table>
+      </div>
+
+      <div class="sect-title" style="margin-top:18px">4. Ma trận chọn phương án móng</div>
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Sơ đồ địa chất<br><small>(từ trên xuống)</small></th>
+            <th>Tải nhỏ<br><small>&lt; 500 kN/m</small></th>
+            <th>Tải trung bình<br><small>500–2000 kN/m</small></th>
+            <th>Tải lớn<br><small>&gt; 2000 kN/m</small></th>
+          </tr>
+          <tr><td>T-T-T-T</td><td>Móng đơn / băng nông</td><td>Móng băng / bè</td><td>Cọc ngắn (L &lt; 20m)</td></tr>
+          <tr><td>X-T-T-T</td><td>Móng bè / cải tạo L1</td><td>Cọc ngắn qua L1</td><td>Cọc dài qua L1</td></tr>
+          <tr><td>T-X-T-T</td><td>Móng nông trên L1</td><td>Cọc ngắn qua L1–L2</td><td>Cọc dài qua L1–L2</td></tr>
+          <tr><td>X-X-T-T</td><td>Cọc ngắn qua L1–L2</td><td>Cọc qua L1–L2</td><td>Cọc dài ≥ 20m</td></tr>
+          <tr><td>T-T-X-T</td><td>Móng nông L1–L2</td><td>Cọc qua L3 xấu</td><td>Cọc dài qua L3</td></tr>
+          <tr><td>X-X-X-T</td><td>Cọc xuyên qua 3 lớp</td><td>Cọc dài ≥ 25m</td><td>Cọc khoan nhồi lớn</td></tr>
+        </table>
+      </div>
+      <p class="note"><b>Lưu ý:</b> T = tốt (đất chịu tải tốt), X = xấu (đất yếu, cần cọc xuyên qua). Phương án cụ thể phụ thuộc thêm vào chiều sâu đặt móng tối thiểu và yêu cầu TCVN.</p>
+    </div>
+  </div>
+
+</main>
+
+<script src="../config.js" onerror="console.log('no config')"></script>
+<script src="../assets/js/engine.js"></script>
+<script>
+var _PATTERNS = ['T-T-T-T','X-T-T-T','T-X-T-T','X-X-T-T','T-T-X-T','X-X-X-T'];
+
+(function(){
+  var sv = getSV();
+  if (!sv) { location.href = '../index.html'; return; }
+  document.getElementById('stt-disp').textContent = sv.stt;
+  document.getElementById('hdr-sv').textContent = sv.hoTen + ' · STT ' + sv.stt;
+
+  var dangs = [
+    { key:'A', cls:'a', file:'C1-A.html', title:'Dạng A — Gợi ý đầy đủ', sub:'Công thức kèm số — chỉ tính kết quả' },
+    { key:'B', cls:'b', file:'C1-B.html', title:'Dạng B — Gợi ý công thức', sub:'Công thức có sẵn — tự điền số và tính' },
+    { key:'C', cls:'c', file:'C1-C.html', title:'Dạng C — Tự luận thuần túy', sub:'Chỉ có đề bài — không có gợi ý nào' }
+  ];
+
+  var html = '';
+  dangs.forEach(function(d) {
+    html += '<div class="dang-sec"><div class="dang-sec-hd">';
+    html += '<span class="dbadge ' + d.cls + '">' + d.key + '</span>';
+    html += '<div><div class="dtitle">' + d.title + '</div>';
+    html += '<div class="dsub">' + d.sub + '</div></div></div>';
+    html += '<div class="dang-sec-body"><div class="ex-chips">';
+    for (var ex = 1; ex <= 6; ex++) {
+      var subKey = 'nm_sub_C1-' + d.key + ex + '_' + sv.maSV;
+      var done = !!localStorage.getItem(subKey);
+      var url = d.file + '?ex=' + ex;
+      html += '<a href="' + url + '" class="ex-chip ' + d.cls + (done ? ' done' : '') + '">';
+      html += '<span class="ec-num">' + d.key + ex + '</span>';
+      html += '<span class="ec-pat">' + _PATTERNS[ex-1] + '</span>';
+      html += '<span class="ec-st">' + (done ? '✓ Đã nộp' : 'Làm bài') + '</span>';
+      html += '</a>';
+    }
+    html += '</div></div></div>';
+  });
+  document.getElementById('ex-sections').innerHTML = html;
+})();
+
+function toggleTh() {
+  var body = document.getElementById('th-body');
+  var icon = document.getElementById('th-icon');
+  var open = body.classList.toggle('open');
+  icon.className = open ? 'ti ti-chevron-up' : 'ti ti-chevron-down';
+}
+</script>
+</body>
+</html>

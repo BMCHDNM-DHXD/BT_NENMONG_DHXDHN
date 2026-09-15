@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pg-title">CLO1 Dạng B1 — Phương Án Móng · BT Nền Móng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root{--P:#1565C0;--Pdk:#0D47A1;--Plt:#E3F2FD;--G:#2E7D32;--Glt:#E8F5E9;--Gdk:#1B5E20;
+      --R:#C62828;--Rlt:#FFEBEE;--A:#FF8F00;--Alt:#FFF8E1;
+      --bg:#EEF4FB;--sur:#fff;--brd:#BBDEFB;--muted:#546E7A;--text:#0A1929;
+      --sans:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+      --r:10px;--sh:0 2px 14px rgba(13,71,161,.09)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+.hdr{background:var(--P);color:#fff;position:sticky;top:0;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.hdr-in{max-width:800px;margin:0 auto;padding:0 16px;height:52px;display:flex;align-items:center;gap:10px}
+.hdr-back{display:flex;align-items:center;gap:5px;color:rgba(255,255,255,.8);text-decoration:none;font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;transition:.15s}
+.hdr-back:hover{background:rgba(255,255,255,.12);color:#fff}
+.hdr-sep{color:rgba(255,255,255,.3)}
+.hdr-title{font-size:13px;font-weight:700;flex:1}
+.hdr-sv-info{font-size:11px;color:rgba(255,255,255,.65);font-family:var(--mono);text-align:right}
+.pbar-wrap{background:rgba(0,0,0,.15);height:5px}
+.pbar-fill{height:100%;background:#90CAF9;transition:width .4s}
+.prog-row{background:var(--P);padding:4px 16px 6px;display:flex;align-items:center;gap:8px;font-size:11.5px;color:rgba(255,255,255,.7)}
+.prog-row #hprog{color:#fff;font-family:var(--mono);font-weight:700}
+main{max-width:800px;margin:0 auto;padding:20px 16px 100px}
+.de-bai{background:var(--sur);border:1.5px solid var(--P);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:18px;overflow:hidden}
+.de-hd{background:var(--P);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
+.de-body{padding:14px 16px}
+.soil-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0}
+.soil-table th{background:var(--Pdk);color:#fff;padding:7px 8px;text-align:center;font-weight:700;font-size:11.5px}
+.soil-table td{padding:7px 8px;border-bottom:1px solid var(--brd);text-align:center;font-family:var(--mono)}
+.soil-table tr:nth-child(even) td{background:#F8FBFF}
+.soil-table td.tn{font-family:var(--sans);text-align:left;font-size:12px}
+.soil-table .th-sub{font-size:10px;font-weight:400;font-family:var(--sans)}
+.ex{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:14px;overflow:hidden}
+.exhd{background:var(--Plt);padding:11px 14px;cursor:pointer;display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;color:var(--Pdk);user-select:none;transition:.15s}
+.exhd:hover{background:#BBDEFB}
+.exhd.open{background:var(--Pdk);color:#fff}
+.snum{background:rgba(255,255,255,.25);border-radius:6px;padding:2px 9px;font-family:var(--mono);font-size:11px;font-weight:700;flex-shrink:0}
+.exhd:not(.open) .snum{background:var(--P);color:#fff}
+.echv{margin-left:auto;transition:transform .2s;font-size:14px}
+.echv.open{transform:rotate(90deg)}
+.exbd{display:none;padding:0}
+.exbd.open{display:block}
+.step-blk{padding:14px 16px;border-bottom:1px solid var(--Plt)}
+.step-blk:last-child{border-bottom:none}
+.step-hd{font-size:12px;font-weight:700;color:var(--P);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.step-hd .ln{background:var(--Pdk);color:#fff;border-radius:5px;padding:1px 7px;font-family:var(--mono);font-size:11px}
+.fr{font-family:var(--mono);font-size:13px;color:var(--text);margin:5px 0 4px;line-height:2;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.fr .lbl{font-family:var(--sans);font-size:12.5px;color:var(--muted);min-width:34px}
+.fr .eq{color:var(--Pdk);font-weight:700}
+.fr .hint{color:var(--muted);font-style:italic;font-size:12px}
+.fi{width:82px;padding:5px 8px;border:2px solid #90CAF9;border-radius:6px;font-family:var(--mono);font-size:13px;text-align:center;outline:none;background:#F8FBFF;transition:.15s}
+.fi:focus{border-color:var(--P);background:#fff}
+.fi.ok{border-color:var(--G);background:#F1F8E9;color:var(--Gdk)}
+.fi.no{border-color:var(--R);background:var(--Rlt);color:var(--R)}
+.fbt{background:var(--P);color:#fff;border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:12px;font-family:var(--sans);font-weight:700;transition:.15s}
+.fbt:hover{background:var(--Pdk)}
+.ffb{font-size:12px;font-family:var(--sans);min-width:120px}
+.pw{display:flex;flex-direction:column;gap:7px;padding:12px 16px}
+.mo{padding:9px 14px;border-radius:7px;border:1.5px solid var(--brd);cursor:pointer;font-size:13px;transition:.15s;display:flex;align-items:center;gap:8px}
+.mo:hover{border-color:var(--P);background:var(--Plt)}
+.mo.ok{border-color:var(--G);background:var(--Glt);color:var(--Gdk);font-weight:700}
+.mo.sel{border-color:var(--P);background:var(--Plt);color:var(--Pdk);font-weight:700}
+.mo.no{border-color:var(--R);background:var(--Rlt);color:var(--R);text-decoration:line-through}
+.mo.rok{border-color:var(--G);background:var(--Glt);color:var(--Gdk)}
+.mo .mk{width:26px;height:26px;border-radius:50%;background:var(--Plt);color:var(--Pdk);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+.me{display:none;margin:0 16px 12px;padding:9px 14px;border-radius:7px;font-size:12.5px;line-height:1.6}
+.me.show{display:block}
+.me.ok-e{background:var(--Glt);border-left:3px solid var(--G);color:var(--Gdk)}
+.me.no-e{background:var(--Rlt);border-left:3px solid var(--R);color:var(--R)}
+.soil-svg-box{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:14px;overflow:hidden}
+.soil-svg-hd{background:#E3F2FD;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--Pdk);border-bottom:1px solid var(--brd)}
+.soil-svg-bd{padding:16px;display:flex;justify-content:center}
+.submit-wrap{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);box-shadow:var(--sh);padding:16px;margin-top:6px}
+.scb{width:100%;padding:12px;background:var(--P);color:#fff;border:none;border-radius:9px;font-size:14px;font-family:var(--sans);font-weight:700;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.scb:hover{background:var(--Pdk)}
+.scb:disabled{background:#B0BEC5;cursor:not-allowed}
+.rqb{background:#FFF8E1;color:#E65100;border-radius:7px;padding:9px 14px;font-size:12.5px;margin-bottom:12px;display:flex;align-items:center;gap:8px;line-height:1.5}
+.toast{position:fixed;bottom:24px;right:20px;padding:12px 18px;border-radius:9px;font-size:13px;font-weight:600;z-index:999;display:none;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.toast.show{display:flex}
+.toast.ok{background:var(--Glt);color:var(--Gdk);border:1px solid var(--G)}
+.toast.err{background:var(--Rlt);color:var(--R);border:1px solid var(--R)}
+.dang-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:700;margin-left:6px}
+.note-box{background:var(--Alt);border-left:3px solid var(--A);border-radius:0 7px 7px 0;padding:9px 14px;font-size:12px;margin:10px 0;line-height:1.6;color:#4E342E}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-in">
+    <a class="hdr-back" href="index_C1.html"><i class="ti ti-arrow-left"></i> CLO1</a>
+    <span class="hdr-sep">›</span>
+    <span class="hdr-title" id="hdr-title">Phương Án Móng · Dạng B1 <span class="dang-badge">Công thức — không số</span></span>
+    <div class="hdr-sv-info"><span id="sv-name">–</span> · STT <strong id="sv-stt">–</strong></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-fill" id="pfill" style="width:0%"></div></div>
+  <div class="prog-row"><i class="ti ti-chart-bar"></i> Tiến độ: <span id="hprog">0 / 0</span></div>
+</header>
+
+<main>
+  <div class="de-bai">
+    <div class="de-hd"><i class="ti ti-file-description"></i> <span id="de-hd-txt">Đề bài — CLO1 Dạng B1</span> &nbsp;·&nbsp; STT <span id="stt-hd">–</span></div>
+    <div class="de-body">
+      <p>Cho hồ sơ địa chất gồm <b>4 lớp đất</b>. Phân loại đất, xác định trạng thái, vẽ hồ sơ địa chất và đề xuất phương án nền móng theo <b>3 cấp tải trọng</b>.</p>
+      <table class="soil-table" id="soil-input-table">
+        <thead>
+          <tr>
+            <th rowspan="2">Lớp</th><th rowspan="2">Mô tả</th><th rowspan="2">h (m)</th>
+            <th colspan="3">Đất dính</th><th colspan="2">Đất rời</th>
+          </tr>
+          <tr>
+            <th>w (%)</th><th>w<sub>L</sub> (%)</th><th>w<sub>P</sub> (%)</th>
+            <th>N<sub>SPT</sub></th><th>q<sub>c</sub> (MPa)</th>
+          </tr>
+        </thead>
+        <tbody id="soil-tbody"></tbody>
+      </table>
+      <div class="note-box"><i class="ti ti-alert-triangle"></i> <b>Dạng B:</b> Công thức được cho nhưng <b>chưa điền số</b> — bạn phải tra số liệu từ bảng trên, tự thay vào và tính kết quả.</div>
+      <p>Tải trọng: <b id="load-txt">–</b></p>
+    </div>
+  </div>
+
+  <!-- BƯỚC 1 -->
+  <div class="ex">
+    <div class="exhd open" onclick="tog('e1')">
+      <span class="snum">Bước 1</span> Tính A, B từ công thức — tra số từ bảng số liệu
+      <i class="ti ti-chevron-right echv open" id="cv-e1"></i>
+    </div>
+    <div class="exbd open" id="bd-e1">
+      <div id="step1-dinh"></div>
+      <div id="step1-roi"></div>
+    </div>
+  </div>
+
+  <!-- BƯỚC 2 -->
+  <div class="ex">
+    <div class="exhd" onclick="tog('e2')">
+      <span class="snum">Bước 2</span> Xác định tên đất và trạng thái từng lớp
+      <i class="ti ti-chevron-right echv" id="cv-e2"></i>
+    </div>
+    <div class="exbd" id="bd-e2">
+      <div id="step2-mcq"></div>
+    </div>
+  </div>
+
+  <!-- SVG -->
+  <div class="soil-svg-box">
+    <div class="soil-svg-hd"><i class="ti ti-layers-intersect"></i> Bước 3 — Hồ sơ địa chất (hiển thị sau khi làm Bước 2)</div>
+    <div class="soil-svg-bd"><div id="soil-svg-container"></div></div>
+  </div>
+
+  <!-- BƯỚC 4 -->
+  <div class="ex">
+    <div class="exhd" onclick="tog('e4')">
+      <span class="snum">Bước 4</span> Đề xuất phương án nền móng
+      <i class="ti ti-chevron-right echv" id="cv-e4"></i>
+    </div>
+    <div class="exbd" id="bd-e4">
+      <div id="step4-mcq"></div>
+    </div>
+  </div>
+
+  <div class="submit-wrap">
+    <div class="rqb" id="rq-msg"><i class="ti ti-info-circle"></i><span id="rq-txt">Hoàn thành ít nhất 80% câu hỏi để nộp bài.</span></div>
+    <button class="scb" id="btn-submit" onclick="doSubmit()">
+      <i class="ti ti-send"></i> Nộp bài &amp; lưu kết quả
+    </button>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+<script src="../config.js" onerror="console.log('no config')"></script>
+<script src="../assets/js/engine.js"></script>
+<script>
+window.FEEDBACK_MODE = 'B';
+var EX_NUM = parseInt(new URLSearchParams(location.search).get('ex')) || 1;
+if (EX_NUM < 1 || EX_NUM > 6) EX_NUM = 1;
+var CHAPTER_ID = 'C1-B' + EX_NUM;
+var C1_PATTERN_NAMES = ['T-T-T-T','X-T-T-T','T-X-T-T','X-X-T-T','T-T-X-T','X-X-X-T'];
+var D = null;
+
+window.onload = function() {
+  var page = initPage('c1');
+  if (!page || !page.isOpen) return;
+  var stt = page.stt;
+  var patName = C1_PATTERN_NAMES[EX_NUM - 1];
+  var label = 'Dạng B' + EX_NUM + ' (' + patName + ')';
+
+  document.getElementById('stt-hd').textContent = stt;
+  if (document.getElementById('hdr-title')) document.getElementById('hdr-title').textContent = 'Phương Án Móng · ' + label;
+  if (document.getElementById('de-hd-txt')) document.getElementById('de-hd-txt').textContent = 'Đề bài — CLO1 ' + label;
+  document.getElementById('pg-title').textContent = 'CLO1 ' + label + ' — BT Nền Móng';
+
+  D = genC1ByPattern(stt, EX_NUM, 2);
+  renderTable(D);
+  renderStep1(D);
+  renderStep2(D);
+  renderStep4(D);
+  drawSoilSVG(D.layers, 'soil-svg-container', false);
+
+  var submitKey = 'nm_sub_' + CHAPTER_ID + '_' + page.sv.maSV;
+  if (localStorage.getItem(submitKey)) {
+    var btn = document.getElementById('btn-submit');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="ti ti-check"></i> Đã nộp'; }
+    document.getElementById('rq-msg').style.display = 'none';
+  }
+};
+
+function renderTable(d) {
+  var tbody = document.getElementById('soil-tbody');
+  var rows = '';
+  d.layers.forEach(function(l) {
+    var h = l.h != null ? l.h : '∞';
+    if (l.type === 'dinh') {
+      rows += '<tr><td><b>L' + l.idx + '</b></td><td class="tn">Đất dính</td><td>' + h + '</td>'
+            + '<td>' + l.w + '</td><td>' + l.wL + '</td><td>' + l.wP + '</td><td>–</td><td>–</td></tr>';
+    } else {
+      var nspt = l.nspt != null ? l.nspt : '–';
+      var qc   = l.qc   != null ? l.qc   : '–';
+      rows += '<tr><td><b>L' + l.idx + '</b></td><td class="tn">Đất rời</td><td>' + h + '</td>'
+            + '<td>–</td><td>–</td><td>–</td><td>' + nspt + '</td><td>' + qc + '</td></tr>';
+    }
+  });
+  tbody.innerHTML = rows;
+  document.getElementById('load-txt').innerHTML =
+    '<span style="color:#E65100">Nhỏ: <b>' + d.loads.nho + ' kN/m</b></span> &nbsp;|&nbsp;'
+    + '<span style="color:#1565C0">TB: <b>' + d.loads.tb + ' kN/m</b></span> &nbsp;|&nbsp;'
+    + '<span style="color:#C62828">Lớn: <b>' + d.loads.lon + ' kN/m</b></span>';
+}
+
+function renderStep1(d) {
+  var dinhs = d.layers.filter(function(l){ return l.type === 'dinh'; });
+  var rois  = d.layers.filter(function(l){ return l.type === 'roi';  });
+  var html = '';
+  dinhs.forEach(function(l) {
+    var i = l.idx;
+    regQ('A' + i, l.A, 0.5);
+    regQ('B' + i, l.B, 0.02);
+    html += '<div class="step-blk">';
+    html += '<div class="step-hd"><span class="ln">L' + i + '</span> Lớp ' + i + ' — Đất dính (tra bảng: w, w<sub>L</sub>, w<sub>P</sub>)</div>';
+    // Công thức KHÔNG có số
+    html += '<div class="fr"><span class="lbl">A<sub>' + i + '</sub></span><span class="eq">=</span>'
+          + ' w<sub>L' + i + '</sub> – w<sub>P' + i + '</sub>'
+          + ' <span class="eq">=</span>'
+          + ' <span class="hint">(tra bảng)</span>'
+          + ' <span class="eq">=</span>'
+          + ' <input id="f-A' + i + '" class="fi" type="number" step="any" placeholder="?" oninput="cf(\'A' + i + '\')">'
+          + ' <button class="fbt" onclick="cf(\'A' + i + '\')">✓</button>'
+          + ' <span id="fb-A' + i + '" class="ffb"></span></div>';
+    html += '<div class="fr"><span class="lbl">B<sub>' + i + '</sub></span><span class="eq">=</span>'
+          + ' (w<sub>' + i + '</sub> – w<sub>P' + i + '</sub>) / A<sub>' + i + '</sub>'
+          + ' <span class="eq">=</span>'
+          + ' <span class="hint">(tra bảng)</span>'
+          + ' <span class="eq">=</span>'
+          + ' <input id="f-B' + i + '" class="fi" type="number" step="any" placeholder="?" oninput="cf(\'B' + i + '\')">'
+          + ' <button class="fbt" onclick="cf(\'B' + i + '\')">✓</button>'
+          + ' <span id="fb-B' + i + '" class="ffb"></span></div>';
+    html += '</div>';
+  });
+  document.getElementById('step1-dinh').innerHTML = html;
+  var roiHtml = '';
+  rois.forEach(function(l) {
+    roiHtml += '<div class="step-blk"><div class="step-hd"><span class="ln">L' + l.idx + '</span> Lớp ' + l.idx + ' — Đất rời</div>';
+    if (l.nspt != null) roiHtml += '<div style="font-size:12.5px;color:var(--muted)">Tra bảng N<sub>SPT</sub> với N = <b>' + l.nspt + '</b> búa/30cm</div>';
+    else                roiHtml += '<div style="font-size:12.5px;color:var(--muted)">Tra bảng q<sub>c</sub> với q<sub>c</sub> = <b>' + l.qc + '</b> MPa</div>';
+    roiHtml += '</div>';
+  });
+  document.getElementById('step1-roi').innerHTML = roiHtml;
+}
+
+function renderStep2(d) {
+  var optsDinh = ['Cứng','Nửa cứng','Dẻo cứng','Dẻo mềm','Dẻo chảy','Chảy'];
+  var optsRoi  = ['Rất rời','Rời','Chặt vừa','Chặt','Rất chặt'];
+  var html = '';
+  d.layers.forEach(function(l) {
+    var qname = 'tt' + l.idx;
+    var opts = l.type === 'dinh' ? optsDinh : optsRoi;
+    var ci = opts.indexOf(l.trangThai);
+    if (ci < 0) ci = 0;
+    ANS['mcq_' + qname] = null; updateProg();
+    html += '<div style="padding:12px 16px 2px;border-bottom:1px solid var(--Plt)">';
+    html += '<div style="font-size:12.5px;font-weight:700;color:var(--Pdk);margin-bottom:6px"><i class="ti ti-arrow-right" style="font-size:11px"></i> ';
+    if (l.type === 'dinh') html += 'Lớp ' + l.idx + ' — Từ A và B vừa tính, trạng thái đất là?';
+    else if (l.nspt != null) html += 'Lớp ' + l.idx + ' — N<sub>SPT</sub> = ' + l.nspt + ', trạng thái đất là?';
+    else html += 'Lớp ' + l.idx + ' — q<sub>c</sub> = ' + l.qc + ' MPa, trạng thái đất là?';
+    html += '</div></div><div class="pw">';
+    opts.forEach(function(opt, oi) {
+      html += '<div class="mo" id="mo-' + qname + '-' + oi + '" onclick="pm(\'' + qname + '\',' + oi + ',' + ci + ')">'
+            + '<span class="mk">' + String.fromCharCode(65+oi) + '</span>' + opt + '</div>';
+    });
+    var expTxt = 'Đáp án: <b>' + l.trangThai + '</b> ' + l.icon;
+    html += '<div class="me" id="me-' + qname + '">' + expTxt + '</div></div>';
+  });
+  document.getElementById('step2-mcq').innerHTML = html;
+  // Sau Bước 2 vẽ lại SVG với kết quả
+}
+
+function renderStep4(d) {
+  var pattern = d.pattern;
+  var lvlKeys = ['nho','tb','lon'];
+  var lvlLabels = ['Nhỏ','Trung bình','Lớn'];
+  var lvlVals = [d.loads.nho, d.loads.tb, d.loads.lon];
+  var tblHtml = '';
+  lvlLabels.forEach(function(lb, i) {
+    tblHtml += '<tr><td><b>' + lb + '</b></td><td>' + lvlVals[i] + ' kN/m</td>'
+             + '<td style="font-size:11.5px;color:var(--muted);font-family:var(--sans)">→ câu hỏi bên dưới</td></tr>';
+  });
+  if (document.getElementById('load-table-body')) document.getElementById('load-table-body').innerHTML = tblHtml;
+  var html = '';
+  lvlKeys.forEach(function(lk, li) {
+    var qname = 'pa_' + lk;
+    var mcq = getFoundationMCQ(pattern, lk);
+    ANS['mcq_' + qname] = null; updateProg();
+    html += '<div style="padding:12px 16px 2px;border-top:1px solid var(--Plt)">';
+    html += '<div style="font-size:12.5px;font-weight:700;color:var(--Pdk);margin-bottom:4px"><i class="ti ti-question-mark" style="font-size:11px"></i> Tải ' + lvlLabels[li].toLowerCase() + ' (<b>' + lvlVals[li] + ' kN/m</b>) — Phương án nền móng phù hợp nhất?</div></div>';
+    html += '<div class="pw">';
+    mcq.opts.forEach(function(opt, oi) {
+      html += '<div class="mo" id="mo-' + qname + '-' + oi + '" onclick="pm(\'' + qname + '\',' + oi + ',' + mcq.correct + ')">'
+            + '<span class="mk">' + String.fromCharCode(65 + oi) + '</span>' + opt.text + '</div>';
+    });
+    html += '<div class="me" id="me-' + qname + '">' + mcq.opts[mcq.correct].explain + '</div></div>';
+  });
+  document.getElementById('step4-mcq').innerHTML = html;
+}
+
+// Override pm để vẽ lại SVG sau Bước 2
+var _origPm = pm;
+var _step2Done = 0;
+pm = function(name, picked, correct) {
+  _origPm(name, picked, correct);
+  if (name.startsWith('tt')) {
+    _step2Done++;
+    if (_step2Done >= 4) drawSoilSVG(D.layers, 'soil-svg-container', true);
+  }
+};
+
+function doSubmit() {
+  var sv = getSV();
+  if (!sv) { showToast('Chưa đăng nhập!', 'err'); return; }
+  var vals = Object.values(ANS);
+  var total = vals.length;
+  var done  = vals.filter(function(v){ return v === true; }).length;
+  var pct   = total > 0 ? Math.round(done / total * 100) : 0;
+  var minPct = window.MIN_ATTEMPT_PCT || 80;
+  if (pct < minPct) {
+    document.getElementById('rq-txt').textContent = 'Cần ' + minPct + '% (' + done + '/' + total + '). Hiện tại: ' + pct + '%.';
+    showToast('Chưa đủ ' + minPct + '%!', 'err'); return;
+  }
+  var btn = document.getElementById('btn-submit');
+  btn.disabled = true; btn.innerHTML = '<i class="ti ti-loader ti-spin"></i> Đang nộp...';
+  var workerUrl = window.WORKER_URL || '';
+  if (!workerUrl) {
+    localStorage.setItem('nm_sub_' + CHAPTER_ID + '_' + sv.maSV, JSON.stringify({ ts: Date.now(), score: pct }));
+    localStorage.setItem('nm_prog_c1_' + sv.maSV, JSON.stringify({ pct: pct, score: pct }));
+    btn.innerHTML = '<i class="ti ti-check"></i> Đã lưu (local)';
+    document.getElementById('rq-msg').style.display = 'none';
+    showToast('Lưu thành công! ' + pct + '%', 'ok'); return;
+  }
+  fetch(workerUrl, { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ hoTen:sv.hoTen, maSV:sv.maSV, stt:sv.stt, lop:sv.lop, chapterId:CHAPTER_ID, score:pct, correct:done, total:total, duration:0 })
+  }).then(function(r){ return r.json(); }).then(function(res) {
+    if (res && res.ok) {
+      localStorage.setItem('nm_sub_' + CHAPTER_ID + '_' + sv.maSV, JSON.stringify({ ts: Date.now(), score: pct }));
+      btn.innerHTML = '<i class="ti ti-check"></i> Đã nộp · ' + pct + '%';
+      document.getElementById('rq-msg').style.display = 'none';
+      showToast('Nộp thành công! ' + pct + '%', 'ok');
+    } else throw new Error(res && res.error ? res.error : 'Lỗi');
+  }).catch(function(e) {
+    btn.disabled = false; btn.innerHTML = '<i class="ti ti-send"></i> Nộp bài & lưu kết quả';
+    showToast('Lỗi: ' + e.message, 'err');
+  });
+}
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show ' + (type || 'ok');
+  setTimeout(function(){ t.className = 'toast'; }, 3500);
+}
+</script>
+</body>
+</html>
