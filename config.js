@@ -4,7 +4,7 @@
 
 window.WORKER_URL = "https://bt-nen-mong.bm-cdnm.workers.dev";
 
-window.MIN_ATTEMPT_PCT = 10;   // % số câu phải làm để được nộp
+window.MIN_ATTEMPT_PCT = 80;   // % số câu phải làm để được nộp
 
 window.APP_INFO = {
   name:    "Bài Tập Nền Móng Online",
