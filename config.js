@@ -14,15 +14,33 @@ window.APP_INFO = {
 };
 
 window.CLASS_LIST = [
-  { id: "64XD1",  name: "64XD1"  },
-  { id: "64XD2",  name: "64XD2"  },
-  { id: "64XD3",  name: "64XD3"  },
-  { id: "64XD4",  name: "64XD4"  },
-  { id: "64XD5",  name: "64XD5"  },
-  { id: "64KT1",  name: "64KT1"  },
-  { id: "64KT2",  name: "64KT2"  },
-  { id: "64BDS1", name: "64BDS1" },
-  { id: "64NV1",  name: "64NV1"  },
+  // Xây dựng
+  { id: "XD1",  name: "XD1"  },
+  { id: "XD2",  name: "XD2"  },
+  { id: "XD3",  name: "XD3"  },
+  { id: "XD4",  name: "XD4"  },
+  { id: "XD5",  name: "XD5"  },
+  { id: "XD6",  name: "XD6"  },
+  { id: "XD7",  name: "XD7"  },
+  { id: "XD8",  name: "XD8"  },
+  { id: "XD9",  name: "XD9"  },
+  { id: "XD10", name: "XD10" },
+  // Xây dựng đặc biệt
+  { id: "XE1",  name: "XE1"  },
+  { id: "XE2",  name: "XE2"  },
+  { id: "XF",   name: "XF"   },
+  // Cầu đường
+  { id: "CD1",  name: "CD1"  },
+  { id: "CD2",  name: "CD2"  },
+  { id: "CD3",  name: "CD3"  },
+  { id: "CDS",  name: "CDS"  },
+  // Thủy lợi – Thủy điện
+  { id: "TH1",  name: "TH1"  },
+  { id: "TH2",  name: "TH2"  },
+  { id: "TH3",  name: "TH3"  },
+  // Khác
+  { id: "CTT",  name: "CTT"  },
+  { id: "CB",   name: "CB"   },
 ];
 
 // Lịch mở từng CLO / chương (null = không giới hạn thời gian)
