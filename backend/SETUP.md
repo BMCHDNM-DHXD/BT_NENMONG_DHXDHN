@@ -28,7 +28,13 @@
 
 > **Mỗi lần sửa appsscript.js phải deploy lại** (New deployment hoặc Manage deployments → Edit).
 
-## Bước 3 — Tạo Cloudflare Worker
+## Bước 3 — Tạo KV Namespace (chặn nộp trùng)
+
+1. Cloudflare Dashboard → **Workers & Pages → KV**
+2. **Create namespace** → đặt tên: `NM_KV`
+3. Ghi nhớ namespace ID để dùng ở Bước 4.
+
+## Bước 4 — Tạo Cloudflare Worker
 
 1. Vào https://workers.cloudflare.com → **Create Worker**
 2. Đặt tên: `bt-nen-mong`
@@ -40,8 +46,17 @@
    | `GAS_URL`      | Web app URL từ Bước 2                            |
    | `SECRET_TOKEN` | `NenMong_HUCE_2025#`  *(khớp với appsscript.js)* |
 
-5. **Save and Deploy** → copy **Worker URL**
+5. **Settings → KV Namespace Bindings → Add**:
+   - Variable name: `NM_KV`
+   - KV namespace: `NM_KV` *(vừa tạo ở Bước 3)*
+
+6. **Save and Deploy** → copy **Worker URL**
    (dạng `https://bt-nen-mong.YOUR-SUBDOMAIN.workers.dev`)
+
+> **KV hoạt động như thế nào:**
+> - Khi SV nộp bài thành công → Worker ghi key `sub:maSV:chapterId` vào KV (vĩnh viễn)
+> - Lần sau nộp lại → Worker thấy key đó → từ chối ngay, không tốn quota GAS
+> - Rate-limit: key `rl:maSV:chapterId` tự xóa sau 5 phút
 
 ## Bước 4 — Cập nhật config.js
 
