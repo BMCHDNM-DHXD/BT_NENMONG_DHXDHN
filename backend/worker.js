@@ -44,6 +44,10 @@ export default {
     // ── Preflight ────────────────────────────────────────────
     if (request.method === "OPTIONS") return preflight(origin);
 
+    if (request.method === "GET") {
+      return corsResp({ ok: true, service: "NenMong-Results-v2", status: "online" }, 200, origin);
+    }
+
     if (request.method !== "POST") {
       return corsResp({ ok: false, error: "Method not allowed" }, 405, origin);
     }
