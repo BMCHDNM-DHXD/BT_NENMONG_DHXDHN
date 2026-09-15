@@ -74,15 +74,15 @@ var ANS = {};
 
 function updateProg() {
   var vals = Object.values(ANS);
-  var total = vals.length;
-  var done  = vals.filter(function(v){ return v === true; }).length;
-  var pct   = total > 0 ? Math.round(done / total * 100) : 0;
+  var total    = vals.length;
+  var attempted = vals.filter(function(v){ return v !== null; }).length;
+  var pct   = total > 0 ? Math.round(attempted / total * 100) : 0;
   var pfill = document.getElementById('pfill');
   var ptxt  = document.getElementById('ptxt');
   var hprog = document.getElementById('hprog');
   if (pfill) pfill.style.width = pct + '%';
-  if (ptxt)  ptxt.textContent  = done + '/' + total + ' (' + pct + '%)';
-  if (hprog) hprog.textContent = done + ' / ' + total;
+  if (ptxt)  ptxt.textContent  = attempted + '/' + total + ' (' + pct + '%)';
+  if (hprog) hprog.textContent = attempted + ' / ' + total;
 }
 
 // ── Đăng ký và chấm ô điền số ────────────────────────────────
@@ -120,28 +120,25 @@ var _MCQ_CORRECT = {};  // { name: correctIdx } — dùng để reveal sau submi
 
 function pm(name, picked, correct) {
   _MCQ_CORRECT[name] = correct;
-  if (_MCQ_DONE[name]) return;
-  _MCQ_DONE[name] = true;
+  _MCQ_DONE[name] = picked;  // lưu lựa chọn mới nhất (cho revealAllMCQ)
 
   var mode = window.FEEDBACK_MODE || 'A';
   var opts = document.querySelectorAll('[id^="mo-' + name + '-"]');
 
   if (mode === 'A') {
-    // Dạng A: hiện đúng/sai ngay + đánh dấu đáp án đúng + explanation
     opts.forEach(function(el, i) {
       if (i === picked) el.className = 'mo ' + (i === correct ? 'ok' : 'no');
       else if (i === correct) el.className = 'mo rok';
+      else el.className = 'mo';
       el.setAttribute('data-picked', i === picked ? '1' : '0');
     });
     var exp = document.getElementById('me-' + name);
     if (exp) exp.className = 'me show ' + (picked === correct ? 'ok-e' : 'no-e');
   } else {
-    // Dạng B hoặc C: chỉ highlight đã chọn, không hiện đúng/sai
     opts.forEach(function(el, i) {
-      if (i === picked) { el.className = 'mo sel'; el.setAttribute('data-picked','1'); }
-      else { el.setAttribute('data-picked','0'); }
+      el.className = i === picked ? 'mo sel' : 'mo';
+      el.setAttribute('data-picked', i === picked ? '1' : '0');
     });
-    // Không hiện me (explanation)
   }
 
   ANS['mcq_' + name] = (picked === correct);
@@ -152,14 +149,13 @@ function pm(name, picked, correct) {
 function revealAllMCQ() {
   Object.keys(_MCQ_DONE).forEach(function(name) {
     var correct = _MCQ_CORRECT[name];
-    if (correct === undefined) return;
+    var picked  = _MCQ_DONE[name];
+    if (correct === undefined || picked === undefined) return;
     var opts = document.querySelectorAll('[id^="mo-' + name + '-"]');
-    var picked = -1;
-    opts.forEach(function(el, i) { if (el.getAttribute('data-picked')==='1') picked=i; });
-    if (picked < 0) return;
     opts.forEach(function(el, i) {
       if (i === picked) el.className = 'mo ' + (i === correct ? 'ok' : 'no');
       else if (i === correct) el.className = 'mo rok';
+      else el.className = 'mo';
     });
     var exp = document.getElementById('me-' + name);
     if (exp) exp.className = 'me show ' + (picked === correct ? 'ok-e' : 'no-e');

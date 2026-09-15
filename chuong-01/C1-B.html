@@ -327,14 +327,14 @@ function renderStep4(d) {
   document.getElementById('step4-mcq').innerHTML = html;
 }
 
-// Override pm để vẽ lại SVG sau Bước 2
+// Override pm để vẽ lại SVG sau Bước 2 (dùng Set để chịu được re-selection)
 var _origPm = pm;
-var _step2Done = 0;
+var _step2Answered = new Set();
 pm = function(name, picked, correct) {
   _origPm(name, picked, correct);
   if (name.startsWith('tt')) {
-    _step2Done++;
-    if (_step2Done >= 4) drawSoilSVG(D.layers, 'soil-svg-container', true);
+    _step2Answered.add(name);
+    if (_step2Answered.size >= 4) drawSoilSVG(D.layers, 'soil-svg-container', true);
   }
 };
 
@@ -342,37 +342,54 @@ function doSubmit() {
   var sv = getSV();
   if (!sv) { showToast('Chưa đăng nhập!', 'err'); return; }
   var vals = Object.values(ANS);
-  var total = vals.length;
-  var done  = vals.filter(function(v){ return v === true; }).length;
-  var pct   = total > 0 ? Math.round(done / total * 100) : 0;
+  var total    = vals.length;
+  var attempted = vals.filter(function(v){ return v !== null; }).length;
+  var correct  = vals.filter(function(v){ return v === true; }).length;
+  var attemptPct = total > 0 ? Math.round(attempted / total * 100) : 0;
+  var scorePct   = total > 0 ? Math.round(correct  / total * 100) : 0;
   var minPct = window.MIN_ATTEMPT_PCT || 80;
-  if (pct < minPct) {
-    document.getElementById('rq-txt').textContent = 'Cần ' + minPct + '% (' + done + '/' + total + '). Hiện tại: ' + pct + '%.';
-    showToast('Chưa đủ ' + minPct + '%!', 'err'); return;
+  if (attemptPct < minPct) {
+    document.getElementById('rq-txt').textContent = 'Cần làm ít nhất ' + minPct + '% (' + attempted + '/' + total + ' câu). Hiện tại: ' + attemptPct + '%.';
+    showToast('Chưa đủ ' + minPct + '% câu hỏi!', 'err'); return;
   }
   var btn = document.getElementById('btn-submit');
   btn.disabled = true; btn.innerHTML = '<i class="ti ti-loader ti-spin"></i> Đang nộp...';
-  var workerUrl = window.WORKER_URL || '';
-  if (!workerUrl) {
-    localStorage.setItem('nm_sub_' + CHAPTER_ID + '_' + sv.maSV, JSON.stringify({ ts: Date.now(), score: pct }));
-    localStorage.setItem('nm_prog_c1_' + sv.maSV, JSON.stringify({ pct: pct, score: pct }));
-    btn.innerHTML = '<i class="ti ti-check"></i> Đã lưu (local)';
+
+  var onSuccess = function() {
+    localStorage.setItem('nm_sub_' + CHAPTER_ID + '_' + sv.maSV, JSON.stringify({ ts: Date.now(), score: scorePct }));
+    btn.innerHTML = '<i class="ti ti-check"></i> Đã nộp · ' + scorePct + '%';
     document.getElementById('rq-msg').style.display = 'none';
-    showToast('Lưu thành công! ' + pct + '%', 'ok'); return;
-  }
+    showToast('Nộp thành công! ' + scorePct + '%', 'ok');
+    revealAllMCQ();
+    showNextLink();
+  };
+
+  var workerUrl = window.WORKER_URL || '';
+  if (!workerUrl) { onSuccess(); return; }
   fetch(workerUrl, { method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ hoTen:sv.hoTen, maSV:sv.maSV, stt:sv.stt, lop:sv.lop, chapterId:CHAPTER_ID, score:pct, correct:done, total:total, duration:0 })
+    body: JSON.stringify({ hoTen:sv.hoTen, maSV:sv.maSV, stt:sv.stt, lop:sv.lop,
+      chapterId:CHAPTER_ID, score:scorePct, correct:correct, total:total, duration:0 })
   }).then(function(r){ return r.json(); }).then(function(res) {
-    if (res && res.ok) {
-      localStorage.setItem('nm_sub_' + CHAPTER_ID + '_' + sv.maSV, JSON.stringify({ ts: Date.now(), score: pct }));
-      btn.innerHTML = '<i class="ti ti-check"></i> Đã nộp · ' + pct + '%';
-      document.getElementById('rq-msg').style.display = 'none';
-      showToast('Nộp thành công! ' + pct + '%', 'ok');
-    } else throw new Error(res && res.error ? res.error : 'Lỗi');
+    if (res && res.ok) { onSuccess(); }
+    else throw new Error(res && res.error ? res.error : 'Lỗi');
   }).catch(function(e) {
     btn.disabled = false; btn.innerHTML = '<i class="ti ti-send"></i> Nộp bài & lưu kết quả';
     showToast('Lỗi: ' + e.message, 'err');
   });
+}
+
+function showNextLink() {
+  if (EX_NUM >= 6) return;
+  var wrap = document.querySelector('.submit-wrap');
+  if (!wrap) return;
+  var next = EX_NUM + 1;
+  var patName = C1_PATTERN_NAMES[next - 1];
+  wrap.insertAdjacentHTML('beforeend',
+    '<a href="C1-B.html?ex=' + next + '" style="display:flex;align-items:center;justify-content:center;gap:8px;'
+    + 'margin-top:10px;padding:11px;background:var(--Glt);border:1.5px solid var(--G);border-radius:9px;'
+    + 'color:var(--Gdk);font-weight:700;font-size:13.5px;text-decoration:none">'
+    + '<i class="ti ti-arrow-right"></i> Tiếp theo: B' + next + ' (' + patName + ')</a>'
+  );
 }
 function showToast(msg, type) {
   var t = document.getElementById('toast');
