@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pg-title">CLO2 Dạng A — Kiểm Tra Kích Thước Đáy Móng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<script src="../config.js" onerror="console.log('no config')"></script>
+<script src="../assets/js/engine.js"></script>
+<style>
+:root{--P:#1565C0;--Pdk:#0D47A1;--Plt:#E3F2FD;--G:#2E7D32;--Glt:#E8F5E9;--Gdk:#1B5E20;
+      --R:#C62828;--Rlt:#FFEBEE;--A:#FF8F00;--Alt:#FFF8E1;--O:#E65100;
+      --bg:#EEF4FB;--sur:#fff;--brd:#BBDEFB;--muted:#546E7A;--text:#0A1929;
+      --sans:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+      --r:10px;--sh:0 2px 14px rgba(13,71,161,.09)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+.hdr{background:var(--Pdk);color:#fff;position:sticky;top:0;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.hdr-in{max-width:860px;margin:0 auto;padding:0 16px;height:52px;display:flex;align-items:center;gap:10px}
+.hdr-back{display:flex;align-items:center;gap:5px;color:rgba(255,255,255,.8);text-decoration:none;font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;transition:.15s;white-space:nowrap}
+.hdr-back:hover{background:rgba(255,255,255,.12);color:#fff}
+.hdr-sep{color:rgba(255,255,255,.3)}
+.hdr-title{font-size:13px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hdr-sv-info{font-size:11px;color:rgba(255,255,255,.65);font-family:var(--mono);text-align:right;white-space:nowrap}
+.pbar-wrap{background:rgba(0,0,0,.15);height:5px}
+.pbar-fill{height:100%;background:#64B5F6;transition:width .4s}
+.prog-row{background:var(--Pdk);padding:4px 16px 6px;display:flex;align-items:center;gap:8px;font-size:11.5px;color:rgba(255,255,255,.7)}
+.prog-row #hprog{color:#fff;font-family:var(--mono);font-weight:700}
+main{max-width:860px;margin:0 auto;padding:20px 16px 100px}
+/* SV info */
+.sv-bar{background:linear-gradient(135deg,var(--Pdk),var(--P));color:#fff;border-radius:var(--r);padding:10px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.sv-bar-txt{flex:1;font-size:13px;font-weight:600}
+.sv-bar-stt{font-family:var(--mono);font-size:20px;font-weight:800;background:rgba(255,255,255,.15);padding:4px 14px;border-radius:8px}
+/* CARDS */
+.card{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:14px;overflow:hidden}
+.card-hd{background:var(--Plt);padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1.5px solid var(--brd);cursor:pointer;user-select:none}
+.card-hd i{font-size:16px;color:var(--P)}
+.card-hd h3{font-size:12.5px;font-weight:700;color:var(--Pdk);flex:1}
+.card-hd .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;background:var(--P);color:#fff;white-space:nowrap}
+.card-body{padding:14px}
+/* DE BAI */
+.de-bai{background:var(--sur);border:1.5px solid var(--P);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:18px;overflow:hidden}
+.de-hd{background:var(--Pdk);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
+.de-body{padding:14px 16px}
+.de-body p{font-size:13px;margin-bottom:8px;line-height:1.7}
+.pa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.pa-box{border-radius:8px;padding:10px 14px;font-size:13px;border:1.5px solid}
+.pa-box.pa1{background:#E3F2FD;border-color:#90CAF9;color:#0D47A1}
+.pa-box.pa2{background:#FCE4EC;border-color:#F48FB1;color:#C62828}
+/* STEP BLOCKS */
+.step{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:12px;overflow:hidden}
+.step-hd{background:var(--Plt);padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--Pdk)}
+.step-hd.open{background:var(--Pdk);color:#fff}
+.snum{background:var(--P);color:#fff;font-size:11px;font-weight:800;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+.step-hd.open .snum{background:rgba(255,255,255,.25)}
+.step-body{padding:14px;display:flex;flex-direction:column;gap:10px}
+/* FORMULA BOX */
+.fml{background:#F8FBFF;border:1.5px solid #BBDEFB;border-left:4px solid var(--P);border-radius:0 8px 8px 0;padding:10px 14px;font-family:var(--mono);font-size:13px;line-height:2.0}
+.fml .ftl{font-family:var(--sans);font-size:10px;font-weight:700;color:var(--P);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.fml em{color:var(--Pdk);font-style:normal;font-weight:700}
+.fml.hint{border-left-color:var(--A);background:var(--Alt)}
+/* INFO BOXES */
+.ib{border-left:4px solid;border-radius:0 8px 8px 0;padding:9px 13px;font-size:12.5px;line-height:1.6}
+.ib.th{background:var(--Plt);border-color:var(--P);color:var(--Pdk)}
+.ib.ok{background:var(--Glt);border-color:var(--G);color:var(--Gdk);font-weight:500}
+.ib.wa{background:var(--Rlt);border-color:var(--R);color:var(--R)}
+.ib.am{background:var(--Alt);border-color:var(--A);color:#4E342E}
+/* GRID */
+.tc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* ANS ROWS */
+.ans-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--Plt);flex-wrap:wrap}
+.ans-row:last-child{border-bottom:none}
+.ans-lbl{font-size:12.5px;flex:1;min-width:160px;line-height:1.5}
+.ans-inp{width:100px;padding:5px 8px;border:2px solid var(--brd);border-radius:7px;font-family:var(--mono);font-size:13px;text-align:center;transition:border-color .15s,background .15s;background:var(--sur)}
+.ans-inp:focus{outline:none;border-color:var(--P)}
+.ans-inp.ok{border-color:var(--G)!important;background:var(--Glt)}
+.ans-inp.no{border-color:var(--R)!important;background:var(--Rlt)}
+.ans-unit{font-size:11.5px;color:var(--muted);white-space:nowrap;font-family:var(--mono)}
+.chip{font-size:11px;font-weight:700;padding:3px 8px;border-radius:10px;white-space:nowrap;min-width:24px;text-align:center}
+.chip.ok{background:var(--Glt);color:var(--Gdk)}
+.chip.no{background:var(--Rlt);color:var(--R)}
+/* RESULT TABLE */
+.res-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.res-tbl th{background:var(--Pdk);color:#fff;padding:5px 8px;font-weight:700;text-align:center;border:1px solid var(--P)}
+.res-tbl td{padding:5px 8px;border:1px solid var(--brd);text-align:center;font-family:var(--mono);font-size:11.5px}
+.res-tbl td.lbl{text-align:left;font-family:var(--sans);font-weight:600;color:var(--Pdk)}
+.res-tbl .pass{color:var(--G);font-weight:700}
+.res-tbl .fail{color:var(--R);font-weight:700}
+/* MCQ */
+.mw{border:1px solid var(--brd);border-radius:var(--r);overflow:hidden;margin:4px 0}
+.mq{padding:9px 13px 7px;font-size:13px;font-weight:600;border-bottom:1px solid var(--Plt);background:#FAFCFF;line-height:1.5}
+.mn{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--P);background:var(--Plt);padding:2px 6px;border-radius:4px;margin-right:5px}
+.mo-list{display:grid;gap:0}
+.mo-list.g2{grid-template-columns:1fr 1fr}
+.mo{padding:8px 12px;cursor:pointer;display:flex;align-items:flex-start;gap:8px;font-size:12.5px;border-top:1px solid var(--Plt);transition:background .12s;line-height:1.4}
+.mo:hover{background:var(--Plt)}
+.mk{font-family:var(--mono);font-size:11px;font-weight:700;min-width:20px;height:20px;background:var(--Plt);color:var(--P);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.mo.ok{background:var(--Glt)!important}.mo.ok .mk{background:var(--G);color:#fff}
+.mo.no{background:var(--Rlt)!important}.mo.no .mk{background:var(--R);color:#fff}
+.mo.rok{background:var(--Glt)!important;opacity:.65}.mo.rok .mk{background:var(--G);color:#fff}
+.me{padding:8px 13px;font-size:12px;line-height:1.6;border-top:1px solid var(--brd);display:none}
+.me.show{display:block}.me.ok-e{background:var(--Glt);color:var(--Gdk)}.me.no-e{background:var(--Rlt);color:#b71c1c}
+/* SEC LABEL */
+.sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--P);display:flex;align-items:center;gap:6px;margin:6px 0 4px}
+.sl::after{content:'';flex:1;height:1px;background:var(--brd)}
+/* SNAV */
+.snav{position:fixed;bottom:0;left:0;right:0;background:var(--Pdk);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;z-index:200;box-shadow:0 -2px 12px rgba(0,0,0,.2);gap:12px;flex-wrap:wrap}
+.snav-info{color:rgba(255,255,255,.7);font-size:12.5px;flex:1}
+.btn{padding:7px 15px;border-radius:8px;border:none;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:600;transition:opacity .15s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.btn-sub{background:#fff;color:var(--Pdk)}
+.btn-nav{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.btn:hover{opacity:.85}
+/* TZ TABLE */
+.tz-tbl{width:100%;border-collapse:collapse;font-size:11.5px}
+.tz-tbl th{background:var(--Plt);color:var(--Pdk);font-weight:700;padding:5px 8px;border:1px solid var(--brd);text-align:center}
+.tz-tbl td{padding:4px 7px;border:1px solid #EBF5FB;text-align:center;font-family:var(--mono);font-size:11px}
+.tz-tbl td:first-child{font-weight:700;color:var(--P);background:var(--Plt)}
+.tz-tbl tr.hi{background:#FFF9C4}
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#323232;color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:.3s;z-index:999;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok-t{background:var(--G)}.toast.warn-t{background:var(--A)}.toast.err-t{background:var(--R)}
+@media(max-width:600px){.tc,.pa-grid,.mo-list.g2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a href="index.html" class="hdr-back"><i class="ti ti-arrow-left"></i> CLO2</a>
+    <span class="hdr-sep">|</span>
+    <span class="hdr-title" id="hdr-title">Dạng A — Kiểm Tra Kích Thước Đáy Móng</span>
+    <div class="hdr-sv-info" id="hdr-sv"></div>
+  </div>
+</header>
+<div class="pbar-wrap"><div class="pbar-fill" id="pfill" style="width:0%"></div></div>
+<div class="prog-row"><i class="ti ti-target" style="font-size:13px"></i> Tiến độ: <span id="hprog">0/0</span></div>
+
+<main>
+  <div class="sv-bar">
+    <i class="ti ti-id-badge" style="font-size:20px;opacity:.8"></i>
+    <div class="sv-bar-txt">Kiểm tra kích thước đáy móng — <span id="sv-name">đang tải...</span></div>
+    <div class="sv-bar-stt" id="sv-stt">–</div>
+  </div>
+
+  <!-- BẢNG TRA TERZAGHI -->
+  <div class="card">
+    <div class="card-hd" onclick="togCard('tz')">
+      <i class="ti ti-table"></i><h3>Bảng tra Terzaghi — Nc, Nq, Nγ theo φ &nbsp;&amp;&nbsp; Hệ số hình dạng α</h3>
+      <span class="badge">TRA CỨU</span>
+      <i class="ti ti-chevron-down" id="cv-tz" style="margin-left:6px;font-size:13px;color:var(--muted)"></i>
+    </div>
+    <div class="card-body" id="bd-tz">
+      <div class="tc">
+        <div>
+          <div class="sl"><i class="ti ti-table"></i>Hệ số Nc, Nq, Nγ (Terzaghi)</div>
+          <table class="tz-tbl">
+            <tr><th>φ (°)</th><th>N<sub>c</sub></th><th>N<sub>q</sub></th><th>N<sub>γ</sub></th></tr>
+            <tr><td>15</td><td>12.9</td><td>4.4</td><td>2.5</td></tr>
+            <tr><td>18</td><td>15.5</td><td>6.0</td><td>4.0</td></tr>
+            <tr class="hi"><td>20</td><td>17.7</td><td>7.4</td><td>5.0</td></tr>
+            <tr><td>22</td><td>20.3</td><td>9.2</td><td>6.8</td></tr>
+            <tr><td>25</td><td>25.1</td><td>12.7</td><td>10.9</td></tr>
+            <tr><td>28</td><td>31.6</td><td>17.8</td><td>17.0</td></tr>
+            <tr><td>30</td><td>37.2</td><td>22.5</td><td>19.7</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="sl"><i class="ti ti-shape"></i>Hệ số hình dạng α</div>
+          <table class="tz-tbl">
+            <tr><th>Loại móng</th><th>α<sub>1</sub></th><th>α<sub>2</sub></th><th>α<sub>3</sub></th></tr>
+            <tr><td style="text-align:left">Băng (L/B&gt;10)</td><td>0.5</td><td>1.0</td><td>1.0</td></tr>
+            <tr><td style="text-align:left">Vuông (L=B)</td><td>0.4</td><td>1.0</td><td>1.3</td></tr>
+            <tr class="hi"><td style="text-align:left">Chữ nhật</td><td>1−0.2B/L</td><td>1.0</td><td>1+0.2B/L</td></tr>
+          </table>
+          <div class="fml" style="margin-top:8px;font-size:12px">
+            <div class="ftl"><i class="ti ti-math-function"></i> SCT nền — Terzaghi</div>
+            <em>P<sub>gh</sub></em> = α₁·N<sub>γ</sub>·B·γ + α₂·N<sub>q</sub>·q + α₃·N<sub>c</sub>·c<br>
+            <em>[P]</em> = P<sub>gh</sub> / F<sub>s</sub> &nbsp;·&nbsp; q = γ·h<sub>m</sub>
+          </div>
+          <div class="fml" style="margin-top:6px;font-size:12px">
+            <div class="ftl"><i class="ti ti-arrows-transfer-down"></i> Áp lực đáy móng</div>
+            <em>p<sub>tb</sub></em> = N₀/(B·L) + γ<sub>tb</sub>·h<sub>m</sub><br>
+            <em>p<sub>max/min</sub></em> = p<sub>tb</sub> ± 6M₀/(B·L²) <span style="font-family:var(--sans);font-size:10px">(lệch tâm)</span>
+          </div>
+        </div>
+      </div>
+      <div class="ib th" style="margin-top:8px;font-size:12px">
+        <strong>Điều kiện SCT (đúng tâm):</strong> p<sub>tb</sub> ≤ [P] &nbsp;·&nbsp;
+        <strong>Lệch tâm thêm:</strong> p<sub>max</sub> ≤ 1.2·[P] và p<sub>min</sub> ≥ 0
+      </div>
+    </div>
+  </div>
+
+  <!-- EXERCISE CONTENT -->
+  <div id="ex-content"><div style="text-align:center;padding:40px;color:var(--muted)"><i class="ti ti-loader" style="font-size:28px"></i></div></div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+</main>
+
+<nav class="snav">
+  <div class="snav-info" id="snav-info">Dạng A · Bài đang tải...</div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <span id="prev-link"></span>
+    <button class="btn btn-sub" id="sub-btn" onclick="doSubmit()">
+      <i class="ti ti-send"></i> Nộp bài
+    </button>
+    <span id="next-link"></span>
+  </div>
+</nav>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   C2-A.html — Kiểm tra SCT nền, Dạng A (FEEDBACK_MODE='A')
+   CLO2 · 6 patterns · stt-seeded PRNG
+══════════════════════════════════════════════════════════ */
+
+window.FEEDBACK_MODE = 'A';
+var CHAPTER_ID = 'C2-A';
+var DANG_IDX   = 1;
+
+/* ── URL params ── */
+var _sp = new URLSearchParams(location.search);
+var EX_NUM = Math.max(1, Math.min(6, parseInt(_sp.get('ex')) || 1));
+
+/* ── Terzaghi lookup ── */
+var TZ = {
+  15:{Nc:12.9,Nq:4.4,Ng:2.5},
+  18:{Nc:15.5,Nq:6.0,Ng:4.0},
+  20:{Nc:17.7,Nq:7.4,Ng:5.0},
+  22:{Nc:20.3,Nq:9.2,Ng:6.8},
+  25:{Nc:25.1,Nq:12.7,Ng:10.9},
+  28:{Nc:31.6,Nq:17.8,Ng:17.0},
+  30:{Nc:37.2,Nq:22.5,Ng:19.7}
+};
+
+/* ── Pattern definitions ── */
+var C2_PAT = [
+  {type:'don', ecc:false, LB:1.0,  lbl:'Móng đơn vuông · Đúng tâm'},
+  {type:'don', ecc:false, LB:1.5,  lbl:'Móng đơn · L=1.5B · Đúng tâm'},
+  {type:'don', ecc:false, LB:2.0,  lbl:'Móng đơn · L=2B · Đúng tâm'},
+  {type:'don', ecc:true,  LB:1.0,  lbl:'Móng đơn vuông · Lệch tâm'},
+  {type:'don', ecc:true,  LB:1.5,  lbl:'Móng đơn · L=1.5B · Lệch tâm'},
+  {type:'bang',ecc:true,  LB:null, lbl:'Móng băng · Lệch tâm'}
+];
+
+/* ── Data generator ── */
+function genC2(stt, patIdx) {
+  var r   = seededRng(stt * 1009 + patIdx * 100 + DANG_IDX);
+  var pat = C2_PAT[patIdx];
+
+  var PHI_POOL = [18,20,22,25,28];
+  var phi  = PHI_POOL[Math.floor(r() * PHI_POOL.length)];
+  var tz   = TZ[phi];
+  var c    = [10,12,15,18,20,22,25][Math.floor(r() * 7)];
+  var gam  = [17.5,18.0,18.5,19.0,19.5][Math.floor(r() * 5)];
+  var hm   = [1.2,1.4,1.5,1.6,1.8,2.0][Math.floor(r() * 6)];
+  var Fs   = 2.5;
+  var gtb  = 20;
+  var q    = Math.round(gam * hm * 10) / 10;
+
+  var N0, M0;
+  if (pat.type === 'don') {
+    var N0p = [400,500,600,700,800,900,1000,1200,1500];
+    N0  = N0p[Math.floor(r() * N0p.length)];
+    M0  = pat.ecc ? Math.round(N0 * (0.12 + r() * 0.13)) : 0;
+  } else {
+    var N0p = [150,180,200,220,250,280,300,350];
+    N0  = N0p[Math.floor(r() * N0p.length)];
+    M0  = pat.ecc ? Math.round(N0 * (0.08 + r() * 0.10)) : 0;
+  }
+
+  /* Estimate B_needed from [P] rough */
+  var LB = pat.LB || 1.0;
+  var a1_est = pat.type==='bang' ? 0.5 : (LB===1.0 ? 0.4 : 1-0.2/LB);
+  var a3_est = pat.type==='bang' ? 1.0 : (LB===1.0 ? 1.3 : 1+0.2/LB);
+  var B_est_sq = 1.5;
+  var Pgh_est = a1_est*tz.Ng*B_est_sq*gam + tz.Nq*q + a3_est*tz.Nc*c;
+  var P_est   = Pgh_est / Fs;
+  var pgl_est = Math.max(30, P_est - gtb*hm);
+  var B_need  = pat.type==='bang' ? N0/pgl_est : Math.sqrt(N0 / pgl_est / LB);
+  B_need      = Math.max(0.8, B_need);
+
+  /* PA1: ~75% of needed → should fail */
+  var B1 = Math.round(B_need * 0.75 * 10) / 10;
+  if (B1 < 0.7) B1 = 0.7;
+  var L1 = pat.type==='don' ? Math.round(B1 * LB * 10) / 10 : null;
+  if (L1 && L1 < B1) L1 = B1;
+
+  /* PA2: ~125% of needed → should pass */
+  var B2 = Math.round(B_need * 1.25 * 10) / 10;
+  var L2 = pat.type==='don' ? Math.round(B2 * LB * 10) / 10 : null;
+  if (L2 && L2 < B2) L2 = B2;
+
+  /* Compute answers for one PA */
+  function calcPA(B, L) {
+    var a1, a3;
+    if (pat.type === 'bang') {
+      a1 = 0.5; a3 = 1.0;
+    } else if (L === B) {
+      a1 = 0.4; a3 = 1.3;
+    } else {
+      a1 = Math.round((1 - 0.2*B/L)*1000)/1000;
+      a3 = Math.round((1 + 0.2*B/L)*1000)/1000;
+    }
+    var Pgh = a1*tz.Ng*B*gam + tz.Nq*q + a3*tz.Nc*c;
+    var P   = Pgh / Fs;
+    var ptb = pat.type==='bang' ? N0/B + gtb*hm : N0/(B*L) + gtb*hm;
+    var pmax, pmin;
+    if (pat.ecc && pat.type==='don')  { pmax = ptb + 6*M0/(B*L*L); pmin = ptb - 6*M0/(B*L*L); }
+    else if (pat.ecc)                  { pmax = ptb + 6*M0/(B*B);   pmin = ptb - 6*M0/(B*B);   }
+    else                               { pmax = ptb; pmin = ptb; }
+    var ok_tb  = ptb  <= P;
+    var ok_max = pmax <= 1.2*P;
+    var ok_min = pmin >= 0;
+    return {
+      a1:   Math.round(a1*1000)/1000,
+      a3:   Math.round(a3*1000)/1000,
+      Pgh:  Math.round(Pgh*10)/10,
+      P:    Math.round(P*10)/10,
+      ptb:  Math.round(ptb*10)/10,
+      pmax: Math.round(pmax*10)/10,
+      pmin: Math.round(pmin*10)/10,
+      ok_tb, ok_max, ok_min,
+      pass: ok_tb && ok_max && ok_min
+    };
+  }
+
+  var ans1 = calcPA(B1, L1);
+  var ans2 = calcPA(B2, L2);
+
+  /* Ensure PA1 fails, PA2 passes — adjust if needed */
+  if (ans1.pass) {
+    B1 = Math.round((B1 - 0.3) * 10) / 10;
+    if (B1 < 0.6) B1 = 0.6;
+    L1 = pat.type==='don' ? Math.round(B1*LB*10)/10 : null;
+    if (L1 && L1 < B1) L1 = B1;
+    ans1 = calcPA(B1, L1);
+  }
+  if (!ans2.pass) {
+    B2 = Math.round((B2 + 0.3) * 10) / 10;
+    L2 = pat.type==='don' ? Math.round(B2*LB*10)/10 : null;
+    if (L2 && L2 < B2) L2 = B2;
+    ans2 = calcPA(B2, L2);
+  }
+
+  return { pat, N0, M0, hm, gtb, Fs, gam, c, phi, tz, q, B1, L1, B2, L2, ans1, ans2, LB };
+}
+
+/* ══ Global data ══ */
+var D, sv;
+
+/* ══ Fill-in handler ══ */
+function fillAns(id, rawVal, correct, tol) {
+  var v = parseFloat(rawVal);
+  var inp = document.getElementById('fi-' + id);
+  var chk = document.getElementById('ck-' + id);
+  if (!inp) return;
+  if (isNaN(v)) {
+    inp.className = 'ans-inp';
+    if (chk) { chk.className = 'chip'; chk.textContent = ''; }
+    ANS['fi_' + id] = null;
+    updateProg(); return;
+  }
+  var ok = Math.abs(v - correct) <= tol;
+  inp.className = 'ans-inp ' + (ok ? 'ok' : 'no');
+  if (chk) {
+    chk.className = 'chip ' + (ok ? 'ok' : 'no');
+    chk.textContent = ok ? '✓' : '≈' + correct;
+  }
+  ANS['fi_' + id] = ok;
+  updateProg();
+}
+
+/* ══ Card toggle ══ */
+function togCard(id) {
+  var bd = document.getElementById('bd-' + id);
+  var cv = document.getElementById('cv-' + id);
+  if (!bd) return;
+  var open = bd.style.display !== 'none';
+  bd.style.display = open ? 'none' : '';
+  if (cv) cv.style.transform = open ? 'rotate(-90deg)' : '';
+}
+
+/* ══ Build fill-in row ══ */
+function fiRow(id, label, correct, tol, unit) {
+  ANS['fi_' + id] = null;
+  return '<div class="ans-row">' +
+    '<span class="ans-lbl">' + label + '</span>' +
+    '<input class="ans-inp" id="fi-' + id + '" type="number" step="0.01" placeholder="?"' +
+    ' oninput="fillAns(\'' + id + '\',this.value,' + correct + ',' + tol + ')">' +
+    '<span class="ans-unit">' + unit + '</span>' +
+    '<span class="chip" id="ck-' + id + '"></span>' +
+    '</div>';
+}
+
+/* ══ Render exercise ══ */
+function renderExercise() {
+  var patIdx = EX_NUM - 1;
+  D = genC2(sv.stt, patIdx);
+  var p = D.pat;
+
+  // ANS keys for MCQs
+  ANS = {};
+  ANS['mcq_cond'] = null;
+  ANS['mcq_kq']   = null;
+  ANS['mcq_econ'] = null;
+
+  var dimStr1 = p.type==='don' ? 'B₁ = '+D.B1+'m, L₁ = '+D.L1+'m (BL = '+(Math.round(D.B1*D.L1*100)/100)+'m²)'
+                               : 'B₁ = '+D.B1+'m (tính 1m dài)';
+  var dimStr2 = p.type==='don' ? 'B₂ = '+D.B2+'m, L₂ = '+D.L2+'m (BL = '+(Math.round(D.B2*D.L2*100)/100)+'m²)'
+                               : 'B₂ = '+D.B2+'m (tính 1m dài)';
+
+  var html = '';
+
+  /* ─── Đề bài ─── */
+  html += '<div class="de-bai">';
+  html += '<div class="de-hd"><i class="ti ti-file-description"></i>&nbsp; Đề bài — ' + p.lbl + '</div>';
+  html += '<div class="de-body">';
+  html += '<p>Tại chân cột/tường: <strong>N₀ = ' + D.N0 + ' kN' + (p.ecc ? ', M₀ = '+D.M0+' kNm (lệch tâm theo phương cạnh L)' : '') + '</strong>.<br>';
+  html += 'Chiều sâu chôn móng <strong>h<sub>m</sub> = ' + D.hm + ' m</strong>, γ<sub>tb</sub> = ' + D.gtb + ' kN/m³, F<sub>s</sub> = ' + D.Fs + '.</p>';
+  html += '<p>Nền đất: <strong>γ = ' + D.gam + ' kN/m³</strong>, c = <strong>' + D.c + ' kPa</strong>, φ = <strong>' + D.phi + '°</strong>.</p>';
+  html += '<div class="pa-grid">';
+  html += '<div class="pa-box pa1"><strong>Phương án 1:</strong><br>' + dimStr1 + '</div>';
+  html += '<div class="pa-box pa2"><strong>Phương án 2:</strong><br>' + dimStr2 + '</div>';
+  html += '</div>';
+  html += '<div class="ib am" style="margin-top:10px;font-size:12.5px"><strong>Yêu cầu:</strong> (a) Kiểm tra điều kiện SCT cho từng PA. &nbsp;(b) Nhận xét khi BL tăng. &nbsp;(c) Chọn PA và đề xuất tối ưu.</div>';
+  html += '</div></div>';
+
+  /* ─── Bước 1: Điều kiện ─── */
+  html += '<div class="step">';
+  html += '<div class="step-hd open"><span class="snum">1</span> Xác định điều kiện kiểm tra SCT</div>';
+  html += '<div class="step-body">';
+  html += '<div class="mw"><div class="mq"><span class="mn">1.1</span>Bài này dùng điều kiện kiểm tra SCT nào là đúng?</div>';
+  var condCorr = p.ecc ? 1 : 0;
+  html += '<div class="mo-list">';
+  html += '<div class="mo" id="mo-cond-0" onclick="pm(\'cond\',0,' + condCorr + ')"><span class="mk">A</span><span>Đúng tâm (M=0): p<sub>tb</sub> ≤ [P]</span></div>';
+  html += '<div class="mo" id="mo-cond-1" onclick="pm(\'cond\',1,' + condCorr + ')"><span class="mk">B</span><span>Lệch tâm (M≠0): p<sub>tb</sub> ≤ [P], p<sub>max</sub> ≤ 1.2[P], p<sub>min</sub> ≥ 0</span></div>';
+  html += '<div class="mo" id="mo-cond-2" onclick="pm(\'cond\',2,' + condCorr + ')"><span class="mk">C</span><span>Chỉ cần p<sub>max</sub> ≤ [P] là đủ</span></div>';
+  html += '</div>';
+  var condExp = p.ecc
+    ? '✓ Có mô men M₀ → lệch tâm. Phải kiểm tra 3 điều kiện: p_tb ≤ [P], p_max ≤ 1.2·[P] và p_min ≥ 0.'
+    : '✓ Không có mô men M₀ = 0 → đúng tâm. Chỉ cần p_tb ≤ [P].';
+  html += '<div class="me" id="me-cond">' + condExp + '</div></div>';
+  html += '</div></div>';
+
+  /* ─── Bước 2: Áp lực đáy móng ─── */
+  html += '<div class="step">';
+  html += '<div class="step-hd open"><span class="snum">2</span> Tính áp lực tiếp xúc đáy móng</div>';
+  html += '<div class="step-body">';
+
+  if (p.type === 'don') {
+    html += '<div class="fml"><div class="ftl"><i class="ti ti-math-function"></i> Công thức — Móng đơn</div>';
+    html += '<em>p<sub>tb</sub></em> = N₀/(B×L) + γ<sub>tb</sub>×h<sub>m</sub>';
+    if (p.ecc) html += '<br><em>p<sub>max</sub></em> = p<sub>tb</sub> + 6×M₀/(B×L²) &nbsp;·&nbsp; <em>p<sub>min</sub></em> = p<sub>tb</sub> − 6×M₀/(B×L²)';
+    html += '</div>';
+  } else {
+    html += '<div class="fml"><div class="ftl"><i class="ti ti-math-function"></i> Công thức — Móng băng (1m dài)</div>';
+    html += '<em>p<sub>tb</sub></em> = N₀/B + γ<sub>tb</sub>×h<sub>m</sub>';
+    html += '<br><em>p<sub>max</sub></em> = p<sub>tb</sub> + 6×M₀/B² &nbsp;·&nbsp; <em>p<sub>min</sub></em> = p<sub>tb</sub> − 6×M₀/B²</div>';
+  }
+
+  /* PA1 hint */
+  var ptb1_hint, pmax1_hint;
+  if (p.type === 'don') {
+    ptb1_hint  = 'p<sub>tb</sub> = ' + D.N0 + '/(' + D.B1 + '×' + D.L1 + ') + ' + D.gtb + '×' + D.hm + ' = ?';
+    pmax1_hint = 'p<sub>max</sub> = p<sub>tb</sub> + 6×' + D.M0 + '/(' + D.B1 + '×' + D.L1 + '²) = ?';
+  } else {
+    ptb1_hint  = 'p<sub>tb</sub> = ' + D.N0 + '/' + D.B1 + ' + ' + D.gtb + '×' + D.hm + ' = ?';
+    pmax1_hint = 'p<sub>max</sub> = p<sub>tb</sub> + 6×' + D.M0 + '/' + D.B1 + '² = ?';
+  }
+
+  html += '<div class="sl"><i class="ti ti-number-1"></i>Phương án 1</div>';
+  html += '<div class="fml hint"><div class="ftl"><i class="ti ti-calculator"></i> Thay số PA1</div>' + ptb1_hint + '</div>';
+  html += fiRow('ptb1', '📌 p<sub>tb</sub> (PA1)', D.ans1.ptb, 3, 'kPa');
+  if (p.ecc) {
+    html += fiRow('pmax1', '📌 p<sub>max</sub> (PA1) = p<sub>tb</sub> + 6M₀/(B·L²)', D.ans1.pmax, 4, 'kPa');
+    html += fiRow('pmin1', '📌 p<sub>min</sub> (PA1) = p<sub>tb</sub> − 6M₀/(B·L²)', D.ans1.pmin, 4, 'kPa');
+  }
+
+  /* PA2 hint */
+  var ptb2_hint;
+  if (p.type === 'don') {
+    ptb2_hint  = 'p<sub>tb</sub> = ' + D.N0 + '/(' + D.B2 + '×' + D.L2 + ') + ' + D.gtb + '×' + D.hm + ' = ?';
+  } else {
+    ptb2_hint  = 'p<sub>tb</sub> = ' + D.N0 + '/' + D.B2 + ' + ' + D.gtb + '×' + D.hm + ' = ?';
+  }
+  html += '<div class="sl"><i class="ti ti-number-2"></i>Phương án 2</div>';
+  html += '<div class="fml hint"><div class="ftl"><i class="ti ti-calculator"></i> Thay số PA2</div>' + ptb2_hint + '</div>';
+  html += fiRow('ptb2', '📌 p<sub>tb</sub> (PA2)', D.ans2.ptb, 3, 'kPa');
+  if (p.ecc) {
+    html += fiRow('pmax2', '📌 p<sub>max</sub> (PA2) = p<sub>tb</sub> + 6M₀/(B·L²)', D.ans2.pmax, 4, 'kPa');
+    html += fiRow('pmin2', '📌 p<sub>min</sub> (PA2) = p<sub>tb</sub> − 6M₀/(B·L²)', D.ans2.pmin, 4, 'kPa');
+  }
+  html += '</div></div>';
+
+  /* ─── Bước 3: Tính [P] ─── */
+  html += '<div class="step">';
+  html += '<div class="step-hd open"><span class="snum">3</span> Tính sức chịu tải nền [P] = P<sub>gh</sub>/F<sub>s</sub></div>';
+  html += '<div class="step-body">';
+  html += '<div class="fml"><div class="ftl"><i class="ti ti-math-function"></i> Công thức Terzaghi (φ = ' + D.phi + '° → N<sub>c</sub>=' + D.tz.Nc + ', N<sub>q</sub>=' + D.tz.Nq + ', N<sub>γ</sub>=' + D.tz.Ng + ')</div>';
+  html += '<em>P<sub>gh</sub></em> = α₁·N<sub>γ</sub>·B·γ + N<sub>q</sub>·q + α₃·N<sub>c</sub>·c<br>';
+  html += 'q = γ×h<sub>m</sub> = ' + D.gam + '×' + D.hm + ' = <em>' + D.q + ' kPa</em></div>';
+
+  /* alpha explanations */
+  html += '<div class="sl"><i class="ti ti-number-1"></i>Phương án 1 (B₁=' + D.B1 + 'm)</div>';
+  if (p.type === 'bang') {
+    html += '<div class="ib th" style="font-size:12.5px">Móng băng → α₁ = 0.5, α₃ = 1.0 (cố định)</div>';
+    html += fiRow('Pgh1', '📌 P<sub>gh</sub> = 0.5·'+D.tz.Ng+'·'+D.B1+'·'+D.gam+' + '+D.tz.Nq+'·'+D.q+' + 1.0·'+D.tz.Nc+'·'+D.c, D.ans1.Pgh, 8, 'kPa');
+  } else if (D.L1 === D.B1) {
+    html += '<div class="ib th" style="font-size:12.5px">Móng vuông (L=B) → α₁ = 0.4, α₃ = 1.3 (cố định)</div>';
+    html += fiRow('Pgh1', '📌 P<sub>gh</sub> = 0.4·'+D.tz.Ng+'·'+D.B1+'·'+D.gam+' + '+D.tz.Nq+'·'+D.q+' + 1.3·'+D.tz.Nc+'·'+D.c, D.ans1.Pgh, 8, 'kPa');
+  } else {
+    html += fiRow('a11', '📌 α₁ = 1 − 0.2×B/L = 1 − 0.2×'+D.B1+'/'+D.L1, D.ans1.a1, 0.01, '—');
+    html += fiRow('Pgh1', '📌 P<sub>gh</sub> (PA1) = α₁·'+D.tz.Ng+'·'+D.B1+'·'+D.gam+' + '+D.tz.Nq+'·'+D.q+' + α₃·'+D.tz.Nc+'·'+D.c, D.ans1.Pgh, 8, 'kPa');
+  }
+  html += fiRow('P1', '📌 [P] = P<sub>gh</sub> / F<sub>s</sub> = P<sub>gh</sub> / ' + D.Fs, D.ans1.P, 4, 'kPa');
+
+  html += '<div class="sl"><i class="ti ti-number-2"></i>Phương án 2 (B₂=' + D.B2 + 'm)</div>';
+  if (p.type === 'bang') {
+    html += fiRow('Pgh2', '📌 P<sub>gh</sub> = 0.5·'+D.tz.Ng+'·'+D.B2+'·'+D.gam+' + '+D.tz.Nq+'·'+D.q+' + 1.0·'+D.tz.Nc+'·'+D.c, D.ans2.Pgh, 8, 'kPa');
+  } else if (D.L2 === D.B2) {
+    html += fiRow('Pgh2', '📌 P<sub>gh</sub> = 0.4·'+D.tz.Ng+'·'+D.B2+'·'+D.gam+' + '+D.tz.Nq+'·'+D.q+' + 1.3·'+D.tz.Nc+'·'+D.c, D.ans2.Pgh, 8, 'kPa');
+  } else {
+    html += fiRow('a12', '📌 α₁ = 1 − 0.2×B/L = 1 − 0.2×'+D.B2+'/'+D.L2, D.ans2.a1, 0.01, '—');
+    html += fiRow('Pgh2', '📌 P<sub>gh</sub> (PA2) = α₁·'+D.tz.Ng+'·'+D.B2+'·'+D.gam+' + '+D.tz.Nq+'·'+D.q+' + α₃·'+D.tz.Nc+'·'+D.c, D.ans2.Pgh, 8, 'kPa');
+  }
+  html += fiRow('P2', '📌 [P] = P<sub>gh</sub> / F<sub>s</sub> = P<sub>gh</sub> / ' + D.Fs, D.ans2.P, 4, 'kPa');
+  html += '</div></div>';
+
+  /* ─── Bảng tổng hợp (hiển thị sau khi đủ fill-in) ─── */
+  var a1P  = D.ans1.P, a1pb = D.ans1.ptb, a1pm = D.ans1.pmax;
+  var a2P  = D.ans2.P, a2pb = D.ans2.ptb, a2pm = D.ans2.pmax;
+  var r1tb = a1pb <= a1P ? '<span class="pass">✅ ' + a1pb + '≤' + a1P + '</span>' : '<span class="fail">❌ ' + a1pb + '>' + a1P + '</span>';
+  var r1mx = p.ecc ? (a1pm <= 1.2*a1P ? '<span class="pass">✅ ' + a1pm + '≤' + Math.round(1.2*a1P*10)/10 + '</span>' : '<span class="fail">❌ ' + a1pm + '>' + Math.round(1.2*a1P*10)/10 + '</span>') : '—';
+  var r2tb = a2pb <= a2P ? '<span class="pass">✅ ' + a2pb + '≤' + a2P + '</span>' : '<span class="fail">❌ ' + a2pb + '>' + a2P + '</span>';
+  var r2mx = p.ecc ? (a2pm <= 1.2*a2P ? '<span class="pass">✅ ' + a2pm + '≤' + Math.round(1.2*a2P*10)/10 + '</span>' : '<span class="fail">❌ ' + a2pm + '>' + Math.round(1.2*a2P*10)/10 + '</span>') : '—';
+
+  html += '<div class="step">';
+  html += '<div class="step-hd open"><span class="snum">4</span> So sánh và kết luận</div>';
+  html += '<div class="step-body">';
+  html += '<div class="sl"><i class="ti ti-table"></i>Bảng tổng hợp</div>';
+  html += '<table class="res-tbl"><tr><th>PA</th><th>BL (m²)</th><th>p<sub>tb</sub></th><th>[P]</th>' + (p.ecc ? '<th>p<sub>max</sub></th><th>1.2·[P]</th>' : '') + '<th>Kết luận</th></tr>';
+  var bl1 = p.type==='don' ? Math.round(D.B1*D.L1*100)/100 : D.B1+'×1';
+  var bl2 = p.type==='don' ? Math.round(D.B2*D.L2*100)/100 : D.B2+'×1';
+  html += '<tr><td class="lbl">PA1 (' + (p.type==='don'?D.B1+'×'+D.L1:'B='+D.B1) + ')</td>';
+  html += '<td>' + bl1 + '</td><td>' + r1tb + '</td><td>' + a1P + '</td>';
+  if (p.ecc) html += '<td>' + r1mx + '</td><td>' + Math.round(1.2*a1P*10)/10 + '</td>';
+  html += '<td><strong class="fail">Không đạt</strong></td></tr>';
+  html += '<tr><td class="lbl">PA2 (' + (p.type==='don'?D.B2+'×'+D.L2:'B='+D.B2) + ')</td>';
+  html += '<td>' + bl2 + '</td><td>' + r2tb + '</td><td>' + a2P + '</td>';
+  if (p.ecc) html += '<td>' + r2mx + '</td><td>' + Math.round(1.2*a2P*10)/10 + '</td>';
+  html += '<td><strong class="pass">Đạt KT</strong></td></tr></table>';
+
+  /* MCQs */
+  var pa2pct = Math.round(a2pb / a2P * 100);
+  html += '<div style="margin-top:12px">';
+
+  /* Q kết quả kỹ thuật */
+  html += '<div class="mw"><div class="mq"><span class="mn">4.1</span>Phương án nào thỏa mãn điều kiện kỹ thuật SCT?</div><div class="mo-list">';
+  html += '<div class="mo" id="mo-kq-0" onclick="pm(\'kq\',0,2)"><span class="mk">A</span><span>Cả hai PA đều thỏa mãn</span></div>';
+  html += '<div class="mo" id="mo-kq-1" onclick="pm(\'kq\',1,2)"><span class="mk">B</span><span>Chỉ PA1 thỏa mãn</span></div>';
+  html += '<div class="mo" id="mo-kq-2" onclick="pm(\'kq\',2,2)"><span class="mk">C</span><span>Chỉ PA2 thỏa mãn kỹ thuật</span></div>';
+  html += '<div class="mo" id="mo-kq-3" onclick="pm(\'kq\',3,2)"><span class="mk">D</span><span>Cả hai đều không thỏa mãn</span></div>';
+  html += '</div><div class="me" id="me-kq">✓ PA1 vi phạm điều kiện SCT (áp lực vượt giới hạn). PA2 đáp ứng đầy đủ. Chọn PA2.</div></div>';
+
+  /* Q nhận xét kinh tế */
+  var econCorr = pa2pct < 80 ? 1 : 0;
+  html += '<div class="mw" style="margin-top:8px"><div class="mq"><span class="mn">4.2</span>PA2 có p<sub>tb</sub>/[P] ≈ ' + pa2pct + '%. Nhận xét về kinh tế?</div><div class="mo-list">';
+  if (pa2pct < 80) {
+    html += '<div class="mo" id="mo-econ-0" onclick="pm(\'econ\',0,1)"><span class="mk">A</span><span>PA2 tối ưu kinh tế vì p/[P] gần 100%</span></div>';
+    html += '<div class="mo" id="mo-econ-1" onclick="pm(\'econ\',1,1)"><span class="mk">B</span><span>PA2 còn dư ~' + (100-pa2pct) + '% SCT — có thể thử giảm kích thước một chút để tối ưu</span></div>';
+    html += '<div class="mo" id="mo-econ-2" onclick="pm(\'econ\',2,1)"><span class="mk">C</span><span>PA2 lãng phí nghiêm trọng, cần đổi sang móng cọc</span></div>';
+    html += '<div class="me" id="me-econ">✓ Còn ~' + (100-pa2pct) + '% SCT chưa khai thác → PA2 an toàn nhưng hơi lãng phí vật liệu. Nên thử kích thước nhỏ hơn (p/[P] mục tiêu 85–95%).</div>';
+  } else {
+    html += '<div class="mo" id="mo-econ-0" onclick="pm(\'econ\',0,0)"><span class="mk">A</span><span>PA2 tối ưu kinh tế vì p/[P] ≈ ' + pa2pct + '% gần 100%</span></div>';
+    html += '<div class="mo" id="mo-econ-1" onclick="pm(\'econ\',1,0)"><span class="mk">B</span><span>PA2 còn nhiều dự trữ SCT chưa khai thác</span></div>';
+    html += '<div class="mo" id="mo-econ-2" onclick="pm(\'econ\',2,0)"><span class="mk">C</span><span>PA2 hơi dư (~' + (100-pa2pct) + '%) — chấp nhận được vì đã sát giới hạn</span></div>';
+    html += '<div class="me" id="me-econ">✓ p/[P] = ' + pa2pct + '% → còn ~' + (100-pa2pct) + '% dự trữ. Ở mức này là tương đối tốt về kinh tế.</div>';
+    econCorr = 0;
+    // fix correct index
+    html = html.replace('onclick="pm(\'econ\',0,0)"', 'onclick="pm(\'econ\',0,0)"');
+    // Actually for this branch, option A is correct
+    ANS['mcq_econ_correct'] = 0;
+  }
+  html += '</div></div>';
+  html += '</div></div></div>';
+
+  document.getElementById('ex-content').innerHTML = html;
+
+  // Fix MCQ correct for econ branch
+  if (pa2pct >= 80) {
+    // Rewrite onclick for econ MCQ to correct=0
+    var el0 = document.getElementById('mo-econ-0');
+    if (el0) el0.onclick = function(){ pm('econ',0,0); };
+    var el1 = document.getElementById('mo-econ-1');
+    if (el1) el1.onclick = function(){ pm('econ',1,0); };
+    var el2 = document.getElementById('mo-econ-2');
+    if (el2) el2.onclick = function(){ pm('econ',2,0); };
+  }
+
+  updateProg();
+
+  // Update header/nav
+  document.getElementById('hdr-title').textContent = 'Dạng A' + EX_NUM + ' — ' + p.lbl;
+  document.getElementById('pg-title').textContent = 'A' + EX_NUM + ' — Kiểm Tra SCT';
+  document.getElementById('snav-info').innerHTML = 'Dạng A · Bài A' + EX_NUM + ' / 6 · ' + p.lbl;
+
+  // Prev / Next links
+  if (EX_NUM > 1) {
+    document.getElementById('prev-link').innerHTML =
+      '<a href="C2-A.html?ex=' + (EX_NUM-1) + '" class="btn btn-nav"><i class="ti ti-arrow-left"></i> A' + (EX_NUM-1) + '</a>';
+  }
+  if (EX_NUM < 6) {
+    document.getElementById('next-link').innerHTML =
+      '<a href="C2-A.html?ex=' + (EX_NUM+1) + '" class="btn btn-nav">A' + (EX_NUM+1) + ' <i class="ti ti-arrow-right"></i></a>';
+  }
+}
+
+/* ══ Submit ══ */
+function doSubmit() {
+  if (window._nm_submitting) return;
+  window._nm_submitting = true;
+  var vals    = Object.values(ANS);
+  var total   = vals.length;
+  var attempted = vals.filter(function(v){ return v !== null; }).length;
+  var correct = vals.filter(function(v){ return v === true;  }).length;
+  var minPct  = window.MIN_ATTEMPT_PCT || 80;
+  var attPct  = total > 0 ? Math.round(attempted/total*100) : 0;
+
+  if (attPct < minPct) {
+    window._nm_submitting = false;
+    showToast('Cần làm ít nhất ' + minPct + '% — hiện ' + attPct + '%', 'warn-t');
+    return;
+  }
+
+  var scorePct = total > 0 ? Math.round(correct/total*100) : 0;
+  var btn = document.getElementById('sub-btn');
+
+  if (!sv || !sv.maSV) { window._nm_submitting = false; showToast('Chưa đăng nhập', 'err-t'); return; }
+
+  // Check already submitted
+  var subKey = 'nm_sub_' + CHAPTER_ID + EX_NUM + '_' + sv.maSV;
+  if (localStorage.getItem(subKey)) {
+    window._nm_submitting = false; showToast('Đã nộp bài này rồi!', 'warn-t'); return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader ti-spin"></i> Đang nộp...';
+
+  var payload = {
+    token:     window.SECRET_TOKEN || 'NenMong_HUCE_2025#',
+    chapterId: CHAPTER_ID + EX_NUM,
+    maSV:      sv.maSV,
+    hoTen:     sv.name,
+    lopHoc:    sv.classId,
+    score:     scorePct,
+    correct:   correct,
+    total:     total,
+    attempted: attempted,
+    stt:       sv.stt,
+    patternIdx: EX_NUM,
+    dang:      'A'
+  };
+
+  fetch(window.WORKER_URL, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    if (data.ok) {
+      localStorage.setItem(subKey, JSON.stringify({score:scorePct,ts:Date.now()}));
+      btn.innerHTML = '<i class="ti ti-check"></i> Đã nộp · ' + scorePct + '%';
+      btn.style.background = 'var(--G)';
+      showToast('Nộp thành công! Điểm: ' + scorePct + '%', 'ok-t');
+      showNextLink();
+    } else {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="ti ti-send"></i> Nộp bài';
+      showToast('Lỗi: ' + (data.error || 'Unknown'), 'err-t');
+    }
+  })
+  .catch(function() {
+    window._nm_submitting = false;
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-send"></i> Nộp bài';
+    showToast('Lỗi kết nối', 'err-t');
+  });
+}
+
+function showNextLink() {
+  if (EX_NUM >= 6) return;
+  var wrap = document.getElementById('ex-content');
+  var next = EX_NUM + 1;
+  wrap.insertAdjacentHTML('beforeend',
+    '<a href="C2-A.html?ex=' + next + '" class="btn btn-sub" style="display:block;text-align:center;margin:20px 0;padding:12px;font-size:14px;background:var(--G);color:#fff;border-radius:10px;text-decoration:none">' +
+    '<i class="ti ti-arrow-right-circle"></i> Tiếp theo: Dạng A' + next + ' — ' + C2_PAT[next-1].lbl + '</a>');
+}
+
+function showToast(msg, cls) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (cls||'');
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+/* ══ Init ══ */
+window.onload = function() {
+  try { sv = JSON.parse(sessionStorage.getItem('ncm_sv')); } catch(e){}
+  if (!sv || !sv.stt) {
+    location.href = '../index.html?from=' + encodeURIComponent(location.href);
+    return;
+  }
+  document.getElementById('sv-name').textContent = sv.name + ' — Lớp ' + sv.classId;
+  document.getElementById('sv-stt').textContent  = '#' + sv.stt;
+  document.getElementById('hdr-sv').textContent  = sv.maSV;
+
+  renderExercise();
+};
+</script>
+</body>
+</html>

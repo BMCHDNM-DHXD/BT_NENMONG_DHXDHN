@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLO 2 — Móng Nông · BT Nền Móng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root{--P:#1565C0;--Pdk:#0D47A1;--Plt:#E3F2FD;--G:#2E7D32;--Glt:#E8F5E9;--Gdk:#1B5E20;
+      --R:#C62828;--Rlt:#FFEBEE;--A:#FF8F00;--Alt:#FFF8E1;--O:#E65100;--Olt:#FBE9E7;
+      --bg:#EEF4FB;--sur:#fff;--brd:#BBDEFB;--muted:#546E7A;--text:#0A1929;
+      --sans:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+      --r:12px;--sh:0 2px 16px rgba(13,71,161,.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh}
+.hdr{background:var(--Pdk);color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.hdr-in{max-width:860px;margin:0 auto;padding:0 20px;height:56px;display:flex;align-items:center;gap:12px}
+.hdr-back{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;font-weight:600;transition:.15s;padding:5px 10px;border-radius:7px}
+.hdr-back:hover{background:rgba(255,255,255,.12);color:#fff}
+.hdr-sep{color:rgba(255,255,255,.35);font-size:16px}
+.hdr-title{font-weight:700;font-size:15px;flex:1}
+.hdr-sv{font-size:11.5px;color:rgba(255,255,255,.65);font-family:var(--mono);text-align:right}
+.hero{background:linear-gradient(135deg,#0D47A1 0%,#1976D2 100%);color:#fff;padding:36px 20px 28px;text-align:center}
+.hero-in{max-width:660px;margin:0 auto}
+.clo-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:.6px;margin-bottom:14px}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:700;margin-bottom:8px}
+.hero p{font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.7;max-width:520px;margin:0 auto 20px}
+.stt-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:24px;padding:6px 18px;font-family:var(--mono);font-size:13px}
+.stt-pill strong{font-size:18px}
+main{max-width:860px;margin:0 auto;padding:24px 20px 72px}
+.intro-box{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);padding:18px 20px;margin-bottom:24px;box-shadow:var(--sh)}
+.intro-box h3{font-size:13px;font-weight:700;color:var(--Pdk);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:600px){.steps-grid{grid-template-columns:1fr 1fr}}
+.step-mini{text-align:center;padding:10px 6px}
+.step-mini .num{width:32px;height:32px;border-radius:50%;background:var(--Plt);color:var(--Pdk);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 6px}
+.step-mini .lbl{font-size:11px;color:var(--muted);line-height:1.4}
+.dang-sec{background:var(--sur);border:1.5px solid var(--brd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:18px}
+.dang-sec-hd{padding:14px 18px 10px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--brd)}
+.dang-sec-hd .dbadge{font-family:var(--mono);font-size:20px;font-weight:700;min-width:52px}
+.dbadge.da{color:var(--G)}.dbadge.db{color:var(--P)}.dbadge.dc{color:var(--R)}
+.dang-sec-hd .dtitle{font-size:14px;font-weight:700;flex:1}
+.dang-sec-hd .dsub{font-size:11.5px;color:var(--muted)}
+.dang-sec-body{padding:14px 18px 16px}
+.ex-chips{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+@media(max-width:640px){.ex-chips{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:380px){.ex-chips{grid-template-columns:repeat(2,1fr)}}
+.ex-chip{display:flex;flex-direction:column;align-items:center;text-decoration:none;background:#F8FBFF;border:1.5px solid var(--brd);border-radius:10px;padding:10px 6px 8px;transition:.18s;position:relative;color:var(--text)}
+.ex-chip:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(13,71,161,.14)}
+.ex-chip .ec-num{font-family:var(--mono);font-size:15px;font-weight:700;margin-bottom:3px}
+.ex-chip .ec-pat{font-size:9px;color:var(--muted);font-family:var(--mono);letter-spacing:.2px;text-align:center;line-height:1.3}
+.ex-chip .ec-st{font-size:9px;margin-top:5px;font-weight:700;padding:1px 6px;border-radius:8px}
+.ex-chip.a{border-color:#A5D6A7}.ex-chip.a:hover{border-color:var(--G);background:var(--Glt)}.ex-chip.a .ec-num{color:var(--G)}
+.ex-chip.b{border-color:#90CAF9}.ex-chip.b:hover{border-color:var(--P);background:var(--Plt)}.ex-chip.b .ec-num{color:var(--P)}
+.ex-chip.c{border-color:#EF9A9A}.ex-chip.c:hover{border-color:var(--R);background:var(--Rlt)}.ex-chip.c .ec-num{color:var(--R)}
+.ex-chip.done{opacity:.75}
+.ex-chip.done .ec-st{background:var(--Glt);color:var(--Gdk)}
+.ex-chip:not(.done) .ec-st{background:var(--Plt);color:var(--Pdk)}
+.theory-box{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:16px}
+.theory-hd{background:var(--Alt);padding:12px 18px;border-bottom:1px solid #FFE0B2;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.theory-hd h3{font-size:13px;font-weight:700;color:var(--O);display:flex;align-items:center;gap:7px}
+.theory-body{padding:18px;display:none}
+.theory-body.open{display:block}
+.table-wrap{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th{background:var(--Pdk);color:#fff;padding:7px 10px;text-align:center;font-weight:700}
+td{padding:6px 10px;border-bottom:1px solid var(--brd);text-align:center;font-family:var(--mono);font-size:12px}
+tr:nth-child(even) td{background:#F8FBFF}
+.t-head2{background:var(--Plt);color:var(--Pdk);font-weight:700;font-family:var(--sans)}
+.kf{font-family:var(--mono);background:var(--Plt);color:var(--Pdk);padding:1px 5px;border-radius:4px;font-size:11.5px}
+p.note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6}
+.sect-title{font-size:12.5px;font-weight:700;color:var(--Pdk);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.5px}
+.fml-ref{background:#F8FBFF;border:1.5px solid var(--brd);border-left:4px solid var(--P);border-radius:0 8px 8px 0;padding:10px 14px;font-family:var(--mono);font-size:12.5px;line-height:2;margin:8px 0}
+.fml-ref em{color:var(--Pdk);font-style:normal;font-weight:700}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a class="hdr-back" href="../index.html"><i class="ti ti-arrow-left"></i> Trang chủ</a>
+    <span class="hdr-sep">›</span>
+    <span class="hdr-title">CLO 2 — Móng Nông</span>
+    <div class="hdr-sv" id="hdr-sv"></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in">
+    <div class="clo-badge"><i class="ti ti-building-arch"></i> CLO 2 · Bloom C3 — Áp dụng</div>
+    <h1>Kiểm Tra Kích Thước Đáy Móng</h1>
+    <p>Kiểm tra sức chịu tải (SCT) của đất nền theo Terzaghi cho 6 dạng móng: vuông, chữ nhật, băng · đúng tâm và lệch tâm.</p>
+    <div class="stt-pill"><i class="ti ti-key"></i> Số thứ tự của bạn: <strong id="stt-disp">–</strong></div>
+  </div>
+</section>
+
+<main>
+  <div class="intro-box">
+    <h3><i class="ti ti-list-numbers"></i> Quy trình giải bài (4 bước)</h3>
+    <div class="steps-grid">
+      <div class="step-mini"><div class="num">1</div><div class="lbl">Xác định <b>điều kiện</b> kiểm tra (đúng tâm / lệch tâm)</div></div>
+      <div class="step-mini"><div class="num">2</div><div class="lbl">Tính <b>p<sub>tb</sub>, p<sub>max</sub>, p<sub>min</sub></b> đáy móng</div></div>
+      <div class="step-mini"><div class="num">3</div><div class="lbl">Tra bảng Terzaghi → tính <b>P<sub>gh</sub></b> và <b>[P]</b></div></div>
+      <div class="step-mini"><div class="num">4</div><div class="lbl">So sánh và <b>kết luận</b> PA nào đạt</div></div>
+    </div>
+  </div>
+
+  <div id="ex-sections"></div>
+
+  <div class="theory-box">
+    <div class="theory-hd" onclick="toggleTh()">
+      <h3><i class="ti ti-book"></i> Lý thuyết tham khảo — Terzaghi &amp; Kiểm tra SCT</h3>
+      <i class="ti ti-chevron-down" id="th-icon"></i>
+    </div>
+    <div class="theory-body" id="th-body">
+      <div class="sect-title">1. Công thức Terzaghi</div>
+      <div class="fml-ref">
+        <em>P<sub>gh</sub></em> = α<sub>1</sub>·N<sub>γ</sub>·B·γ + α<sub>2</sub>·N<sub>q</sub>·q + α<sub>3</sub>·N<sub>c</sub>·c<br>
+        <em>[P]</em> = P<sub>gh</sub> / F<sub>s</sub> &nbsp; (F<sub>s</sub> = 2.5)<br>
+        q = γ × h<sub>m</sub>
+      </div>
+      <div class="sect-title">2. Hệ số hình dạng α</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Loại móng</th><th>α<sub>1</sub></th><th>α<sub>2</sub></th><th>α<sub>3</sub></th></tr>
+          <tr><td>Băng</td><td>0.5</td><td>1.0</td><td>1.0</td></tr>
+          <tr><td>Vuông (B=L)</td><td>0.4</td><td>1.0</td><td>1.3</td></tr>
+          <tr><td>Chữ nhật (B&lt;L)</td><td>1 − 0.2·B/L</td><td>1.0</td><td>1 + 0.2·B/L</td></tr>
+        </table>
+      </div>
+      <div class="sect-title">3. Hệ số sức chịu tải Terzaghi</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>φ (°)</th><th>N<sub>c</sub></th><th>N<sub>q</sub></th><th>N<sub>γ</sub></th></tr>
+          <tr><td>15</td><td>12.9</td><td>4.4</td><td>2.5</td></tr>
+          <tr><td>18</td><td>15.5</td><td>6.0</td><td>4.0</td></tr>
+          <tr><td>20</td><td>17.7</td><td>7.4</td><td>5.0</td></tr>
+          <tr><td>22</td><td>20.3</td><td>9.2</td><td>6.8</td></tr>
+          <tr><td>25</td><td>25.1</td><td>12.7</td><td>10.9</td></tr>
+          <tr><td>28</td><td>31.6</td><td>17.8</td><td>17.0</td></tr>
+          <tr><td>30</td><td>37.2</td><td>22.5</td><td>19.7</td></tr>
+        </table>
+      </div>
+      <div class="sect-title">4. Điều kiện kiểm tra SCT</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Trường hợp</th><th>Điều kiện</th></tr>
+          <tr><td class="t-head2">Đúng tâm (M₀=0)</td><td style="text-align:left">p<sub>tb</sub> ≤ [P]</td></tr>
+          <tr><td class="t-head2">Lệch tâm (M₀≠0)</td><td style="text-align:left">p<sub>tb</sub> ≤ [P] &nbsp;·&nbsp; p<sub>max</sub> ≤ 1.2[P] &nbsp;·&nbsp; p<sub>min</sub> ≥ 0</td></tr>
+        </table>
+      </div>
+      <div class="sect-title">5. Công thức áp lực đáy móng</div>
+      <div class="fml-ref">
+        <b>Móng đơn đúng tâm:</b> p<sub>tb</sub> = N₀/(B×L) + γ<sub>tb</sub>×h<sub>m</sub><br>
+        <b>Móng đơn lệch tâm:</b> p<sub>max/min</sub> = p<sub>tb</sub> ± 6×M₀/(B×L²)<br>
+        <b>Móng băng:</b> p<sub>tb</sub> = N₀/B + γ<sub>tb</sub>×h<sub>m</sub> &nbsp;·&nbsp; p<sub>max/min</sub> = p<sub>tb</sub> ± 6×M₀/B²
+      </div>
+      <p class="note"><b>Lưu ý:</b> N₀ là lực dọc tính toán tại đáy móng (kN), M₀ là mô men uốn tại đáy móng (kNm), B và L tính bằng mét.</p>
+    </div>
+  </div>
+</main>
+
+<script src="../config.js" onerror="console.log('no config')"></script>
+<script src="../assets/js/engine.js"></script>
+<script>
+var _PATTERNS = [
+  'Vuông·ĐT','L=1.5B·ĐT','L=2B·ĐT',
+  'Vuông·LT','L=1.5B·LT','Băng·LT'
+];
+
+(function(){
+  var sv = getSV();
+  if (!sv) { location.href = '../index.html'; return; }
+  document.getElementById('stt-disp').textContent = sv.stt;
+  document.getElementById('hdr-sv').textContent = sv.hoTen + ' · STT ' + sv.stt;
+
+  var dangs = [
+    { key:'A', cls:'a', file:'C2-A.html', title:'Dạng A — Có công thức & gợi ý', sub:'Công thức thay số sẵn — điền kết quả và chọn đáp án' },
+    { key:'B', cls:'b', file:'C2-B.html', title:'Dạng B — Có công thức, không gợi ý', sub:'Công thức hiển thị — tự thay số và tính, chọn đáp án' },
+    { key:'C', cls:'c', file:'C2-C.html', title:'Dạng C — Toàn trắc nghiệm', sub:'Chỉ có đề bài — chọn đáp án, không gợi ý' }
+  ];
+
+  var html = '';
+  dangs.forEach(function(d) {
+    html += '<div class="dang-sec"><div class="dang-sec-hd">';
+    html += '<span class="dbadge ' + d.cls + '">' + d.key + '</span>';
+    html += '<div><div class="dtitle">' + d.title + '</div>';
+    html += '<div class="dsub">' + d.sub + '</div></div></div>';
+    html += '<div class="dang-sec-body"><div class="ex-chips">';
+    for (var ex = 1; ex <= 6; ex++) {
+      var subKey = 'nm_sub_C2-' + d.key + ex + '_' + sv.maSV;
+      var done = !!localStorage.getItem(subKey);
+      var url = d.file + '?ex=' + ex;
+      html += '<a href="' + url + '" class="ex-chip ' + d.cls + (done ? ' done' : '') + '">';
+      html += '<span class="ec-num">' + d.key + ex + '</span>';
+      html += '<span class="ec-pat">' + _PATTERNS[ex-1] + '</span>';
+      html += '<span class="ec-st">' + (done ? '✓ Đã nộp' : 'Làm bài') + '</span>';
+      html += '</a>';
+    }
+    html += '</div></div></div>';
+  });
+  document.getElementById('ex-sections').innerHTML = html;
+})();
+
+function toggleTh() {
+  var body = document.getElementById('th-body');
+  var icon = document.getElementById('th-icon');
+  var open = body.classList.toggle('open');
+  icon.className = open ? 'ti ti-chevron-up' : 'ti ti-chevron-down';
+}
+</script>
+</body>
+</html>

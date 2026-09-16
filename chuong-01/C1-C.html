@@ -320,8 +320,10 @@ function revealSVG() {
 }
 
 function doSubmit() {
+  if (window._nm_submitting) return;
+  window._nm_submitting = true;
   var sv = getSV();
-  if (!sv) { showToast('Chưa đăng nhập!', 'err'); return; }
+  if (!sv) { window._nm_submitting = false; showToast('Chưa đăng nhập!', 'err'); return; }
   var vals = Object.values(ANS);
   var total    = vals.length;
   var attempted = vals.filter(function(v){ return v !== null; }).length;
@@ -356,6 +358,7 @@ function doSubmit() {
     if (res && res.ok) { onSuccess(); }
     else throw new Error(res && res.error ? res.error : 'Lỗi');
   }).catch(function(e) {
+    window._nm_submitting = false;
     btn.disabled = false; btn.innerHTML = '<i class="ti ti-send"></i> Nộp bài & xem kết quả';
     showToast('Lỗi: ' + e.message, 'err');
   });

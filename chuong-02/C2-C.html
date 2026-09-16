@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pg-title">CLO2 Dạng C — Kiểm Tra Kích Thước Đáy Móng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<script src="../config.js" onerror="console.log('no config')"></script>
+<script src="../assets/js/engine.js"></script>
+<style>
+:root{--P:#1565C0;--Pdk:#0D47A1;--Plt:#E3F2FD;--G:#2E7D32;--Glt:#E8F5E9;--Gdk:#1B5E20;
+      --R:#C62828;--Rlt:#FFEBEE;--A:#FF8F00;--Alt:#FFF8E1;
+      --bg:#EEF4FB;--sur:#fff;--brd:#BBDEFB;--muted:#546E7A;--text:#0A1929;
+      --sans:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+      --r:10px;--sh:0 2px 14px rgba(13,71,161,.09)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+.hdr{background:var(--Pdk);color:#fff;position:sticky;top:0;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.hdr-in{max-width:860px;margin:0 auto;padding:0 16px;height:52px;display:flex;align-items:center;gap:10px}
+.hdr-back{display:flex;align-items:center;gap:5px;color:rgba(255,255,255,.8);text-decoration:none;font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;transition:.15s;white-space:nowrap}
+.hdr-back:hover{background:rgba(255,255,255,.12);color:#fff}
+.hdr-sep{color:rgba(255,255,255,.3)}
+.hdr-title{font-size:13px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hdr-sv-info{font-size:11px;color:rgba(255,255,255,.65);font-family:var(--mono);text-align:right;white-space:nowrap}
+.pbar-wrap{background:rgba(0,0,0,.15);height:5px}
+.pbar-fill{height:100%;background:#64B5F6;transition:width .4s}
+.prog-row{background:var(--Pdk);padding:4px 16px 6px;display:flex;align-items:center;gap:8px;font-size:11.5px;color:rgba(255,255,255,.7)}
+.prog-row #hprog{color:#fff;font-family:var(--mono);font-weight:700}
+main{max-width:860px;margin:0 auto;padding:20px 16px 100px}
+.sv-bar{background:linear-gradient(135deg,var(--Pdk),var(--P));color:#fff;border-radius:var(--r);padding:10px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.sv-bar-txt{flex:1;font-size:13px;font-weight:600}
+.sv-bar-stt{font-family:var(--mono);font-size:20px;font-weight:800;background:rgba(255,255,255,.15);padding:4px 14px;border-radius:8px}
+.de-bai{background:var(--sur);border:1.5px solid var(--P);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:18px;overflow:hidden}
+.de-hd{background:var(--Pdk);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
+.de-body{padding:14px 16px}
+.de-body p{font-size:13px;margin-bottom:8px;line-height:1.7}
+.pa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.pa-box{border-radius:8px;padding:10px 14px;font-size:13px;border:1.5px solid}
+.pa-box.pa1{background:#E3F2FD;border-color:#90CAF9;color:#0D47A1}
+.pa-box.pa2{background:#FCE4EC;border-color:#F48FB1;color:#C62828}
+.mw{border:1px solid var(--brd);border-radius:var(--r);overflow:hidden;margin:10px 0}
+.mq{padding:9px 13px 7px;font-size:13px;font-weight:600;border-bottom:1px solid var(--Plt);background:#FAFCFF;line-height:1.5}
+.mn{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--P);background:var(--Plt);padding:2px 6px;border-radius:4px;margin-right:5px}
+.mo-list{display:grid;gap:0}
+.mo{padding:9px 12px;cursor:pointer;display:flex;align-items:flex-start;gap:8px;font-size:12.5px;border-top:1px solid var(--Plt);transition:background .12s;line-height:1.4}
+.mo:hover{background:var(--Plt)}
+.mk{font-family:var(--mono);font-size:11px;font-weight:700;min-width:20px;height:20px;background:var(--Plt);color:var(--P);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.mo.sel{background:var(--Plt)!important}.mo.sel .mk{background:var(--P);color:#fff}
+.mo.ok{background:var(--Glt)!important}.mo.ok .mk{background:var(--G);color:#fff}
+.mo.no{background:var(--Rlt)!important}.mo.no .mk{background:var(--R);color:#fff}
+.mo.rok{background:var(--Glt)!important;opacity:.65}.mo.rok .mk{background:var(--G);color:#fff}
+.me{padding:8px 13px;font-size:12px;line-height:1.6;border-top:1px solid var(--brd);display:none}
+.me.show{display:block}.me.ok-e{background:var(--Glt);color:var(--Gdk)}.me.no-e{background:var(--Rlt);color:#b71c1c}
+.snav{position:fixed;bottom:0;left:0;right:0;background:var(--Pdk);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;z-index:200;box-shadow:0 -2px 12px rgba(0,0,0,.2);gap:12px;flex-wrap:wrap}
+.snav-info{color:rgba(255,255,255,.7);font-size:12.5px;flex:1}
+.btn{padding:7px 15px;border-radius:8px;border:none;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:600;transition:opacity .15s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.btn-sub{background:#fff;color:var(--Pdk)}
+.btn-nav{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.btn:hover{opacity:.85}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#323232;color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:.3s;z-index:999;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok-t{background:var(--G)}.toast.warn-t{background:var(--A)}.toast.err-t{background:var(--R)}
+.grp-hd{background:var(--Plt);border-left:4px solid var(--P);padding:7px 13px;margin:12px 0 4px;font-size:12px;font-weight:700;color:var(--Pdk);border-radius:0 6px 6px 0}
+@media(max-width:600px){.pa-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a href="index.html" class="hdr-back"><i class="ti ti-arrow-left"></i> CLO2</a>
+    <span class="hdr-sep">|</span>
+    <span class="hdr-title" id="hdr-title">Dạng C — Kiểm Tra Kích Thước Đáy Móng</span>
+    <div class="hdr-sv-info" id="hdr-sv"></div>
+  </div>
+</header>
+<div class="pbar-wrap"><div class="pbar-fill" id="pfill" style="width:0%"></div></div>
+<div class="prog-row"><i class="ti ti-target" style="font-size:13px"></i> Tiến độ: <span id="hprog">0/0</span></div>
+
+<main>
+  <div class="sv-bar">
+    <i class="ti ti-id-badge" style="font-size:20px;opacity:.8"></i>
+    <div class="sv-bar-txt">Kiểm tra kích thước đáy móng — <span id="sv-name">đang tải...</span></div>
+    <div class="sv-bar-stt" id="sv-stt">–</div>
+  </div>
+  <div id="ex-content"></div>
+  <div class="toast" id="toast"></div>
+</main>
+
+<nav class="snav">
+  <div class="snav-info" id="snav-info">Dạng C · Bài đang tải...</div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <span id="prev-link"></span>
+    <button class="btn btn-sub" id="sub-btn" onclick="doSubmit()"><i class="ti ti-send"></i> Nộp bài</button>
+    <span id="next-link"></span>
+  </div>
+</nav>
+
+<script>
+window.FEEDBACK_MODE = 'C';
+var CHAPTER_ID = 'C2-C';
+var DANG_IDX   = 3;
+
+var _sp = new URLSearchParams(location.search);
+var EX_NUM = Math.max(1, Math.min(6, parseInt(_sp.get('ex')) || 1));
+
+var TZ={15:{Nc:12.9,Nq:4.4,Ng:2.5},18:{Nc:15.5,Nq:6.0,Ng:4.0},20:{Nc:17.7,Nq:7.4,Ng:5.0},22:{Nc:20.3,Nq:9.2,Ng:6.8},25:{Nc:25.1,Nq:12.7,Ng:10.9},28:{Nc:31.6,Nq:17.8,Ng:17.0},30:{Nc:37.2,Nq:22.5,Ng:19.7}};
+var C2_PAT=[{type:'don',ecc:false,LB:1.0,lbl:'Móng vuông · Đúng tâm'},{type:'don',ecc:false,LB:1.5,lbl:'Móng chữ nhật L=1.5B · Đúng tâm'},{type:'don',ecc:false,LB:2.0,lbl:'Móng chữ nhật L=2B · Đúng tâm'},{type:'don',ecc:true,LB:1.0,lbl:'Móng vuông · Lệch tâm'},{type:'don',ecc:true,LB:1.5,lbl:'Móng chữ nhật L=1.5B · Lệch tâm'},{type:'bang',ecc:true,LB:null,lbl:'Móng băng · Lệch tâm'}];
+
+function genC2(stt,patIdx){
+  var r=seededRng(stt*1009+patIdx*100+DANG_IDX);
+  var pat=C2_PAT[patIdx];
+  var phi=[18,20,22,25,28][Math.floor(r()*5)];
+  var tz=TZ[phi];
+  var c=[10,12,15,18,20,22,25][Math.floor(r()*7)];
+  var gam=[17.5,18.0,18.5,19.0,19.5][Math.floor(r()*5)];
+  var hm=[1.2,1.4,1.5,1.6,1.8,2.0][Math.floor(r()*6)];
+  var Fs=2.5,gtb=20,q=Math.round(gam*hm*10)/10;
+  var N0,M0;
+  if(pat.type==='don'){var np=[400,500,600,700,800,900,1000,1200,1500];N0=np[Math.floor(r()*np.length)];M0=pat.ecc?Math.round(N0*(0.12+r()*0.13)):0;}
+  else{var np=[150,180,200,220,250,280,300,350];N0=np[Math.floor(r()*np.length)];M0=pat.ecc?Math.round(N0*(0.08+r()*0.10)):0;}
+  var LB=pat.LB||1.0;
+  var a1e=pat.type==='bang'?0.5:(LB===1.0?0.4:1-0.2/LB);
+  var a3e=pat.type==='bang'?1.0:(LB===1.0?1.3:1+0.2/LB);
+  var Pgh_e=a1e*tz.Ng*1.5*gam+tz.Nq*q+a3e*tz.Nc*c;
+  var P_e=Pgh_e/Fs;
+  var pgl_e=Math.max(30,P_e-gtb*hm);
+  var B_n=pat.type==='bang'?N0/pgl_e:Math.sqrt(N0/pgl_e/LB);
+  B_n=Math.max(0.8,B_n);
+  var B1=Math.round(B_n*0.75*10)/10;if(B1<0.7)B1=0.7;
+  var L1=pat.type==='don'?Math.round(B1*LB*10)/10:null;if(L1&&L1<B1)L1=B1;
+  var B2=Math.round(B_n*1.25*10)/10;
+  var L2=pat.type==='don'?Math.round(B2*LB*10)/10:null;if(L2&&L2<B2)L2=B2;
+  function calc(B,L){
+    var a1,a3;
+    if(pat.type==='bang'){a1=0.5;a3=1.0;}else if(L===B){a1=0.4;a3=1.3;}else{a1=Math.round((1-0.2*B/L)*1000)/1000;a3=Math.round((1+0.2*B/L)*1000)/1000;}
+    var Pgh=a1*tz.Ng*B*gam+tz.Nq*q+a3*tz.Nc*c;
+    var P=Pgh/Fs;
+    var ptb=pat.type==='bang'?N0/B+gtb*hm:N0/(B*L)+gtb*hm;
+    var pmax,pmin;
+    if(pat.ecc&&pat.type==='don'){pmax=ptb+6*M0/(B*L*L);pmin=ptb-6*M0/(B*L*L);}
+    else if(pat.ecc){pmax=ptb+6*M0/(B*B);pmin=ptb-6*M0/(B*B);}
+    else{pmax=ptb;pmin=ptb;}
+    return{a1:Math.round(a1*1000)/1000,a3:Math.round(a3*1000)/1000,Pgh:Math.round(Pgh*10)/10,P:Math.round(P*10)/10,ptb:Math.round(ptb*10)/10,pmax:Math.round(pmax*10)/10,pmin:Math.round(pmin*10)/10,pass:ptb<=P&&pmax<=1.2*P&&pmin>=0};
+  }
+  var ans1=calc(B1,L1),ans2=calc(B2,L2);
+  if(ans1.pass){B1=Math.round((B1-0.3)*10)/10;if(B1<0.6)B1=0.6;L1=pat.type==='don'?Math.round(B1*LB*10)/10:null;if(L1&&L1<B1)L1=B1;ans1=calc(B1,L1);}
+  if(!ans2.pass){B2=Math.round((B2+0.3)*10)/10;L2=pat.type==='don'?Math.round(B2*LB*10)/10:null;if(L2&&L2<B2)L2=B2;ans2=calc(B2,L2);}
+  return{pat,N0,M0,hm,gtb,Fs,gam,c,phi,tz,q,B1,L1,B2,L2,ans1,ans2,LB};
+}
+
+/* ---- MCQ helpers ---- */
+function shuffle3(correct, r){
+  var deltas=[0.05,0.10,0.15,0.20,0.25];
+  var w=deltas[Math.floor(r()*deltas.length)];
+  var opts=[
+    {v:Math.round(correct*(1-w)*10)/10,label:null},
+    {v:correct,label:null,correct:true},
+    {v:Math.round(correct*(1+w)*10)/10,label:null}
+  ];
+  /* simple Fisher-Yates with r */
+  for(var i=2;i>0;i--){var j=Math.floor(r()*(i+1));var t=opts[i];opts[i]=opts[j];opts[j]=t;}
+  return opts;
+}
+
+function mq3(qId,question,opts,corrIdx,explanation){
+  ANS['mcq_'+qId]=null;
+  var keys=['A','B','C'];
+  var html='<div class="mw"><div class="mq"><span class="mn">'+qId+'</span>'+question+'</div><div class="mo-list">';
+  opts.forEach(function(o,i){
+    html+='<div class="mo" id="mo-'+qId+'-'+i+'" onclick="pm(\''+qId+'\','+i+','+corrIdx+')"><span class="mk">'+keys[i]+'</span><span>'+(o.label||o.v+' kPa')+'</span></div>';
+  });
+  html+='</div><div class="me" id="me-'+qId+'">'+explanation+'</div></div>';
+  return html;
+}
+
+function mq4(qId,question,opts,corrIdx,explanation){
+  ANS['mcq_'+qId]=null;
+  var keys=['A','B','C','D'];
+  var html='<div class="mw"><div class="mq"><span class="mn">'+qId+'</span>'+question+'</div><div class="mo-list">';
+  opts.forEach(function(o,i){
+    html+='<div class="mo" id="mo-'+qId+'-'+i+'" onclick="pm(\''+qId+'\','+i+','+corrIdx+')"><span class="mk">'+keys[i]+'</span><span>'+(o.label||o.v)+'</span></div>';
+  });
+  html+='</div><div class="me" id="me-'+qId+'">'+explanation+'</div></div>';
+  return html;
+}
+
+var D, sv;
+
+function pm(qKey,idx,corrIdx){
+  ANS['mcq_'+qKey]=idx;
+  var prefix='mo-'+qKey+'-';
+  for(var i=0;i<6;i++){var el=document.getElementById(prefix+i);if(el)el.className='mo';}
+  var sel=document.getElementById(prefix+idx);
+  if(sel)sel.className='mo sel';
+  updateProg();
+}
+
+function revealAllMCQ(){
+  Object.keys(QMeta).forEach(function(qKey){
+    var meta=QMeta[qKey];
+    var chosen=ANS['mcq_'+qKey];
+    var corrIdx=meta.corrIdx;
+    var prefix='mo-'+qKey+'-';
+    for(var i=0;i<6;i++){
+      var el=document.getElementById(prefix+i);
+      if(!el)continue;
+      if(i===corrIdx){el.className='mo rok';}
+      else if(i===chosen&&chosen!==corrIdx){el.className='mo no';}
+    }
+    var me=document.getElementById('me-'+qKey);
+    if(me){me.style.display='block';me.className='me show '+(chosen===corrIdx?'ok-e':'no-e');}
+    ANS['mcq_'+qKey]=(chosen===corrIdx);
+  });
+  updateProg();
+}
+
+var QMeta={};
+
+function addQ(qId,corrIdx){QMeta[qId]={corrIdx:corrIdx};}
+
+function renderExercise(){
+  var patIdx=EX_NUM-1;
+  D=genC2(sv.stt,patIdx);
+  QMeta={};
+  ANS={};
+  var p=D.pat;
+  var r=seededRng(sv.stt*1009+patIdx*100+DANG_IDX+500); // separate rng for distractors
+
+  var dim1=p.type==='don'?'B₁='+D.B1+'m, L₁='+D.L1+'m':'B₁='+D.B1+'m (1m dài)';
+  var dim2=p.type==='don'?'B₂='+D.B2+'m, L₂='+D.L2+'m':'B₂='+D.B2+'m (1m dài)';
+  var html='';
+
+  html+='<div class="de-bai"><div class="de-hd"><i class="ti ti-file-description"></i>&nbsp; Đề bài — '+p.lbl+'</div><div class="de-body">';
+  html+='<p>N₀ = <strong>'+D.N0+' kN</strong>'+(p.ecc?', M₀ = <strong>'+D.M0+' kNm</strong>':'')+'. h<sub>m</sub> = <strong>'+D.hm+'m</strong>, γ<sub>tb</sub> = '+D.gtb+' kN/m³, F<sub>s</sub> = '+D.Fs+'.</p>';
+  html+='<p>Đất nền: γ = <strong>'+D.gam+' kN/m³</strong>, c = <strong>'+D.c+' kPa</strong>, φ = <strong>'+D.phi+'°</strong>.</p>';
+  html+='<div class="pa-grid"><div class="pa-box pa1"><strong>PA1:</strong> '+dim1+'</div><div class="pa-box pa2"><strong>PA2:</strong> '+dim2+'</div></div>';
+  html+='</div></div>';
+
+  /* Q1: điều kiện */
+  var condCorr=p.ecc?1:0;
+  addQ('q1',condCorr);
+  html+=mq4('q1','Điều kiện kiểm tra SCT áp dụng cho bài này?',
+    [{label:'Đúng tâm: p<sub>tb</sub> ≤ [P]'},{label:'Lệch tâm: p<sub>tb</sub> ≤ [P], p<sub>max</sub> ≤ 1.2[P], p<sub>min</sub> ≥ 0'},{label:'Chỉ kiểm tra p<sub>max</sub> ≤ [P]'},{label:'Không cần kiểm tra áp lực đáy móng'}],
+    condCorr, p.ecc?'✓ Có M₀ → lệch tâm. Áp dụng cả 3 điều kiện.':'✓ M₀=0 → đúng tâm, chỉ cần p_tb ≤ [P].');
+
+  /* Q2: ptb PA1 */
+  var ptb1_opts=shuffle3(D.ans1.ptb,r);
+  var ptb1_corr=ptb1_opts.findIndex(function(o){return o.correct;});
+  addQ('q2',ptb1_corr);
+  html+='<div class="grp-hd"><i class="ti ti-number-1"></i> PA1 — B='+D.B1+'m'+(D.L1?', L='+D.L1+'m':'')+'</div>';
+  html+=mq3('q2','p<sub>tb</sub> của PA1 là bao nhiêu?',ptb1_opts,ptb1_corr,'✓ p_tb = N₀/'+(p.type==='don'?'(B×L)':'B')+' + γ_tb×h_m = '+D.ans1.ptb+' kPa');
+
+  if(p.ecc){
+    var pmax1_opts=shuffle3(D.ans1.pmax,r);
+    var pmax1_corr=pmax1_opts.findIndex(function(o){return o.correct;});
+    addQ('q3',pmax1_corr);
+    html+=mq3('q3','p<sub>max</sub> của PA1 là bao nhiêu?',pmax1_opts,pmax1_corr,'✓ p_max = p_tb + 6M₀/(B×L²) = '+D.ans1.pmax+' kPa');
+    var pmin1_opts=shuffle3(D.ans1.pmin,r);
+    var pmin1_corr=pmin1_opts.findIndex(function(o){return o.correct;});
+    addQ('q4',pmin1_corr);
+    html+=mq3('q4','p<sub>min</sub> của PA1 là bao nhiêu?',pmin1_opts,pmin1_corr,'✓ p_min = p_tb − 6M₀/(B×L²) = '+D.ans1.pmin+' kPa');
+  }
+
+  /* Q: Pgh PA1 */
+  var Pgh1_opts=shuffle3(D.ans1.Pgh,r);
+  var Pgh1_corr=Pgh1_opts.findIndex(function(o){return o.correct;});
+  addQ('q5',Pgh1_corr);
+  html+=mq3('q5','P<sub>gh</sub> (Terzaghi) của PA1 là?',Pgh1_opts,Pgh1_corr,'✓ P_gh = α₁·Nγ·B·γ + Nq·q + α₃·Nc·c = '+D.ans1.Pgh+' kPa');
+
+  var P1_opts=shuffle3(D.ans1.P,r);
+  var P1_corr=P1_opts.findIndex(function(o){return o.correct;});
+  addQ('q6',P1_corr);
+  html+=mq3('q6','[P] = P<sub>gh</sub>/F<sub>s</sub> của PA1 là?',P1_opts,P1_corr,'✓ [P] = '+D.ans1.Pgh+'/'+D.Fs+' = '+D.ans1.P+' kPa');
+
+  /* Q7: kết luận PA1 */
+  var pa1KQ;
+  if(!p.ecc){pa1KQ=D.ans1.ptb<=D.ans1.P?0:1;}
+  else{pa1KQ=(D.ans1.ptb<=D.ans1.P&&D.ans1.pmax<=1.2*D.ans1.P&&D.ans1.pmin>=0)?0:1;}
+  addQ('q7',pa1KQ);
+  html+=mq4('q7','Kết luận PA1:',
+    [{label:'✓ Đạt — thỏa mãn điều kiện SCT'},{label:'✗ Không đạt — vi phạm điều kiện SCT'},{label:'Cần thêm số liệu để kết luận'},{label:'Chỉ kiểm tra PA cuối cùng'}],
+    pa1KQ,pa1KQ===0?'✓ PA1 đạt tất cả điều kiện kiểm tra.':'✓ PA1 vi phạm: p_tb='+D.ans1.ptb+' > [P]='+D.ans1.P);
+
+  /* PA2 questions */
+  html+='<div class="grp-hd"><i class="ti ti-number-2"></i> PA2 — B='+D.B2+'m'+(D.L2?', L='+D.L2+'m':'')+'</div>';
+
+  var ptb2_opts=shuffle3(D.ans2.ptb,r);
+  var ptb2_corr=ptb2_opts.findIndex(function(o){return o.correct;});
+  addQ('q8',ptb2_corr);
+  html+=mq3('q8','p<sub>tb</sub> của PA2 là bao nhiêu?',ptb2_opts,ptb2_corr,'✓ p_tb = '+D.ans2.ptb+' kPa');
+
+  if(p.ecc){
+    var pmax2_opts=shuffle3(D.ans2.pmax,r);
+    var pmax2_corr=pmax2_opts.findIndex(function(o){return o.correct;});
+    addQ('q9',pmax2_corr);
+    html+=mq3('q9','p<sub>max</sub> của PA2 là bao nhiêu?',pmax2_opts,pmax2_corr,'✓ p_max = '+D.ans2.pmax+' kPa');
+    var pmin2_opts=shuffle3(D.ans2.pmin,r);
+    var pmin2_corr=pmin2_opts.findIndex(function(o){return o.correct;});
+    addQ('q10',pmin2_corr);
+    html+=mq3('q10','p<sub>min</sub> của PA2 là bao nhiêu?',pmin2_opts,pmin2_corr,'✓ p_min = '+D.ans2.pmin+' kPa');
+  }
+
+  var Pgh2_opts=shuffle3(D.ans2.Pgh,r);
+  var Pgh2_corr=Pgh2_opts.findIndex(function(o){return o.correct;});
+  addQ('q11',Pgh2_corr);
+  html+=mq3('q11','P<sub>gh</sub> (Terzaghi) của PA2 là?',Pgh2_opts,Pgh2_corr,'✓ P_gh = '+D.ans2.Pgh+' kPa');
+
+  var P2_opts=shuffle3(D.ans2.P,r);
+  var P2_corr=P2_opts.findIndex(function(o){return o.correct;});
+  addQ('q12',P2_corr);
+  html+=mq3('q12','[P] của PA2 là?',P2_opts,P2_corr,'✓ [P] = '+D.ans2.P+' kPa');
+
+  /* Kết luận cuối */
+  html+='<div class="grp-hd"><i class="ti ti-flag"></i> Kết luận chung</div>';
+  addQ('q13',2);
+  html+=mq4('q13','PA nào thỏa mãn điều kiện kỹ thuật?',
+    [{label:'Cả hai PA đều đạt'},{label:'Chỉ PA1 đạt'},{label:'Chỉ PA2 đạt'},{label:'Cả hai đều không đạt'}],
+    2,'✓ PA1 vi phạm SCT. PA2 đáp ứng đầy đủ điều kiện → Chọn PA2.');
+
+  var pa2pct=Math.round(D.ans2.ptb/D.ans2.P*100);
+  var econCorr=pa2pct<80?1:0;
+  addQ('q14',econCorr);
+  html+=mq4('q14','PA2 có p<sub>tb</sub>/[P] ≈ '+pa2pct+'%. Nhận xét về kinh tế?',
+    [{label:'Tối ưu (gần 100%)'},{label:'Dư ~'+(100-pa2pct)+'% SCT — có thể giảm B một chút'},{label:'Lãng phí, đổi giải pháp móng'},{label:'Thiếu an toàn'}],
+    econCorr,pa2pct<80?'✓ Dư ~'+(100-pa2pct)+'% → giảm B để tiết kiệm vật liệu.':'✓ Dư ~'+(100-pa2pct)+'% — hợp lý, tối ưu kinh tế.');
+
+  document.getElementById('ex-content').innerHTML=html;
+  updateProg();
+  document.getElementById('hdr-title').textContent='Dạng C'+EX_NUM+' — '+p.lbl;
+  document.getElementById('pg-title').textContent='C'+EX_NUM+' — Kiểm Tra SCT';
+  document.getElementById('snav-info').innerHTML='Dạng C · Bài C'+EX_NUM+' / 6 · '+p.lbl;
+  if(EX_NUM>1)document.getElementById('prev-link').innerHTML='<a href="C2-C.html?ex='+(EX_NUM-1)+'" class="btn btn-nav"><i class="ti ti-arrow-left"></i> C'+(EX_NUM-1)+'</a>';
+  if(EX_NUM<6)document.getElementById('next-link').innerHTML='<a href="C2-C.html?ex='+(EX_NUM+1)+'" class="btn btn-nav">C'+(EX_NUM+1)+' <i class="ti ti-arrow-right"></i></a>';
+}
+
+function doSubmit(){
+  if(window._nm_submitting)return;
+  window._nm_submitting=true;
+  var vals=Object.values(ANS);
+  var total=vals.length;
+  var attempted=vals.filter(function(v){return v!==null;}).length;
+  var minPct=window.MIN_ATTEMPT_PCT||80;
+  var attPct=total>0?Math.round(attempted/total*100):0;
+  if(attPct<minPct){window._nm_submitting=false;showToast('Cần làm ít nhất '+minPct+'% — hiện '+attPct+'%','warn-t');return;}
+  var btn=document.getElementById('sub-btn');
+  if(!sv||!sv.maSV){window._nm_submitting=false;showToast('Chưa đăng nhập','err-t');return;}
+  var subKey='nm_sub_'+CHAPTER_ID+EX_NUM+'_'+sv.maSV;
+  if(localStorage.getItem(subKey)){window._nm_submitting=false;showToast('Đã nộp bài này rồi!','warn-t');return;}
+  revealAllMCQ();
+  var correct=Object.values(ANS).filter(function(v){return v===true;}).length;
+  var scorePct=total>0?Math.round(correct/total*100):0;
+  btn.disabled=true;
+  btn.innerHTML='<i class="ti ti-loader ti-spin"></i> Đang nộp...';
+  fetch(window.WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:window.SECRET_TOKEN||'NenMong_HUCE_2025#',chapterId:CHAPTER_ID+EX_NUM,maSV:sv.maSV,hoTen:sv.name,lopHoc:sv.classId,score:scorePct,correct:correct,total:total,attempted:attempted,stt:sv.stt,patternIdx:EX_NUM,dang:'C'})})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(data.ok){localStorage.setItem(subKey,JSON.stringify({score:scorePct,ts:Date.now()}));btn.innerHTML='<i class="ti ti-check"></i> Đã nộp · '+scorePct+'%';btn.style.background='var(--G)';showToast('Nộp thành công! Điểm: '+scorePct+'%','ok-t');showNextLink();}
+    else{window._nm_submitting=false;btn.disabled=false;btn.innerHTML='<i class="ti ti-send"></i> Nộp bài';showToast('Lỗi: '+(data.error||'Unknown'),'err-t');}
+  })
+  .catch(function(){window._nm_submitting=false;btn.disabled=false;btn.innerHTML='<i class="ti ti-send"></i> Nộp bài';showToast('Lỗi kết nối','err-t');});
+}
+
+function showNextLink(){if(EX_NUM>=6)return;document.getElementById('ex-content').insertAdjacentHTML('beforeend','<a href="C2-C.html?ex='+(EX_NUM+1)+'" class="btn btn-sub" style="display:block;text-align:center;margin:20px 0;padding:12px;font-size:14px;background:var(--G);color:#fff;border-radius:10px;text-decoration:none"><i class="ti ti-arrow-right-circle"></i> Tiếp theo: C'+(EX_NUM+1)+' — '+C2_PAT[EX_NUM].lbl+'</a>');}
+function showToast(msg,cls){var t=document.getElementById('toast');t.textContent=msg;t.className='toast '+(cls||'');t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
+
+window.onload=function(){
+  try{sv=JSON.parse(sessionStorage.getItem('ncm_sv'));}catch(e){}
+  if(!sv||!sv.stt){location.href='../index.html?from='+encodeURIComponent(location.href);return;}
+  document.getElementById('sv-name').textContent=sv.name+' — Lớp '+sv.classId;
+  document.getElementById('sv-stt').textContent='#'+sv.stt;
+  document.getElementById('hdr-sv').textContent=sv.maSV;
+  renderExercise();
+};
+</script>
+</body>
+</html>

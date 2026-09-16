@@ -509,8 +509,10 @@ pm = function(name, picked, correct) {
 
 // ── Nộp bài ─────────────────────────────────────────────────
 function doSubmit() {
+  if (window._nm_submitting) return;
+  window._nm_submitting = true;
   var sv = getSV();
-  if (!sv) { showToast('Chưa đăng nhập!', 'err'); return; }
+  if (!sv) { window._nm_submitting = false; showToast('Chưa đăng nhập!', 'err'); return; }
 
   var vals = Object.values(ANS);
   var total    = vals.length;
@@ -555,6 +557,7 @@ function doSubmit() {
       else throw new Error(res && res.error ? res.error : 'Lỗi server');
     })
     .catch(function(e) {
+      window._nm_submitting = false;
       btn.disabled = false;
       btn.innerHTML = '<i class="ti ti-send"></i> Nộp bài & lưu kết quả';
       showToast('Lỗi kết nối: ' + e.message, 'err');

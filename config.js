@@ -46,7 +46,7 @@ window.CLASS_LIST = [
 // Lịch mở từng CLO / chương (null = không giới hạn thời gian)
 window.CHAPTER_SCHEDULE = {
   c1: { active: true,  open: null, close: null },   // CLO1 — Phương án móng
-  c2: { active: false, open: null, close: null },   // CLO2 — Móng nông
+  c2: { active: true,  open: null, close: null },   // CLO2 — Móng nông
   c3: { active: false, open: null, close: null },   // CLO3 — Móng cọc
   c4: { active: false, open: null, close: null },   // CLO4 — Cấu tạo
 };

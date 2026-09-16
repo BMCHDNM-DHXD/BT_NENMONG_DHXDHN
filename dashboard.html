@@ -274,11 +274,11 @@ main{max-width:1280px;margin:0 auto;padding:32px 28px 80px}
     <!-- CLO 2 -->
     <div class="clo-card locked" id="card-c2">
       <div class="cc-top">
-        <div class="cc-icon" style="background:#F3E5F5">📐</div>
+        <div class="cc-icon" style="background:#E3F2FD">📐</div>
         <div class="cc-info">
-          <div class="clo-num">CLO 2 · Bloom C4 — Phân tích</div>
-          <h3>Móng Nông</h3>
-          <p>Kiểm tra kích thước đáy móng, chiều cao móng, sức chịu tải nền</p>
+          <div class="clo-num">CLO 2 · Bloom C3 — Áp dụng</div>
+          <h3><a href="chuong-02/index.html" style="color:inherit;text-decoration:none">Móng Nông</a></h3>
+          <p>Kiểm tra kích thước đáy móng theo Terzaghi — 6 dạng móng đơn, chữ nhật, băng</p>
         </div>
       </div>
       <div class="cc-ex" id="chips-c2">
@@ -286,7 +286,7 @@ main{max-width:1280px;margin:0 auto;padding:32px 28px 80px}
       </div>
       <div class="cc-foot">
         <span class="status-badge sb-lock" id="status-c2">Chưa mở</span>
-        <span class="cc-prog">–</span>
+        <span class="cc-prog" id="prog-c2">–</span>
       </div>
     </div>
 
@@ -343,12 +343,33 @@ main{max-width:1280px;margin:0 auto;padding:32px 28px 80px}
 <script src="assets/js/engine.js"></script>
 <script>
 var PATTERNS_C1 = ['T-T-T-T','X-T-T-T','T-X-T-T','X-X-T-T','T-T-X-T','X-X-X-T'];
+var PATTERNS_C2 = ['Vuông·ĐT','L=1.5B·ĐT','L=2B·ĐT','Vuông·LT','L=1.5B·LT','Băng·LT'];
+
+function buildChips(containerId, cloKey, fileBase, patterns, sv) {
+  var el = document.getElementById(containerId);
+  if (!el) return 0;
+  var done = 0;
+  var html = '';
+  ['A','B','C'].forEach(function(d) {
+    html += '<div class="ex-group"><span class="ex-label">' + d + '</span>';
+    for (var ex = 1; ex <= 6; ex++) {
+      var key = 'nm_sub_' + cloKey + '-' + d + ex + '_' + sv.maSV;
+      var isDone = !!localStorage.getItem(key);
+      if (isDone) done++;
+      html += '<a class="ex-chip ' + d.toLowerCase() + (isDone ? ' done' : '')
+            + '" href="' + fileBase + '/C' + cloKey.replace('C','') + '-' + d + '.html?ex=' + ex
+            + '" title="' + patterns[ex-1] + '">' + d + ex + '</a>';
+    }
+    html += '</div>';
+  });
+  el.innerHTML = html;
+  return done;
+}
 
 (function(){
   var sv = getSV();
   if (!sv) { location.href = 'index.html'; return; }
 
-  // Header
   var firstName = sv.hoTen.split(' ').pop();
   document.getElementById('sv-av').textContent   = sv.hoTen[0].toUpperCase();
   document.getElementById('sv-name').textContent = sv.hoTen;
@@ -357,47 +378,44 @@ var PATTERNS_C1 = ['T-T-T-T','X-T-T-T','T-X-T-T','X-X-T-T','T-T-X-T','X-X-X-T'];
   document.getElementById('hero-stt').textContent = sv.stt;
   document.getElementById('op-stt').textContent = sv.stt;
 
-  // CLO1 chips (CLO2-4 chưa có file, disable)
-  var doneCount = 0;
-  var chipsC1 = document.getElementById('chips-c1');
-  var html = '';
-  ['A','B','C'].forEach(function(d,di){
-    html += '<div class="ex-group">';
-    html += '<span class="ex-label">' + d + '</span>';
-    for (var ex=1;ex<=6;ex++){
-      var key = 'nm_sub_C1-' + d + ex + '_' + sv.maSV;
-      var done = !!localStorage.getItem(key);
-      if(done) doneCount++;
-      html += '<a class="ex-chip ' + d.toLowerCase() + (done?' done':'')
-            + '" href="chuong-01/C1-' + d + '.html?ex=' + ex
-            + '" title="' + PATTERNS_C1[ex-1] + '">'
-            + d + ex + '</a>';
-    }
-    html += '</div>';
-  });
-  chipsC1.innerHTML = html;
-
-  // Progress CLO1
-  document.getElementById('prog-c1').textContent = doneCount + ' / 18 bài';
-
-  // Overall
-  document.getElementById('op-done').textContent = doneCount;
-  var pct = Math.round(doneCount / 18 * 100);
-  document.getElementById('op-pct').textContent = pct + '%';
-  document.getElementById('op-fill').style.width = pct + '%';
-
-  // Lịch
   var schedule = window.CHAPTER_SCHEDULE || {};
-  ['c1','c2','c3','c4'].forEach(function(chId){
+  function isOpen(chId) {
     var cfg = schedule[chId];
     var now = new Date();
-    var open = !cfg || (cfg.active!==false &&
-      (!cfg.open||new Date(cfg.open)<=now) &&
-      (!cfg.close||new Date(cfg.close)>=now));
+    return !cfg || (cfg.active !== false &&
+      (!cfg.open  || new Date(cfg.open)  <= now) &&
+      (!cfg.close || new Date(cfg.close) >= now));
+  }
+
+  var totalDone = 0;
+  var totalBai  = 0;
+
+  // CLO1
+  var done1 = buildChips('chips-c1', 'C1', 'chuong-01', PATTERNS_C1, sv);
+  totalDone += done1; totalBai += 18;
+  document.getElementById('prog-c1').textContent = done1 + ' / 18 bài';
+
+  // CLO2
+  if (isOpen('c2')) {
+    var done2 = buildChips('chips-c2', 'C2', 'chuong-02', PATTERNS_C2, sv);
+    totalDone += done2; totalBai += 18;
+    document.getElementById('prog-c2').textContent = done2 + ' / 18 bài';
+  }
+
+  // Overall
+  document.getElementById('op-done').textContent = totalDone;
+  var pct = totalBai > 0 ? Math.round(totalDone / totalBai * 100) : 0;
+  document.getElementById('op-pct').textContent = pct + '%';
+  document.getElementById('op-fill').style.width = pct + '%';
+  document.querySelector('.op-n:nth-child(2) .v').textContent = totalBai;
+
+  // Trạng thái khóa/mở từng CLO
+  ['c1','c2','c3','c4'].forEach(function(chId) {
+    var open = isOpen(chId);
     var card = document.getElementById('card-'+chId);
     var stat = document.getElementById('status-'+chId);
-    if(card) card.className = 'clo-card' + (open?'':' locked');
-    if(stat) { stat.textContent=open?'Đang mở':'Chưa mở'; stat.className='status-badge '+(open?'sb-open':'sb-lock'); }
+    if (card) card.className = 'clo-card' + (open ? '' : ' locked');
+    if (stat) { stat.textContent = open ? 'Đang mở' : 'Chưa mở'; stat.className = 'status-badge ' + (open ? 'sb-open' : 'sb-lock'); }
   });
 })();
 
