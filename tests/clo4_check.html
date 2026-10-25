@@ -1,0 +1,32 @@
+<!doctype html><meta charset="utf-8"><title>Kiểm CLO4</title>
+<!-- Mở bằng trình duyệt, hoặc: msedge --headless --dump-dom file:///.../tests/clo4_check.html -->
+<pre id="out">chạy...</pre>
+<script src="../assets/js/engine.js"></script>
+<script src="../assets/js/clo4.js"></script>
+<script>
+window.onerror=function(m,u,l){document.getElementById('out').textContent='JS ERROR: '+m+' @'+l;};
+var C = window.CLO4, n = 0, bad = 0, seen = {}, groups = {}, log = [];
+function err(m) { bad++; if (log.length < 15) log.push(m); }
+for (var stt = 1; stt <= (parseInt(new URLSearchParams(location.search).get("max")) || 200); stt++) for (var ex = 0; ex < 6; ex++) for (var d = 1; d <= 3; d++) {
+  var S = C.gen(stt, ex, d, seededRng); n++;
+  var tag = [stt, ex, d, S.g].join('/');
+  var v = C.violations(S).sort().join(), e = S.errs.slice().sort().join();
+  if (v !== e || S.errs.length !== 2 || S.errs[0] === S.errs[1]) err('violations ' + tag + ' thấy=' + v + ' khai báo=' + e);
+  var items = C.items(S);
+  items.forEach(function (k) {
+    var c = C.correctOpt(S, k), isErr = S.errs.indexOf(k) >= 0;
+    if (isErr ? !(c >= 1 && c <= 3) : c !== 0) err('correctOpt ' + tag + ' ' + k + '=' + c);
+    if (!C.OPT[k] || !C.BASIS[k] || !C.itemText(S, k) || C.itemText(S, k).indexOf('undefined') >= 0 || C.itemText(S, k).indexOf('NaN') >= 0) err('thiếu nội dung ' + tag + ' ' + k);
+  });
+  var svg = C.drawSVG(S);
+  if (svg.indexOf('NaN') >= 0 || svg.indexOf('undefined') >= 0) err('SVG hỏng ' + tag);
+  var ck = C.consequenceKey(S);
+  if (!ck || !C.CONSEQ[ck]) err('hậu quả ' + tag);
+  if (C.consKeys(S).filter(function (k) { return S.errs.indexOf(k) < 0; }).length < 3) err('thiếu mồi hậu quả ' + tag);
+  var aq = C.A_Q(S); if (!aq.length || aq.some(function (q) { return q.opts.indexOf(q.ans) < 0; })) err('A_Q ' + tag);
+  if (!C.intro(S) || C.intro(S).indexOf('undefined') >= 0) err('intro ' + tag);
+  if (!S.haveLot && S.abv < 70 && S.errs.indexOf('abv') < 0 && S.g !== 'coc') err('không lót, abv<70 ' + tag);
+  seen[S.g + ':' + S.errs.slice().sort().join('+')] = 1; groups[S.g] = (groups[S.g] || 0) + 1;
+}
+document.getElementById('out').textContent = 'KET QUA: da kiem ' + n + ' de; loi ' + bad + '; to hop (nhom:2 loi) = ' + Object.keys(seen).length + '; theo nhom ' + JSON.stringify(groups) + ' || ' + log.join(' | ');
+</script>

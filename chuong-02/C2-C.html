@@ -354,7 +354,7 @@ function doSubmit(){
   var scorePct=total>0?Math.round(correct/total*100):0;
   btn.disabled=true;
   btn.innerHTML='<i class="ti ti-loader ti-spin"></i> Đang nộp...';
-  fetch(window.WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:window.SECRET_TOKEN||'NenMong_HUCE_2025#',chapterId:CHAPTER_ID+EX_NUM,maSV:sv.maSV,hoTen:sv.name,lopHoc:sv.classId,score:scorePct,correct:correct,total:total,attempted:attempted,stt:sv.stt,patternIdx:EX_NUM,dang:'C'})})
+  fetch(window.WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:window.SECRET_TOKEN||'NenMong_HUCE_2025#',chapterId:CHAPTER_ID+EX_NUM,maSV:sv.maSV,hoTen:sv.name,lop:sv.classId,lopHoc:sv.classId,score:scorePct,correct:correct,total:total,attempted:attempted,stt:sv.stt,patternIdx:EX_NUM,dang:'C'})})
   .then(function(r){return r.json();})
   .then(function(data){
     if(data.ok){localStorage.setItem(subKey,JSON.stringify({score:scorePct,ts:Date.now()}));btn.innerHTML='<i class="ti ti-check"></i> Đã nộp · '+scorePct+'%';btn.style.background='var(--G)';showToast('Nộp thành công! Điểm: '+scorePct+'%','ok-t');showNextLink();}

@@ -19,8 +19,7 @@ html,body{height:100%}
 body{
   font-family:var(--sans);
   background:linear-gradient(135deg,#0A1929 0%,#0D47A1 55%,#1565C0 100%);
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:16px;position:relative;overflow:hidden;
+  min-height:100vh;position:relative;overflow-x:hidden;
 }
 body::before{
   content:'';position:fixed;inset:0;
@@ -35,19 +34,22 @@ body::before{
   background-size:32px 32px;pointer-events:none;
 }
 .page{
-  width:100%;max-width:980px;
-  display:grid;grid-template-columns:1fr 420px;
-  border-radius:20px;overflow:hidden;
-  box-shadow:0 28px 90px rgba(0,0,0,.55);
+  width:100%;min-height:100vh;
+  display:grid;grid-template-columns:1fr minmax(400px,38vw);
   position:relative;z-index:1;
 }
-@media(max-width:740px){.page{grid-template-columns:1fr}.left-panel{display:none}}
+@media(max-width:860px){.page{grid-template-columns:1fr}.left-panel{display:none}.m-logos{display:flex!important}}
+.logos{display:flex;align-items:center;gap:12px;margin-bottom:34px}
+.logo-img{height:72px;width:72px;object-fit:contain;background:#fff;border-radius:14px;padding:5px;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+.logo-sep{width:1px;height:48px;background:rgba(255,255,255,.25)}
+.m-logos{display:none;justify-content:center;margin-bottom:22px}
+.m-logos .logo-img{height:56px;width:56px;box-shadow:0 2px 10px rgba(21,101,192,.25);border:1px solid #BBDEFB}
 
 /* LEFT */
 .left-panel{
   background:linear-gradient(160deg,rgba(13,71,161,.75) 0%,rgba(21,101,192,.55) 100%);
   backdrop-filter:blur(20px);
-  padding:52px 44px;
+  padding:48px clamp(32px,5vw,80px);
   display:flex;flex-direction:column;justify-content:space-between;
   border-right:1px solid rgba(255,255,255,.1);
 }
@@ -60,7 +62,7 @@ body::before{
 .brand h1{font-size:16px;font-weight:800;color:#fff;line-height:1.25}
 .brand p{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px}
 .headline{flex:1;display:flex;flex-direction:column;justify-content:center}
-.headline h2{font-size:clamp(28px,3.5vw,40px);font-weight:800;color:#fff;line-height:1.15;margin-bottom:16px}
+.headline h2{font-size:clamp(32px,4.2vw,56px);font-weight:800;color:#fff;line-height:1.15;margin-bottom:16px}
 .headline h2 span{color:#90CAF9}
 .headline p{font-size:14px;color:rgba(255,255,255,.7);line-height:1.85;margin-bottom:30px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -79,10 +81,11 @@ body::before{
 
 /* RIGHT */
 .right-panel{
-  background:#fff;padding:52px 44px;
+  background:#fff;padding:48px clamp(28px,4vw,64px);
   display:flex;flex-direction:column;justify-content:center;
 }
-@media(max-width:740px){.right-panel{padding:36px 28px}}
+@media(max-width:860px){.right-panel{padding:36px 24px;min-height:100vh}}
+.right-in{width:100%;max-width:400px;margin:0 auto}
 .right-panel h3{font-size:24px;font-weight:800;color:var(--Pdk);margin-bottom:6px}
 .right-panel .sub{font-size:13px;color:var(--muted);margin-bottom:30px}
 .fld{margin-bottom:16px}
@@ -127,11 +130,15 @@ body::before{
   <!-- LEFT: Branding -->
   <div class="left-panel">
     <div>
-      <div class="brand">
-        <div class="brand-ico">🏗</div>
-        <div>
-          <h1>BT Nền Móng Online</h1>
-          <p>Trường Đại học Xây dựng Hà Nội · BMCHDNM</p>
+      <div class="logos">
+        <img class="logo-img" src="assets/img/logo-dhxdhn.jpg" alt="Logo Trường ĐHXD Hà Nội">
+        <img class="logo-img" src="assets/img/logo-bmchdnm.jpg" alt="Logo Bộ môn CHDNM">
+        <div class="logo-sep"></div>
+        <div class="brand" style="margin:0">
+          <div>
+            <h1>BT Nền Móng Online</h1>
+            <p>Trường Đại học Xây dựng Hà Nội · BMCHDNM</p>
+          </div>
         </div>
       </div>
       <div class="headline">
@@ -146,15 +153,19 @@ body::before{
       </div>
     </div>
     <div class="stats">
-      <div class="sc"><span class="n">6</span><span class="l">Dạng bài / CLO</span></div>
+      <div class="sc"><span class="n">6</span><span class="l">Pattern / dạng</span></div>
       <div class="sc"><span class="n">A·B·C</span><span class="l">Cấp gợi ý</span></div>
-      <div class="sc"><span class="n">4</span><span class="l">CLO Bloom C4</span></div>
+      <div class="sc"><span class="n">4</span><span class="l">CLO</span></div>
       <div class="sc"><span class="n">STT</span><span class="l">Số liệu duy nhất</span></div>
     </div>
   </div>
 
   <!-- RIGHT: Form -->
-  <div class="right-panel">
+  <div class="right-panel"><div class="right-in">
+    <div class="logos m-logos">
+      <img class="logo-img" src="assets/img/logo-dhxdhn.jpg" alt="Logo Trường ĐHXD Hà Nội">
+      <img class="logo-img" src="assets/img/logo-bmchdnm.jpg" alt="Logo Bộ môn CHDNM">
+    </div>
     <h3>Đăng nhập làm bài</h3>
     <p class="sub">Nhập thông tin sinh viên để bắt đầu</p>
 
@@ -190,7 +201,7 @@ body::before{
       Số thứ tự (STT) quyết định bộ số liệu của bạn.<br>
       Cùng STT → cùng đề mỗi lần vào — hãy nhớ đúng STT của mình.
     </div>
-  </div>
+  </div></div>
 </div>
 
 <script src="config.js" onerror="console.log('no config')"></script>

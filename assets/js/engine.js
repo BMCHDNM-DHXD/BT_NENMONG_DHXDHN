@@ -24,7 +24,13 @@ function seededRng(seed) {
 var SV_KEY = 'nm_sv_v1';
 
 function setSV(data) {
-  try { sessionStorage.setItem(SV_KEY, JSON.stringify(data)); } catch(e){}
+  try {
+    sessionStorage.setItem(SV_KEY, JSON.stringify(data));
+    // Tương thích CLO2 (C2-A/B/C đọc khóa cũ 'ncm_sv' với name/classId)
+    sessionStorage.setItem('ncm_sv', JSON.stringify({
+      name: data.hoTen, maSV: data.maSV, stt: data.stt, classId: data.lop
+    }));
+  } catch(e){}
 }
 
 function getSV() {
