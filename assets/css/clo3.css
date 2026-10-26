@@ -1,0 +1,7 @@
+/* CLO3 — phần bổ sung cho clo4.css + clo2.css: hình, bảng tra */
+.figbox{margin:10px 0 2px;padding:8px;background:#fff;border:1px solid var(--brd);border-radius:8px;text-align:center}
+.figrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:flex-start}
+.figrow svg{flex:1 1 220px}
+.tbl-scroll{overflow-x:auto}
+.tbl-scroll .atb{min-width:520px;font-size:11px}
+.tnote{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5}

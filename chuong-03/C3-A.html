@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLO3 Dạng A — Móng cọc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/clo4.css">
+<link rel="stylesheet" href="../assets/css/clo2.css">
+<link rel="stylesheet" href="../assets/css/clo3.css">
+<script src="../config.js" onerror="console.log('no config')"></script>
+<script src="../assets/js/engine.js"></script>
+<script src="../assets/js/clo3.js"></script>
+</head>
+<body>
+<header class="hdr"><div class="hdr-in">
+  <img class="hdr-logo" src="../assets/img/logo-dhxdhn.jpg" alt="ĐHXD Hà Nội">
+  <img class="hdr-logo" src="../assets/img/logo-bmchdnm.jpg" alt="BM CHDNM">
+  <a href="index.html" class="hdr-back">‹ CLO3</a>
+  <span class="hdr-title" id="hdr-title">Dạng A</span>
+  <div class="hdr-sv" id="hdr-sv"></div>
+</div></header>
+<div class="pbar-wrap"><div class="pbar-fill" id="pfill" style="width:0%"></div></div>
+<div class="prog-row">Tiến độ: <span id="hprog">0 / 0</span></div>
+<main>
+  <div class="sv-bar"><div class="sv-bar-txt">Móng cọc — <span id="sv-name">…</span></div><div class="sv-bar-stt" id="sv-stt">–</div></div>
+  <div id="ex-content"></div>
+  <div class="toast" id="toast"></div>
+</main>
+<nav class="snav">
+  <div class="snav-info" id="snav-info">Dạng A</div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <span id="prev-link"></span>
+    <button class="btn btn-sub" id="sub-btn" onclick="doSubmit()">Nộp bài</button>
+    <span id="next-link"></span>
+  </div>
+</nav>
+<script src="../assets/js/clo3-page.js"></script>
+<script>
+window.onload = function () { CLO3PAGE.start({ dang: 'A', mode: 'A', dangIdx: 1 }); };
+</script>
+</body>
+</html>

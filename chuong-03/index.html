@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLO 3 — Móng Cọc · BT Nền Móng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root{--P:#1565C0;--Pdk:#0D47A1;--Plt:#E3F2FD;--G:#2E7D32;--Glt:#E8F5E9;--Gdk:#1B5E20;
+      --R:#C62828;--Rlt:#FFEBEE;--A:#FF8F00;--Alt:#FFF8E1;--O:#E65100;--Olt:#FBE9E7;
+      --bg:#EEF4FB;--sur:#fff;--brd:#BBDEFB;--muted:#546E7A;--text:#0A1929;
+      --sans:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+      --r:12px;--sh:0 2px 16px rgba(13,71,161,.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh}
+.hdr{background:var(--Pdk);color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.hdr-in{max-width:860px;margin:0 auto;padding:0 20px;height:56px;display:flex;align-items:center;gap:12px}
+.hdr-back{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;font-weight:600;transition:.15s;padding:5px 10px;border-radius:7px}
+.hdr-back:hover{background:rgba(255,255,255,.12);color:#fff}
+.hdr-sep{color:rgba(255,255,255,.35);font-size:16px}
+.hdr-title{font-weight:700;font-size:15px;flex:1}
+.hdr-sv{font-size:11.5px;color:rgba(255,255,255,.65);font-family:var(--mono);text-align:right}
+.hero{background:linear-gradient(135deg,#0D47A1 0%,#1976D2 100%);color:#fff;padding:36px 20px 28px;text-align:center}
+.hero-in{max-width:660px;margin:0 auto}
+.clo-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:.6px;margin-bottom:14px}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:700;margin-bottom:8px}
+.hero p{font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.7;max-width:520px;margin:0 auto 20px}
+.stt-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:24px;padding:6px 18px;font-family:var(--mono);font-size:13px}
+.stt-pill strong{font-size:18px}
+main{max-width:860px;margin:0 auto;padding:24px 20px 72px}
+.intro-box{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);padding:18px 20px;margin-bottom:24px;box-shadow:var(--sh)}
+.intro-box h3{font-size:13px;font-weight:700;color:var(--Pdk);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:600px){.steps-grid{grid-template-columns:1fr 1fr}}
+.step-mini{text-align:center;padding:10px 6px}
+.step-mini .num{width:32px;height:32px;border-radius:50%;background:var(--Plt);color:var(--Pdk);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 6px}
+.step-mini .lbl{font-size:11px;color:var(--muted);line-height:1.4}
+.dang-sec{background:var(--sur);border:1.5px solid var(--brd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:18px}
+.dang-sec-hd{padding:14px 18px 10px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--brd)}
+.dang-sec-hd .dbadge{font-family:var(--mono);font-size:20px;font-weight:700;min-width:52px}
+.dbadge.da{color:var(--G)}.dbadge.db{color:var(--P)}.dbadge.dc{color:var(--R)}
+.dang-sec-hd .dtitle{font-size:14px;font-weight:700;flex:1}
+.dang-sec-hd .dsub{font-size:11.5px;color:var(--muted)}
+.dang-sec-body{padding:14px 18px 16px}
+.ex-chips{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+@media(max-width:640px){.ex-chips{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:380px){.ex-chips{grid-template-columns:repeat(2,1fr)}}
+.ex-chip{display:flex;flex-direction:column;align-items:center;text-decoration:none;background:#F8FBFF;border:1.5px solid var(--brd);border-radius:10px;padding:10px 6px 8px;transition:.18s;position:relative;color:var(--text)}
+.ex-chip:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(13,71,161,.14)}
+.ex-chip .ec-num{font-family:var(--mono);font-size:15px;font-weight:700;margin-bottom:3px}
+.ex-chip .ec-pat{font-size:9px;color:var(--muted);font-family:var(--mono);letter-spacing:.2px;text-align:center;line-height:1.3}
+.ex-chip .ec-st{font-size:9px;margin-top:5px;font-weight:700;padding:1px 6px;border-radius:8px}
+.ex-chip.a{border-color:#A5D6A7}.ex-chip.a:hover{border-color:var(--G);background:var(--Glt)}.ex-chip.a .ec-num{color:var(--G)}
+.ex-chip.b{border-color:#90CAF9}.ex-chip.b:hover{border-color:var(--P);background:var(--Plt)}.ex-chip.b .ec-num{color:var(--P)}
+.ex-chip.c{border-color:#EF9A9A}.ex-chip.c:hover{border-color:var(--R);background:var(--Rlt)}.ex-chip.c .ec-num{color:var(--R)}
+.ex-chip.done{opacity:.75}
+.ex-chip.done .ec-st{background:var(--Glt);color:var(--Gdk)}
+.ex-chip:not(.done) .ec-st{background:var(--Plt);color:var(--Pdk)}
+.theory-box{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:16px}
+.theory-hd{background:var(--Alt);padding:12px 18px;border-bottom:1px solid #FFE0B2;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.theory-hd h3{font-size:13px;font-weight:700;color:var(--O);display:flex;align-items:center;gap:7px}
+.theory-body{padding:18px;display:none}
+.theory-body.open{display:block}
+.table-wrap{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th{background:var(--Pdk);color:#fff;padding:7px 10px;text-align:center;font-weight:700}
+td{padding:6px 10px;border-bottom:1px solid var(--brd);text-align:center;font-family:var(--mono);font-size:12px}
+tr:nth-child(even) td{background:#F8FBFF}
+.t-head2{background:var(--Plt);color:var(--Pdk);font-weight:700;font-family:var(--sans)}
+.kf{font-family:var(--mono);background:var(--Plt);color:var(--Pdk);padding:1px 5px;border-radius:4px;font-size:11.5px}
+p.note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6}
+.sect-title{font-size:12.5px;font-weight:700;color:var(--Pdk);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.5px}
+.fml-ref{background:#F8FBFF;border:1.5px solid var(--brd);border-left:4px solid var(--P);border-radius:0 8px 8px 0;padding:10px 14px;font-family:var(--mono);font-size:12.5px;line-height:2;margin:8px 0}
+.fml-ref em{color:var(--Pdk);font-style:normal;font-weight:700}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a class="hdr-back" href="../index.html"><i class="ti ti-arrow-left"></i> Trang chủ</a>
+    <span class="hdr-sep">›</span>
+    <span class="hdr-title">CLO 3 — Móng Cọc</span>
+    <div class="hdr-sv" id="hdr-sv"></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in">
+    <div class="clo-badge"><i class="ti ti-building-arch"></i> CLO 3 · Bloom C4 — Phân tích</div>
+    <h1>Móng Cọc</h1>
+    <p>Theo giáo trình Nền móng V08 và TCVN 10304: sức chịu tải cọc theo bảng tra, SPT, CPT; vật liệu cọc; phản lực đầu cọc; đài cọc (chọc thủng, thép). Giải từng bước, 6 bài · 3 dạng A/B/C.</p>
+    <div class="stt-pill"><i class="ti ti-key"></i> Số thứ tự của bạn: <strong id="stt-disp">–</strong></div>
+  </div>
+</section>
+
+<main>
+  <div class="intro-box">
+    <h3><i class="ti ti-list-numbers"></i> 6 bài của CLO3</h3>
+    <div class="steps-grid">
+      <div class="step-mini"><div class="num">1</div><div class="lbl"><b>SCT cọc — bảng tra</b> — f<sub>i</sub>, q<sub>b</sub>, R<sub>c,d</sub>, hiệu suất</div></div>
+      <div class="step-mini"><div class="num">2</div><div class="lbl"><b>SCT cọc — SPT</b> — c<sub>u</sub>, f, q<sub>b</sub></div></div>
+      <div class="step-mini"><div class="num">3</div><div class="lbl"><b>SCT cọc — CPT</b> — α, k<sub>c</sub>, q<sub>c</sub></div></div>
+      <div class="step-mini"><div class="num">4</div><div class="lbl"><b>Vật liệu cọc và lực ép</b> — R<sub>c,d</sub>, R<sub>c,m</sub></div></div>
+      <div class="step-mini"><div class="num">5</div><div class="lbl"><b>Phản lực đầu cọc</b> — P<sub>max</sub> ≤ R<sub>c,d</sub></div></div>
+      <div class="step-mini"><div class="num">6</div><div class="lbl"><b>Đài cọc</b> — chọc thủng, thép</div></div>
+    </div>
+  </div>
+
+  <div id="ex-sections"></div>
+
+  <div class="theory-box">
+    <div class="theory-hd" onclick="toggleTh()">
+      <h3><i class="ti ti-book"></i> Lý thuyết tham khảo — công thức V08</h3>
+      <i class="ti ti-chevron-down" id="th-icon"></i>
+    </div>
+    <div class="theory-body" id="th-body">
+      <div class="sect-title">1. SCT cọc đóng theo đất nền (V08 mục 4.3, TCVN 10304:2014)</div>
+      <div class="fml-ref">
+        R<sub>c,u</sub> = γ<sub>c</sub>(γ<sub>cq</sub>·q<sub>b</sub>·A<sub>p</sub> + u·Σγ<sub>cf</sub>·f<sub>i</sub>·l<sub>i</sub>) ; R<sub>c,d</sub> = R<sub>c,u</sub>/γ<sub>k</sub><br>
+        γ<sub>k</sub> = 1,4 (bảng tra) · 1,5 (SPT) · 1,25 (CPT) · γ<sub>c</sub> = γ<sub>cq</sub> = γ<sub>cf</sub> = 1 (đóng bằng búa)<br>
+        Bảng tra: q<sub>b</sub> theo Bảng 2 (độ sâu mũi, I<sub>L</sub>), f<sub>i</sub> theo Bảng 3 (độ sâu giữa lớp, I<sub>L</sub>), nội suy tuyến tính
+      </div>
+      <div class="sect-title">2. SPT và CPT</div>
+      <div class="fml-ref">
+        SPT, cọc đóng: đất dính c<sub>u</sub> = 6,25N, f = 0,8c<sub>u</sub> ≤ 100, q<sub>b</sub> = 6c<sub>u</sub> ≤ 18000 · đất rời f = 2N ≤ 100, q<sub>b</sub> = 300N ≤ 18000<br>
+        CPT: f<sub>i</sub> = q<sub>c,i</sub>/α<sub>i</sub> ≤ f<sub>max</sub> ; q<sub>b</sub> = k<sub>c</sub>·q<sub>c</sub> (Bảng G2 TCVN 10304)
+      </div>
+      <div class="sect-title">3. Vật liệu cọc khi thi công đóng/ép</div>
+      <div class="fml-ref">
+        R<sub>c,m</sub> = m(R<sub>b</sub>A<sub>con</sub> + R<sub>sc</sub>A<sub>s</sub>), m = 1,0 · yêu cầu R<sub>c,m</sub> = (2,0 ÷ 3,0)R<sub>c,d</sub> (đất rời), (1,3 ÷ 2,0)R<sub>c,d</sub> (đất dính)
+      </div>
+      <div class="sect-title">4. Phản lực đầu cọc và kiểm tra nhóm cọc (V08 4.4.4)</div>
+      <div class="fml-ref">
+        P<sub>i</sub> = N/n + M<sub>y</sub>x<sub>i</sub>/Σx² + M<sub>x</sub>y<sub>i</sub>/Σy² ; P<sub>tt,max</sub> = P<sub>max</sub> + γ<sub>f</sub>W<sub>p,k</sub> ≤ R<sub>c,d</sub> ; P<sub>min</sub> ≥ 0 · W<sub>p,k</sub> = 25·A<sub>p</sub>·L, γ<sub>f</sub> = 1,1
+      </div>
+      <div class="sect-title">5. Đài cọc (V08 mục 4.5)</div>
+      <div class="fml-ref">
+        Chọc thủng do cột: F = ΣP<sub>i</sub> (cọc ngoài đáy tháp) ≤ F<sub>b,u</sub> = R<sub>bt</sub>·u·h<sub>0</sub>, u = 2(l<sub>c</sub> + b<sub>c</sub>) + 4h<sub>0</sub><br>
+        Thép: M = ΣP<sub>j</sub>z<sub>j</sub> ; α<sub>m</sub> = M/(R<sub>b</sub>Bh<sub>0</sub>²) ; ξ = 1 − √(1 − 2α<sub>m</sub>) ; A<sub>s</sub> = R<sub>b</sub>Bξh<sub>0</sub>/R<sub>s</sub>
+      </div>
+      <p class="note"><b>Lưu ý:</b> tải (kN), mô men (kN·m), kích thước (m), ứng suất (kPa). Bảng 2, 3, G2 hiện ngay trong đề của từng bài. Cát pha, sét pha, sét tính là đất dính.</p>
+    </div>
+  </div>
+</main>
+
+<script src="../config.js" onerror="console.log('no config')"></script>
+<script src="../assets/js/engine.js"></script>
+<script>
+var _PATTERNS = [
+  'SCT bảng tra','SCT SPT','SCT CPT','Vật liệu cọc','Phản lực cọc','Đài cọc'
+];
+
+(function(){
+  var sv = getSV();
+  if (!sv) { location.href = '../index.html'; return; }
+  document.getElementById('stt-disp').textContent = sv.stt;
+  document.getElementById('hdr-sv').textContent = sv.hoTen + ' · STT ' + sv.stt;
+
+  var dangs = [
+    { key:'A', cls:'a', file:'C3-A.html', title:'Dạng A — Có công thức, phản hồi ngay', sub:'Điền số và chọn đáp án, biết đúng/sai ngay từng câu' },
+    { key:'B', cls:'b', file:'C3-B.html', title:'Dạng B — Có công thức, trắc nghiệm chấm khi nộp', sub:'Số điền báo đúng/sai ngay; câu trắc nghiệm chỉ chấm khi nộp' },
+    { key:'C', cls:'c', file:'C3-C.html', title:'Dạng C — Toàn trắc nghiệm', sub:'Không công thức hiển thị — chọn đáp án, chấm khi nộp' }
+  ];
+
+  var html = '';
+  dangs.forEach(function(d) {
+    html += '<div class="dang-sec"><div class="dang-sec-hd">';
+    html += '<span class="dbadge ' + d.cls + '">' + d.key + '</span>';
+    html += '<div><div class="dtitle">' + d.title + '</div>';
+    html += '<div class="dsub">' + d.sub + '</div></div></div>';
+    html += '<div class="dang-sec-body"><div class="ex-chips">';
+    for (var ex = 1; ex <= 6; ex++) {
+      var subKey = 'nm_sub_C3-' + d.key + ex + '_' + sv.maSV;
+      var done = !!localStorage.getItem(subKey);
+      var url = d.file + '?ex=' + ex;
+      html += '<a href="' + url + '" class="ex-chip ' + d.cls + (done ? ' done' : '') + '">';
+      html += '<span class="ec-num">' + d.key + ex + '</span>';
+      html += '<span class="ec-pat">' + _PATTERNS[ex-1] + '</span>';
+      html += '<span class="ec-st">' + (done ? '✓ Đã nộp' : 'Làm bài') + '</span>';
+      html += '</a>';
+    }
+    html += '</div></div></div>';
+  });
+  document.getElementById('ex-sections').innerHTML = html;
+})();
+
+function toggleTh() {
+  var body = document.getElementById('th-body');
+  var icon = document.getElementById('th-icon');
+  var open = body.classList.toggle('open');
+  icon.className = open ? 'ti ti-chevron-up' : 'ti ti-chevron-down';
+}
+</script>
+</body>
+</html>

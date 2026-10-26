@@ -1,0 +1,7 @@
+<!doctype html><meta charset="utf-8"><title>Mở thử CLO3</title>
+<!-- Tạo phiên SV giả rồi mở trang bài ở chế độ preview. Dùng: clo3_open.html?to=C3-B.html&ex=2 -->
+<script>
+var q = new URLSearchParams(location.search);
+sessionStorage.setItem('nm_sv_v1', JSON.stringify({ hoTen: 'Nguyen Van Test', maSV: '2351000001', stt: parseInt(q.get('stt')) || 12, lop: 'XD1' }));
+location.href = '../chuong-03/' + (q.get('to') || 'C3-A.html') + '?ex=' + (q.get('ex') || 1) + '&preview=1';
+</script>
