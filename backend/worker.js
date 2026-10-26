@@ -4,7 +4,7 @@
 //
 //  Cloudflare Dashboard → Settings → Variables & Secrets:
 //    GAS_URL        = https://script.google.com/macros/s/AKf.../exec
-//    SECRET_TOKEN   = NenMong_HUCE_2025#   (khớp appsscript.js)
+//    SECRET_TOKEN   = (Secret, khớp Script Property SECRET_TOKEN của Apps Script; không ghi vào repo)
 //
 //  Cloudflare Dashboard → Workers KV → tạo namespace "NM_KV"
 //    → Bind vào Worker với tên biến: NM_KV

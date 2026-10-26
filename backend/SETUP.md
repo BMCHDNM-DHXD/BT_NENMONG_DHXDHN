@@ -44,7 +44,7 @@
    | Variable       | Value                                            |
    |----------------|--------------------------------------------------|
    | `GAS_URL`      | Web app URL từ Bước 2                            |
-   | `SECRET_TOKEN` | `NenMong_HUCE_2025#`  *(khớp với appsscript.js)* |
+   | `SECRET_TOKEN` | chuỗi ngẫu nhiên dài ≥ 24 ký tự (loại *Secret*); dán cùng giá trị vào Apps Script → Project Settings → Script Properties → `SECRET_TOKEN`. **Không ghi vào file trong repo.** |
 
 5. **Settings → KV Namespace Bindings → Add**:
    - Variable name: `NM_KV`

@@ -6,7 +6,8 @@
 // ═══════════════════════════════════════════════════════════════════
 
 const SHEET_ID     = "";                    // ← Điền Spreadsheet ID
-const SECRET_TOKEN = "NenMong_HUCE_2025#";  // ← Khớp với worker.js
+// Token KHÔNG ghi trong mã: Project Settings → Script Properties → thêm SECRET_TOKEN (khớp biến SECRET_TOKEN của Worker)
+const SECRET_TOKEN = PropertiesService.getScriptProperties().getProperty("SECRET_TOKEN");
 
 // ── Danh sách lớp hợp lệ ─────────────────────────────────────────
 const ALLOWED_CLASSES = new Set([
@@ -30,7 +31,7 @@ function doPost(e) {
     const data = JSON.parse(e.postData.contents);
 
     // Xác thực token
-    if (data.token !== SECRET_TOKEN) {
+    if (!SECRET_TOKEN || data.token !== SECRET_TOKEN) {
       return jsonResp({ ok: false, error: "Unauthorized" });
     }
 
@@ -101,7 +102,7 @@ function testDoPost() {
   const fake = {
     postData: {
       contents: JSON.stringify({
-        token: "NenMong_HUCE_2025#",
+        token: SECRET_TOKEN,
         hoTen: "Nguyễn Văn Test", maSV: "2021000001",
         stt: 1, lop: "XD1", chapterId: "C1-A1",
         score: 87, correct: 7, total: 8, duration: 120,
