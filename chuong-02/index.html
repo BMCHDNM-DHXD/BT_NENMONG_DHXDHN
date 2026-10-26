@@ -90,20 +90,22 @@ p.note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6}
 <section class="hero">
   <div class="hero-in">
     <div class="clo-badge"><i class="ti ti-building-arch"></i> CLO 2 · Bloom C3 — Áp dụng</div>
-    <h1>Kiểm Tra Kích Thước Đáy Móng</h1>
-    <p>Kiểm tra sức chịu tải (SCT) của đất nền theo Terzaghi cho 6 dạng móng: vuông, chữ nhật, băng · đúng tâm và lệch tâm.</p>
+    <h1>Móng Nông trên Nền Tự Nhiên</h1>
+    <p>Theo giáo trình Nền móng V08: kiểm tra sức chịu tải nền (TTGH1), tính lún (TTGH2), kiểm tra chọc thủng và tính thép đáy móng. 6 bài · 3 dạng A/B/C.</p>
     <div class="stt-pill"><i class="ti ti-key"></i> Số thứ tự của bạn: <strong id="stt-disp">–</strong></div>
   </div>
 </section>
 
 <main>
   <div class="intro-box">
-    <h3><i class="ti ti-list-numbers"></i> Quy trình giải bài (4 bước)</h3>
+    <h3><i class="ti ti-list-numbers"></i> 6 bài của CLO2</h3>
     <div class="steps-grid">
-      <div class="step-mini"><div class="num">1</div><div class="lbl">Xác định <b>điều kiện</b> kiểm tra (đúng tâm / lệch tâm)</div></div>
-      <div class="step-mini"><div class="num">2</div><div class="lbl">Tính <b>p<sub>tb</sub>, p<sub>max</sub>, p<sub>min</sub></b> đáy móng</div></div>
-      <div class="step-mini"><div class="num">3</div><div class="lbl">Tra bảng Terzaghi → tính <b>P<sub>gh</sub></b> và <b>[P]</b></div></div>
-      <div class="step-mini"><div class="num">4</div><div class="lbl">So sánh và <b>kết luận</b> PA nào đạt</div></div>
+      <div class="step-mini"><div class="num">1</div><div class="lbl"><b>SCT móng băng</b> — N<sub>d1</sub>, B′, R<sub>d</sub>, U</div></div>
+      <div class="step-mini"><div class="num">2</div><div class="lbl"><b>SCT móng đơn lệch tâm</b> — B<sub>eff</sub>, L<sub>eff</sub>, ξ</div></div>
+      <div class="step-mini"><div class="num">3</div><div class="lbl"><b>SCT lớp yếu / đệm cát</b> — khối quy ước 8°</div></div>
+      <div class="step-mini"><div class="num">4</div><div class="lbl"><b>Lún (TTGH2)</b> — cộng lún từng lớp</div></div>
+      <div class="step-mini"><div class="num">5</div><div class="lbl"><b>Chọc thủng</b> — F, u, F<sub>b,u</sub></div></div>
+      <div class="step-mini"><div class="num">6</div><div class="lbl"><b>Thép đáy móng</b> — M, A<sub>s</sub>, μ, khoảng cách</div></div>
     </div>
   </div>
 
@@ -111,53 +113,36 @@ p.note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6}
 
   <div class="theory-box">
     <div class="theory-hd" onclick="toggleTh()">
-      <h3><i class="ti ti-book"></i> Lý thuyết tham khảo — Terzaghi &amp; Kiểm tra SCT</h3>
+      <h3><i class="ti ti-book"></i> Lý thuyết tham khảo — công thức V08</h3>
       <i class="ti ti-chevron-down" id="th-icon"></i>
     </div>
     <div class="theory-body" id="th-body">
-      <div class="sect-title">1. Công thức Terzaghi</div>
+      <div class="sect-title">1. Hằng số dùng chung (cấp hậu quả C2)</div>
+      <div class="fml-ref">γ<sub>n</sub> = 1,15 · γ<sub>c</sub> = 0,9 (đất dính) · γ<sub>f</sub> = 1,1 (TTGH1), 1,0 (TTGH2) · γ<sub>tb</sub> = 20 kN/m³ · góc phân tán 8°</div>
+      <div class="sect-title">2. Sức chịu tải nền — TTGH1 (V08 mục 2.4.3)</div>
       <div class="fml-ref">
-        <em>P<sub>gh</sub></em> = α<sub>1</sub>·N<sub>γ</sub>·B·γ + α<sub>2</sub>·N<sub>q</sub>·q + α<sub>3</sub>·N<sub>c</sub>·c<br>
-        <em>[P]</em> = P<sub>gh</sub> / F<sub>s</sub> &nbsp; (F<sub>s</sub> = 2.5)<br>
-        q = γ × h<sub>m</sub>
+        γ<sub>n</sub>·N<sub>d1</sub> ≤ γ<sub>c</sub>·R<sub>d</sub> &nbsp; (2.4) ; &nbsp; U = γ<sub>n</sub>N<sub>d1</sub>/(γ<sub>c</sub>R<sub>d</sub>)<br>
+        <em>R<sub>d</sub></em> = B′L′·(N<sub>γ</sub>ξ<sub>γ</sub>b′γ + N<sub>q</sub>ξ<sub>q</sub>γ′h<sub>m</sub> + N<sub>c</sub>ξ<sub>c</sub>c) &nbsp; (2.15)<br>
+        B′ = B − 2e<sub>B</sub>, L′ = L − 2e<sub>L</sub> ; B<sub>eff</sub> = min, L<sub>eff</sub> = max &nbsp; (2.14, 2.20)<br>
+        N<sub>q</sub> = tan²(45° + φ/2)e<sup>π tanφ</sup> ; N<sub>c</sub> = (N<sub>q</sub> − 1)cotφ ; N<sub>γ</sub> = 1,5(N<sub>q</sub> − 1)tanφ &nbsp; (2.16–2.18)<br>
+        ξ<sub>γ</sub> = 1 − 0,25η ; ξ<sub>q</sub> = 1 + 1,5η ; ξ<sub>c</sub> = 1 + 0,3η, η = B<sub>eff</sub>/L<sub>eff</sub> (móng băng: ξ = 1) &nbsp; (2.19)
       </div>
-      <div class="sect-title">2. Hệ số hình dạng α</div>
-      <div class="table-wrap">
-        <table>
-          <tr><th>Loại móng</th><th>α<sub>1</sub></th><th>α<sub>2</sub></th><th>α<sub>3</sub></th></tr>
-          <tr><td>Băng</td><td>0.5</td><td>1.0</td><td>1.0</td></tr>
-          <tr><td>Vuông (B=L)</td><td>0.4</td><td>1.0</td><td>1.3</td></tr>
-          <tr><td>Chữ nhật (B&lt;L)</td><td>1 − 0.2·B/L</td><td>1.0</td><td>1 + 0.2·B/L</td></tr>
-        </table>
-      </div>
-      <div class="sect-title">3. Hệ số sức chịu tải Terzaghi</div>
-      <div class="table-wrap">
-        <table>
-          <tr><th>φ (°)</th><th>N<sub>c</sub></th><th>N<sub>q</sub></th><th>N<sub>γ</sub></th></tr>
-          <tr><td>15</td><td>12.9</td><td>4.4</td><td>2.5</td></tr>
-          <tr><td>18</td><td>15.5</td><td>6.0</td><td>4.0</td></tr>
-          <tr><td>20</td><td>17.7</td><td>7.4</td><td>5.0</td></tr>
-          <tr><td>22</td><td>20.3</td><td>9.2</td><td>6.8</td></tr>
-          <tr><td>25</td><td>25.1</td><td>12.7</td><td>10.9</td></tr>
-          <tr><td>28</td><td>31.6</td><td>17.8</td><td>17.0</td></tr>
-          <tr><td>30</td><td>37.2</td><td>22.5</td><td>19.7</td></tr>
-        </table>
-      </div>
-      <div class="sect-title">4. Điều kiện kiểm tra SCT</div>
-      <div class="table-wrap">
-        <table>
-          <tr><th>Trường hợp</th><th>Điều kiện</th></tr>
-          <tr><td class="t-head2">Đúng tâm (M₀=0)</td><td style="text-align:left">p<sub>tb</sub> ≤ [P]</td></tr>
-          <tr><td class="t-head2">Lệch tâm (M₀≠0)</td><td style="text-align:left">p<sub>tb</sub> ≤ [P] &nbsp;·&nbsp; p<sub>max</sub> ≤ 1.2[P] &nbsp;·&nbsp; p<sub>min</sub> ≥ 0</td></tr>
-        </table>
-      </div>
-      <div class="sect-title">5. Công thức áp lực đáy móng</div>
+      <div class="sect-title">3. Lớp yếu / đệm cát — khối móng quy ước</div>
       <div class="fml-ref">
-        <b>Móng đơn đúng tâm:</b> p<sub>tb</sub> = N₀/(B×L) + γ<sub>tb</sub>×h<sub>m</sub><br>
-        <b>Móng đơn lệch tâm:</b> p<sub>max/min</sub> = p<sub>tb</sub> ± 6×M₀/(B×L²)<br>
-        <b>Móng băng:</b> p<sub>tb</sub> = N₀/B + γ<sub>tb</sub>×h<sub>m</sub> &nbsp;·&nbsp; p<sub>max/min</sub> = p<sub>tb</sub> ± 6×M₀/B²
+        B″ = B<sub>eff</sub> + 2H·tan8° ; L″ = L<sub>eff</sub> + 2H·tan8°<br>
+        N<sub>d,yếu</sub> = N<sub>0</sub> + γ<sub>f</sub>(γ<sub>tb</sub>h<sub>m</sub> + γ<sub>u</sub>H)B″L″ ; q<sub>2</sub> = γ<sub>0</sub>h<sub>m</sub> + γ<sub>u</sub>H ; R<sub>d</sub> theo (2.15) với thông số lớp yếu
       </div>
-      <p class="note"><b>Lưu ý:</b> N₀ là lực dọc tính toán tại đáy móng (kN), M₀ là mô men uốn tại đáy móng (kNm), B và L tính bằng mét.</p>
+      <div class="sect-title">4. Lún — TTGH2 (V08 mục 2.4.4)</div>
+      <div class="fml-ref">
+        p<sub>0</sub> = p − σ<sub>zg,0</sub> ; σ<sub>zp</sub> = α·p<sub>0</sub> ; h<sub>i</sub> ≤ 0,4b ; dừng khi σ<sub>zp</sub> ≤ 0,2σ<sub>zg</sub><br>
+        S = β·Σσ<sub>zp,i</sub>·h<sub>i</sub>/E<sub>i</sub>, β = 0,8 &nbsp; (2.51–2.55)
+      </div>
+      <div class="sect-title">5. Chọc thủng và thép đáy móng (V08 mục 2.5)</div>
+      <div class="fml-ref">
+        p = N<sub>0</sub>/(BL) ; F = N<sub>0</sub> − p(l<sub>c</sub> + 2h<sub>0</sub>)(b<sub>c</sub> + 2h<sub>0</sub>) ; u = 2(l<sub>c</sub> + b<sub>c</sub>) + 4h<sub>0</sub> ; F ≤ R<sub>bt</sub>·u·h<sub>0</sub> &nbsp; (2.75–2.77)<br>
+        M = p·B·l<sub>x</sub>²/2 (đúng tâm) hoặc B·l<sub>x</sub>²(p<sub>max</sub>/3 + p<sub>1</sub>/6) (lệch tâm) ; A<sub>s</sub> = R<sub>b</sub>Bξh<sub>0</sub>/R<sub>s</sub>, ξ = 1 − √(1 − 2α<sub>m</sub>) &nbsp; (2.93–2.94)
+      </div>
+      <p class="note"><b>Lưu ý:</b> tải N₀ (kN hoặc kN/m), mô men (kN·m), kích thước (m). Hệ số N<sub>γ</sub>, N<sub>q</sub>, N<sub>c</sub> tính từ công thức, làm tròn 2 chữ số thập phân.</p>
     </div>
   </div>
 </main>
@@ -166,8 +151,7 @@ p.note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6}
 <script src="../assets/js/engine.js"></script>
 <script>
 var _PATTERNS = [
-  'Vuông·ĐT','L=1.5B·ĐT','L=2B·ĐT',
-  'Vuông·LT','L=1.5B·LT','Băng·LT'
+  'SCT băng','SCT đơn lệch tâm','SCT lớp yếu','Lún TTGH2','Chọc thủng','Thép đáy'
 ];
 
 (function(){
@@ -177,9 +161,9 @@ var _PATTERNS = [
   document.getElementById('hdr-sv').textContent = sv.hoTen + ' · STT ' + sv.stt;
 
   var dangs = [
-    { key:'A', cls:'a', file:'C2-A.html', title:'Dạng A — Có công thức & gợi ý', sub:'Công thức thay số sẵn — điền kết quả và chọn đáp án' },
-    { key:'B', cls:'b', file:'C2-B.html', title:'Dạng B — Có công thức, không gợi ý', sub:'Công thức hiển thị — tự thay số và tính, chọn đáp án' },
-    { key:'C', cls:'c', file:'C2-C.html', title:'Dạng C — Toàn trắc nghiệm', sub:'Chỉ có đề bài — chọn đáp án, không gợi ý' }
+    { key:'A', cls:'a', file:'C2-A.html', title:'Dạng A — Có công thức, phản hồi ngay', sub:'Điền số và chọn đáp án, biết đúng/sai ngay từng câu' },
+    { key:'B', cls:'b', file:'C2-B.html', title:'Dạng B — Có công thức, trắc nghiệm chấm khi nộp', sub:'Số điền báo đúng/sai ngay; câu trắc nghiệm chỉ chấm khi nộp' },
+    { key:'C', cls:'c', file:'C2-C.html', title:'Dạng C — Toàn trắc nghiệm', sub:'Không công thức hiển thị — chọn đáp án, chấm khi nộp' }
   ];
 
   var html = '';
