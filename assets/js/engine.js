@@ -241,20 +241,21 @@ function genC1ByPattern(stt, patternIdx, dangIdx) {
   var A1  = 18 + Math.round(rng() * 12);
   var wP1 = 18 + Math.round(rng() * 9);
   var wL1 = wP1 + A1;
-  var B1  = r2(L1x ? (0.76 + rng() * 0.35) : (0.04 + rng() * 0.70));
+  // Biên chừa lề cho sai số làm tròn w: lớp T có B ≤ 0,44 (dẻo cứng trở lên); lớp X có B ≥ 0,80 (dẻo chảy/chảy); không sinh dẻo mềm.
+  var B1  = r2(L1x ? (0.80 + rng() * 0.31) : (0.04 + rng() * 0.40));
   var w1  = Math.round(wP1 + B1 * A1);
-  var h1  = r1(2.5 + rng() * 3.5);
+  var h1  = r1((L2x && !L1x ? 4.0 : 2.5) + rng() * (L2x && !L1x ? 2.0 : 3.5));  // T-X-T-T: L1 dày ≥ 4 m để móng nông còn khoảng cách tới đỉnh L2
 
   // Lớp 2 — đất dính
   var A2  = 17 + Math.round(rng() * 13);
   var wP2 = 19 + Math.round(rng() * 10);
   var wL2 = wP2 + A2;
-  var B2  = r2(L2x ? (0.76 + rng() * 0.35) : (0.03 + rng() * 0.68));
+  var B2  = r2(L2x ? (0.80 + rng() * 0.31) : (0.03 + rng() * 0.40));
   var w2  = Math.round(wP2 + B2 * A2);
-  var h2  = r1(3.0 + rng() * 4.5);
+  var h2  = r1(3.0 + rng() * (L3x ? 1.5 : 4.5));  // T-T-X-T: L1+L2 mỏng để L3 rời nằm trong vùng ảnh hưởng của móng nông
 
   // Lớp 3 — đất rời, NSPT
-  var nspt3 = L3x ? (2 + Math.round(rng() * 7)) : (15 + Math.round(rng() * 27));
+  var nspt3 = L3x ? (2 + Math.round(rng() * 4)) : (15 + Math.round(rng() * 27));
   var h3    = r1(3.0 + rng() * 4.0);
   var cat3  = ['Cát hạt nhỏ','Cát hạt trung'][Math.floor(rng() * 2)];
 
@@ -263,9 +264,9 @@ function genC1ByPattern(stt, patternIdx, dangIdx) {
   var cat4  = ['Cát hạt trung','Cát hạt thô'][Math.floor(rng() * 2)];
 
   // Tải trọng
-  var nNho = 300 + Math.round(rng() * 200);
-  var nTb  = 800 + Math.round(rng() * 700);
-  var nLon = 2400 + Math.round(rng() * 1800);
+  var nNho = 200 + Math.round(rng() * 150);
+  var nTb  = 500 + Math.round(rng() * 400);
+  var nLon = 1500 + Math.round(rng() * 1000);
 
   var cl1 = classifyDinh(w1, wL1, wP1);
   var cl2 = classifyDinh(w2, wL2, wP2);
@@ -282,139 +283,148 @@ function genC1ByPattern(stt, patternIdx, dangIdx) {
     loads: { nho: nNho, tb: nTb, lon: nLon },
     pattern: pattern,
     patternIdx: patternIdx,
-    dangIdx: dangIdx
+    dangIdx: dangIdx,
+    seed: seed
   };
 }
 
 // ── MCQ phương án móng (4 option đa dạng, 1 đúng) ────────────
 // Trả về { correct: idx, opts: [{text, explain}] }
-function getFoundationMCQ(pattern, loadLevel) {
+function getFoundationMCQ(pattern, loadLevel, seed) {
+  // Ngưỡng tải (kN/m băng): nhỏ < 400 · trung bình 400–1000 · lớn > 1000.
+  // Quy ước đất: T = B ≤ 0,50 (dẻo cứng trở lên) hoặc cát chặt vừa trở lên; X = B > 0,75 (dẻo chảy/chảy) hoặc cát rời.
   var DB = {
     'T-T-T-T': {
       nho: { correct:0, opts: [
-        { t:'Móng đơn hoặc móng băng 1 chiều trên L1', e:'✅ Đúng! T-T-T-T, tải nhỏ (<500kN/m) → đất đều tốt, móng đơn/băng nông trên L1 là kinh tế nhất, không cần giải pháp phức tạp hơn.' },
+        { t:'Móng đơn hoặc móng băng nông đặt trên L1', e:'✅ Đúng! T-T-T-T, tải nhỏ (< 400 kN/m) → đất đều tốt, móng đơn/băng nông trên L1 là kinh tế nhất, không cần giải pháp phức tạp hơn.' },
         { t:'Cọc đóng/ép xuyên L1-L2 vào cát L3',       e:'❌ Sai. Cọc quá tốn kém khi đất tốt + tải nhỏ. Không cần vượt qua các lớp tốt để cắm vào cát.' },
         { t:'Móng bè kết hợp cải tạo đất nền L1',        e:'❌ Sai. Cải tạo đất không cần thiết vì L1 đã tốt. Móng bè dùng khi tải lớn phân bố rộng hoặc đất yếu.' },
-        { t:'Cọc khoan nhồi D≥800 mm cắm sâu vào L4',   e:'❌ Sai. Cọc nhồi cho công trình nặng tải rất lớn. T-T-T-T + tải nhỏ hoàn toàn không cần đến đây.' }
+        { t:'Cọc khoan nhồi D ≥ 800 mm cắm sâu vào L4',  e:'❌ Sai. Cọc nhồi dành cho công trình tải rất lớn. T-T-T-T + tải nhỏ hoàn toàn không cần đến.' }
       ]},
       tb: { correct:1, opts: [
-        { t:'Móng đơn nông đặt trong L1, khoảng cách gần', e:'❌ Sai. Tải TB (500-2000kN/m) → móng đơn riêng lẻ không đủ diện tích, áp lực đáy vượt SCT nền.' },
-        { t:'Móng băng 2 chiều giao thoa hoặc móng bè nông', e:'✅ Đúng! T-T-T-T, tải TB → tăng diện tích đáy bằng móng băng giao thoa hoặc bè đặt trong L1/L2 tốt. Kinh tế, hợp lý.' },
-        { t:'Cọc ngắn L=8-12 m đặt nổi trong L1-L2',      e:'❌ Sai. Cọc nổi trong 2 lớp dính tốt, không cắm vào lớp rời → không phát huy được SCT mũi, không cần thiết.' },
-        { t:'Cọc khoan nhồi cắm sâu vào L4 cát thô',      e:'❌ Sai. Quá mức cần thiết. Đất tốt + tải TB hoàn toàn xử lý được bằng móng bè nông.' }
+        { t:'Móng băng đơn một phương, bề rộng đáy nhỏ như tải nhỏ', e:'❌ Sai. Tải trung bình (400–1000 kN/m) → bề rộng đáy cần lớn hơn nhiều; phải mở rộng đáy bằng băng giao thoa hoặc bè để áp lực đáy không vượt SCT nền.' },
+        { t:'Móng băng giao thoa hoặc móng bè nông trên L1/L2', e:'✅ Đúng! T-T-T-T, tải trung bình → tăng diện tích đáy bằng móng băng giao thoa hoặc bè đặt trong L1/L2 tốt. Kinh tế, hợp lý.' },
+        { t:'Cọc ngắn đặt nổi trong L1-L2',                e:'❌ Sai. Đất nông đã tốt nên cọc không cần thiết, tốn kém hơn móng băng giao thoa/bè nông.' },
+        { t:'Cọc khoan nhồi cắm sâu vào L4 cát thô',       e:'❌ Sai. Quá mức cần thiết. Đất tốt + tải trung bình xử lý được bằng móng băng giao thoa/bè nông.' }
       ]},
       lon: { correct:2, opts: [
-        { t:'Móng bè dày 1.5-2.0m đặt toàn diện',          e:'❌ Sai. Tải lớn (>2000kN/m) → áp lực đáy bè nông vẫn lớn, có thể vượt SCT nền. Cọc truyền tải sâu hơn an toàn.' },
-        { t:'Móng băng mở rộng đến 3-4m',                   e:'❌ Sai. Móng băng rất rộng vẫn giới hạn SCT bởi lớp đất nông. Tải lớn cần truyền sâu xuống L3/L4.' },
-        { t:'Cọc đóng/ép ngắn L < 20m cắm vào cát chặt L3/L4', e:'✅ Đúng! T-T-T-T, tải lớn → cọc đóng/ép ngắn (đủ xuyên qua L1-L2 vào L3/L4 cát chặt) là kinh tế và đảm bảo SCT.' },
-        { t:'Cọc khoan nhồi D=1.2m cắm 40m vào đá gốc',    e:'❌ Sai. Quy mô này dành cho siêu cao tầng hoặc nền đặc biệt. Với đất tốt T-T-T-T hoàn toàn dư thừa.' }
+        { t:'Móng bè dày 1,5–2,0 m đặt toàn diện',         e:'❌ Sai. Tải lớn (> 1000 kN/m) → áp lực đáy bè nông vẫn lớn, vùng ứng suất lan sâu, lún lớn. Cọc truyền tải xuống lớp chặt sâu hợp lý hơn.' },
+        { t:'Móng băng mở rộng đến 3–4 m',                  e:'❌ Sai. Móng băng giới hạn SCT bởi lớp đất nông. Tải lớn cần truyền sâu xuống L3/L4.' },
+        { t:'Cọc đóng/ép ngắn cắm vào cát chặt L3/L4',      e:'✅ Đúng! T-T-T-T, tải lớn → cọc đóng/ép ngắn (xuyên L1-L2 vào L3/L4 cát chặt) là kinh tế và đảm bảo SCT.' },
+        { t:'Cọc khoan nhồi D = 1,2 m cắm 40 m vào đá gốc', e:'❌ Sai. Quy mô này dành cho siêu cao tầng hoặc nền đặc biệt. Với đất tốt T-T-T-T là dư thừa.' }
       ]}
     },
     'X-T-T-T': {
       nho: { correct:1, opts: [
-        { t:'Móng đơn nông đặt trong L1 dẻo chảy/chảy',  e:'❌ Sai! L1 xấu (B>0.75 hoặc B>1) → đất yếu, biến dạng lớn. Móng đơn trong L1 sẽ lún không đều, nguy hiểm.' },
-        { t:'Móng bè trên L1 hoặc đào bỏ L1 → móng đơn vào L2', e:'✅ Đúng! L1 xấu-L2,3,4 tốt, tải nhỏ → 2 cách hợp lý: (1) bè phân bố rộng giảm áp lực lên L1; (2) đào qua L1 đặt móng đơn vào L2 tốt.' },
-        { t:'Cọc dài L ≥ 30m xuyên toàn bộ 4 lớp',       e:'❌ Sai. Chỉ L1 xấu, tải nhỏ → cọc dài tốn kém hoàn toàn không cần thiết khi L2,3,4 tốt.' },
-        { t:'Cọc cát gia cố L1 rồi đặt móng đơn',         e:'❌ Sai. Cọc cát cải tạo đất phức tạp và đắt hơn 2 phương án kia cho cùng tải trọng.' }
+        { t:'Móng đơn nông đặt trực tiếp trong L1 dẻo chảy/chảy', e:'❌ Sai! L1 xấu (B > 0,75) → đất yếu, biến dạng lớn. Móng đặt trực tiếp trong L1 sẽ lún lớn, không đều.' },
+        { t:'Xử lý nền L1 (đệm cát/đào thay khi mỏng; cọc cát, CDM khi dày) rồi đặt móng nông', e:'✅ Đúng! L1 xấu, L2-L4 tốt, tải nhỏ → không cần cọc; xử lý L1 để móng nông làm việc. L1 mỏng: đào thay bằng đệm cát; L1 dày (không đào hết được): gia cố bằng cọc cát, CDM... xuống L2 tốt.' },
+        { t:'Móng bè đặt trên L1 chảy, không xử lý nền',          e:'❌ Sai. Bè trên L1 dẻo chảy/chảy không xử lý vẫn lún lớn và không đều; bè chỉ giảm áp lực đáy, không làm L1 hết yếu.' },
+        { t:'Cọc dài xuyên toàn bộ 4 lớp',                        e:'❌ Sai. Chỉ L1 xấu, tải nhỏ → cọc dài tốn kém hoàn toàn không cần thiết khi L2-L4 tốt.' }
       ]},
       tb: { correct:2, opts: [
         { t:'Móng băng nông trong L1 xấu',                e:'❌ Sai. L1 xấu không đặt móng trực tiếp, dù là băng. Lún không đều và mất ổn định.' },
-        { t:'Móng bè siêu dày 2m đặt toàn diện',          e:'❌ Sai. Bè trên L1 xấu dày → áp lực đáy bè vẫn tác dụng lên đất yếu, lún lớn và không đều dù bè cứng.' },
-        { t:'Cọc ngắn (L=8-18m) xuyên qua L1 xấu, tựa vào L2', e:'✅ Đúng! L1 xấu nhưng L2-L4 tốt, tải TB → cọc ngắn xuyên L1, tựa vào L2 tốt. Kinh tế nhất về kỹ thuật-giá thành.' },
-        { t:'Cọc khoan nhồi D=1m, L=45m',                 e:'❌ Sai. Quá mức cần thiết. Chỉ cần xuyên qua L1 mỏng vào L2 là đủ cho tải TB.' }
+        { t:'Móng bè dày 2 m đặt trên L1 không xử lý',    e:'❌ Sai. Bè trên L1 xấu → áp lực đáy bè vẫn tác dụng lên đất yếu, lún lớn và không đều dù bè cứng.' },
+        { t:'Cọc ngắn xuyên L1 xấu, ngàm một đoạn vào L2 tốt',  e:'✅ Đúng! L1 xấu nhưng L2-L4 tốt, tải trung bình → cọc ngắn xuyên L1, tựa vào L2 tốt. (Gia cố sâu bằng cọc cát/CDM cũng làm được nhưng với tải này cọc ngắn chắc chắn hơn.)' },
+        { t:'Cọc khoan nhồi D = 1 m cắm sâu vào L4',      e:'❌ Sai. Quá mức cần thiết. Chỉ cần xuyên qua L1 vào L2 tốt là đủ cho tải trung bình.' }
       ]},
       lon: { correct:2, opts: [
         { t:'Móng bè BTCT cứng đặt trên L1',              e:'❌ Sai. L1 xấu + tải lớn → dù bè cứng đến đâu vẫn lún và không thể kiểm soát biến dạng.' },
-        { t:'Cọc ngắn chỉ xuyên L1, dừng ở bề mặt L2',   e:'❌ Sai. Tải lớn → cần cắm sâu vào L2 hoặc L3 để phát huy đủ SCT. Cọc quá ngắn không đảm bảo.' },
-        { t:'Cọc trung bình (L=15-25m) xuyên L1, cắm sâu vào L2/L3', e:'✅ Đúng! Tải lớn + L1 xấu → cọc dài hơn cắm sâu vào L2/L3 tốt, đảm bảo SCT cọc đơn và nhóm cọc.' },
-        { t:'Giằng móng siêu cứng kết hợp móng đơn nông', e:'❌ Sai. Giằng cứng không tăng SCT nền. Đặt móng nông trong L1 xấu vẫn bị lún dù giằng.' }
+        { t:'Cọc ngắn chỉ xuyên L1, mũi dừng ngay mặt L2 (không ngàm)',    e:'❌ Sai. Tải lớn → cần ngàm sâu vào L2 hoặc L3 để phát huy đủ SCT. Cọc dừng ngay mặt L2 không đảm bảo.' },
+        { t:'Cọc xuyên L1, ngàm sâu vào L2/L3 tốt',       e:'✅ Đúng! Tải lớn + L1 xấu → cọc xuyên L1 và ngàm sâu vào L2/L3 tốt, đảm bảo SCT cọc đơn và nhóm cọc.' },
+        { t:'Giằng móng siêu cứng kết hợp móng đơn nông', e:'❌ Sai. Giằng cứng không tăng SCT nền. Đặt móng nông trong L1 xấu vẫn bị lún dù có giằng.' }
       ]}
     },
     'T-X-T-T': {
       nho: { correct:0, opts: [
-        { t:'Móng nông đặt trong L1 tốt, không để ứng suất xuống L2 xấu', e:'✅ Đúng! L1 tốt-L2 xấu, tải nhỏ → đặt móng nông trong L1, kiểm soát chiều rộng đáy để vùng ứng suất không lan chạm L2 xấu.' },
-        { t:'Móng đặt trực tiếp vào L2 dẻo chảy/chảy',  e:'❌ Sai! L2 xấu (B>0.75) → đặt móng vào L2 gây lún không đều, mất ổn định nền.' },
-        { t:'Cọc ngắn xuyên L1 tốt dừng ở đầu L2 xấu',  e:'❌ Sai. Mũi cọc trong L2 xấu = cọc nổi trong đất yếu, không có SCT mũi. Phải xuyên QUA L2, không dừng Ở L2.' },
-        { t:'Đào sâu đến L4, đặt móng đơn vào cát chặt', e:'❌ Sai. Đào sâu >10m cho tải nhỏ không kinh tế và nguy hiểm về ổn định hố đào.' }
+        { t:'Móng nông đặt trong L1 tốt, chọn kích thước đáy móng để L2 xấu đủ sức chịu tải', e:'✅ Đúng! L1 tốt-L2 xấu, tải nhỏ → đặt móng nông trong L1 (nền tự nhiên), kiểm soát kích thước đáy móng để lớp 2 xấu đủ SCT. Ứng suất vẫn lan xuống đỉnh L2 nên phải kiểm tra áp lực tại đỉnh L2; không đạt thì đổi phương án.' },
+        { t:'Móng đặt trực tiếp vào L2 dẻo chảy/chảy',  e:'❌ Sai! L2 xấu (B > 0,75) → đặt móng vào L2 gây lún không đều, mất ổn định nền.' },
+        { t:'Cọc ngắn xuyên L1 tốt dừng ở đầu L2 xấu',  e:'❌ Sai. Mũi cọc ở L2 xấu = cọc nổi trong đất yếu, không có SCT mũi. Phải xuyên QUA L2, không dừng Ở L2.' },
+        { t:'Đào sâu đến L4, đặt móng đơn vào cát chặt', e:'❌ Sai. Đào sâu qua L2 cho tải nhỏ không kinh tế và nguy hiểm về ổn định hố đào.' }
       ]},
       tb: { correct:1, opts: [
-        { t:'Móng bè nông trong L1, ứng suất phân bố đều xuống L2 xấu', e:'❌ Sai. Tải TB → vùng ứng suất từ bè nông L1 sẽ lan sâu chạm L2 xấu, gây lún nén lớn không đều.' },
-        { t:'Cọc xuyên qua L2 xấu, mũi cọc cắm vào cát chặt L3', e:'✅ Đúng! L2 xấu + tải TB → cọc phải XUYÊN HẾT L2, mũi cọc vào L3 cát chặt. SCT cọc từ ma sát L1 + mũi trong L3.' },
-        { t:'Gia cố L2 bằng cọc vôi rồi móng bè',        e:'❌ Sai. Khi L2 xấu dày, cọc vôi hiệu quả kém hơn cọc chịu tải trực tiếp và khó kiểm soát chất lượng.' },
+        { t:'Móng bè nông trong L1, ứng suất phân bố đều xuống L2 xấu', e:'❌ Sai. Tải trung bình → vùng ứng suất từ bè nông lan xuống L2 xấu với giá trị lớn, vượt SCT L2 và gây lún nén lớn không đều.' },
+        { t:'Cọc xuyên qua L2 xấu, mũi cọc ngàm vào L3 tốt', e:'✅ Đúng! L2 xấu + tải trung bình → cọc phải XUYÊN HẾT L2, mũi vào L3. SCT cọc từ ma sát L1 + mũi trong L3.' },
+        { t:'Cọc cát/cọc vôi gia cố nông L1 rồi đặt móng bè', e:'❌ Sai. Gia cố nông chỉ cải thiện L1 vốn đã tốt; ứng suất vẫn truyền xuống L2 xấu nằm bên dưới vùng gia cố.' },
         { t:'Cọc đặt nổi trong L2, không xuyên qua',      e:'❌ Sai. Cọc nổi trong đất yếu = cọc không có chỗ tựa → lún theo đất.' }
       ]},
       lon: { correct:2, opts: [
         { t:'Móng nông L1, ứng suất truyền qua L2 xấu xuống L3', e:'❌ Sai. Tải lớn + L2 xấu → ứng suất lớn lan sâu, L2 xấu chịu tải nặng → lún rất lớn, không kiểm soát.' },
         { t:'Cọc ngắn xuyên một phần L2, dừng giữa L2 xấu', e:'❌ Sai. Cọc phải xuyên HẾT L2. Dừng giữa L2 = mũi cọc vẫn trong đất yếu → không đảm bảo tải lớn.' },
-        { t:'Cọc dài xuyên hết L2 xấu, cắm sâu vào cát chặt L3/L4', e:'✅ Đúng! Tải lớn + L2 xấu dày → cọc dài xuyên toàn bộ L2, cắm đủ sâu vào L3/L4 để phát huy cả ma sát và SCT mũi.' },
-        { t:'Móng bè BTCT dày 2.5m cứng tuyệt đối',       e:'❌ Sai. Tăng độ cứng bè không giải quyết L2 xấu dưới tải lớn.' }
+        { t:'Cọc xuyên hết L2 xấu, ngàm sâu vào cát chặt L3/L4', e:'✅ Đúng! Tải lớn + L2 xấu → cọc xuyên toàn bộ L2, ngàm đủ sâu vào L3/L4 để phát huy cả ma sát và SCT mũi.' },
+        { t:'Móng bè BTCT dày 2,5 m cứng tuyệt đối',       e:'❌ Sai. Tăng độ cứng bè không giải quyết L2 xấu dưới tải lớn.' }
       ]}
     },
     'X-X-T-T': {
       nho: { correct:0, opts: [
-        { t:'Cọc ngắn xuyên qua L1-L2 xấu, tựa vào L3 tốt', e:'✅ Đúng! Cả L1-L2 xấu → dù tải nhỏ, không có phương án móng nông. Phải dùng cọc xuyên qua 2 lớp xấu vào L3 tốt.' },
-        { t:'Móng đơn nông trong L1 xấu',                   e:'❌ Sai! 2 lớp đầu đều xấu. Móng bất kỳ trong L1/L2 đều không đủ SCT.' },
-        { t:'Gia cố L1 bằng vôi, đặt móng bè trên L1',     e:'❌ Sai. Chỉ gia cố L1 không đủ khi L2 xấu bên dưới. Ứng suất từ bè lan xuống L2 vẫn gây lún.' },
-        { t:'Móng bè siêu dày trên L1+L2 xấu',              e:'❌ Sai. Bè trên 2 lớp xấu → lún lớn và không đều dù bè cứng. Không giải quyết bản chất.' }
+        { t:'Cọc ngắn xuyên L1-L2 xấu tựa vào L3 tốt, hoặc gia cố sâu (cọc cát, CDM) qua cả L1-L2', e:'✅ Đúng! Cả L1-L2 xấu → dù tải nhỏ vẫn không đặt móng nông trực tiếp được. Hai hướng hợp lý: (1) cọc ngắn xuyên 2 lớp xấu tựa L3 tốt; (2) gia cố nền sâu (cọc cát, CDM...) xuyên hết cả L1 và L2 rồi đặt móng nông. Chọn theo chiều dày L1+L2 và giá thành.' },
+        { t:'Móng đơn nông đặt trong L1 xấu',                e:'❌ Sai! 2 lớp đầu đều xấu. Móng đặt trong L1/L2 không xử lý đều không đủ SCT.' },
+        { t:'Gia cố riêng L1 bằng vôi, đặt móng bè trên L1', e:'❌ Sai. Chỉ gia cố L1 là chưa đủ vì L2 xấu bên dưới vẫn chịu ứng suất lan xuống và gây lún.' },
+        { t:'Móng bè siêu dày trên L1+L2 xấu, không xử lý',  e:'❌ Sai. Bè trên 2 lớp xấu → lún lớn và không đều dù bè cứng. Không giải quyết bản chất.' }
       ]},
       tb: { correct:1, opts: [
-        { t:'Móng bè + gia cố L1-L2',                       e:'❌ Sai. Gia cố đồng thời 2 lớp phức tạp, khó đồng đều và đắt hơn cọc. Khó kiểm soát chất lượng.' },
-        { t:'Cọc đóng/ép xuyên qua L1-L2 xấu, cắm vào L3/L4 tốt', e:'✅ Đúng! X-X-T-T, tải TB → cọc xuyên cả 2 lớp xấu. SCT cọc từ ma sát trong L3/L4 và SCT mũi cọc.' },
+        { t:'Móng bè nông trên L1 xấu, không xử lý nền',    e:'❌ Sai. Bè trên L1-L2 xấu không xử lý → lún lớn, không đều. Không giải quyết bản chất.' },
+        { t:'Cọc đóng/ép xuyên qua L1-L2 xấu, mũi vào L3 tốt', e:'✅ Đúng! X-X-T-T, tải trung bình → cọc xuyên cả 2 lớp xấu. SCT cọc từ ma sát trong L3 và SCT mũi cọc.' },
         { t:'Cọc ngắn chỉ xuyên L1, dừng ở giữa L2 xấu',   e:'❌ Sai. Cọc dừng trong L2 xấu → mũi cọc vẫn trong đất yếu. Phải xuyên HẾT cả 2 lớp.' },
-        { t:'Hệ cọc – bè tận dụng đất L1-L2 chịu một phần', e:'❌ Sai. Khi L1-L2 xấu, phần bè không đóng góp SCT đáng kể. Chủ yếu phải dựa hoàn toàn vào cọc.' }
+        { t:'Móng băng nông mở rộng bề rộng ≥ 4 m trong L1', e:'❌ Sai. Mở rộng đáy trong đất xấu chỉ làm vùng ứng suất lan sâu hơn xuống L2 xấu, không đủ SCT.' }
       ]},
       lon: { correct:2, opts: [
-        { t:'Nhiều cọc ngắn tập trung, khoảng cách dày đặc', e:'❌ Sai. Nhiều cọc ngắn trong đất xấu không hiệu quả. Mỗi cọc phải đủ dài để xuyên vào đất tốt.' },
-        { t:'Cọc trung bình xuyên L1, dừng giữa L2 xấu',    e:'❌ Sai. Cọc phải xuyên HẾT L2 xấu. Dừng trong L2 = mũi cọc trong đất yếu, không đảm bảo tải lớn.' },
-        { t:'Cọc dài ≥ 20m xuyên hết L1-L2, cắm sâu vào L3/L4', e:'✅ Đúng! X-X-T-T, tải lớn → cọc dài xuyên hết 2 lớp xấu, cắm đủ sâu vào L3/L4 cát chặt để đảm bảo SCT.' },
-        { t:'Nền móng hộp cứng (box foundation)',             e:'❌ Sai. Không phải giải pháp tiêu chuẩn. X-X-T-T + tải lớn → cọc là lựa chọn đúng đắn.' }
+        { t:'Nhiều cọc ngắn tập trung, khoảng cách dày đặc', e:'❌ Sai. Nhiều cọc ngắn trong đất xấu không hiệu quả. Mỗi cọc phải đủ dài để ngàm vào đất tốt.' },
+        { t:'Cọc xuyên L1, dừng giữa L2 xấu',               e:'❌ Sai. Cọc phải xuyên HẾT L2 xấu. Dừng trong L2 = mũi cọc trong đất yếu, không đảm bảo tải lớn.' },
+        { t:'Cọc xuyên hết L1-L2 xấu, ngàm sâu vào L3/L4',  e:'✅ Đúng! X-X-T-T, tải lớn → cọc xuyên hết 2 lớp xấu, ngàm đủ sâu vào L3/L4 đảm bảo SCT. Chiều dài cọc = chiều dày L1+L2 + đoạn ngàm.' },
+        { t:'Nền móng hộp cứng (box foundation)',            e:'❌ Sai. Móng hộp là giải pháp bù tải, ít phù hợp khi tải lớn trên 2 lớp xấu; cọc xuyên vào lớp tốt là lựa chọn hợp lý hơn.' }
       ]}
     },
     'T-T-X-T': {
       nho: { correct:0, opts: [
-        { t:'Móng nông trong L1/L2 tốt, kiểm soát không để ứng suất chạm L3 xấu', e:'✅ Đúng! L1-L2 tốt, L3 xấu (cát rời), tải nhỏ → móng nông trong L1/L2, tính toán chiều rộng đáy để vùng ứng suất không lan xuống L3 xấu.' },
+        { t:'Móng nông trong L1/L2 tốt, chọn kích thước đáy móng để L3 xấu đủ sức chịu tải', e:'✅ Đúng! L1-L2 tốt, L3 xấu (cát rời), tải nhỏ → móng nông trong L1/L2 (nền tự nhiên), kiểm soát kích thước đáy móng để lớp 3 xấu đủ SCT, đồng thời kiểm tra lún.' },
         { t:'Cọc ngắn dừng ngay đầu L3 xấu',                e:'❌ Sai. Mũi cọc nằm ở đầu lớp cát rời xấu → không có SCT mũi tốt. Phải xuyên QUA L3 vào L4.' },
         { t:'Móng cọc cắm vào L3 xấu (cát rời)',             e:'❌ Sai! Đặt mũi cọc vào L3 xấu = không có điểm tựa tốt. Phải xuyên qua L3 vào L4 cát chặt.' },
-        { t:'Đào sâu hết L3 xấu, đặt móng bè trên L4',      e:'❌ Sai. Đào hết L3 có thể rất sâu (>10m), không kinh tế và nguy hiểm hố đào.' }
+        { t:'Đào hết L3 xấu, đặt móng bè trên L4',          e:'❌ Sai. Đào hết L3 rất sâu, không kinh tế và nguy hiểm hố đào.' }
       ]},
       tb: { correct:1, opts: [
-        { t:'Móng bè nông trong L1/L2, ứng suất phân tán xuống L3 xấu', e:'❌ Sai. Tải TB → vùng ứng suất từ bè nông lan xuống L3 xấu (cát rời) gây lún lớn và không đều.' },
-        { t:'Cọc xuyên qua L3 xấu (cát rời), mũi cọc cắm vào cát chặt L4', e:'✅ Đúng! T-T-X-T, tải TB → cọc XUYÊN QUA L3 cát rời, mũi cắm vào L4 cát chặt. SCT cọc từ ma sát L1/L2 và SCT mũi trong L4.' },
-        { t:'Cọc cát gia cố L3 rồi móng bè',                e:'❌ Sai. Cọc cát trong cát rời kém hiệu quả. Cọc chịu tải trực tiếp xuyên qua L3 là giải pháp tốt hơn.' },
-        { t:'Móng đơn với hệ dầm giằng siêu cứng',          e:'❌ Sai. Dầm giằng cứng không tăng SCT nền hay giảm lún từ L3 xấu khi tải TB.' }
+        { t:'Móng bè nông trong L1/L2, ứng suất phân tán xuống L3 xấu', e:'❌ Sai. Tải trung bình → vùng ứng suất từ bè nông lan xuống L3 xấu (cát rời), SCT thấp, lún lớn và không đều.' },
+        { t:'Cọc xuyên qua L3 xấu (cát rời), mũi ngàm vào cát chặt L4', e:'✅ Đúng! T-T-X-T, tải trung bình → cọc XUYÊN QUA L3 cát rời, mũi vào L4 cát chặt. SCT cọc từ ma sát L1/L2 và SCT mũi trong L4.' },
+        { t:'Cọc ngắn đặt nổi trong L1-L2, không xuyên L3',   e:'❌ Sai. Mũi cọc không tựa lớp chặt, tải truyền xuống L3 rời bên dưới mũi → SCT thấp và lún lớn.' },
+        { t:'Móng đơn với hệ dầm giằng siêu cứng',          e:'❌ Sai. Dầm giằng cứng không tăng SCT nền hay giảm lún từ L3 xấu khi tải trung bình.' }
       ]},
       lon: { correct:2, opts: [
-        { t:'Cọc ngắn xuyên L1-L2, dừng ngay đầu L3 xấu',  e:'❌ Sai. Mũi cọc trong cát rời L3 xấu → SCT mũi thấp. Tải lớn cần cọc xuyên hết L3 vào cát chặt L4.' },
-        { t:'Cọc xuyên L3 nhưng cắm nông vào L4',            e:'❌ Sai. Tải lớn → cần chiều dài cắm vào L4 đủ lớn để phát huy đủ ma sát và SCT mũi. Cắm nông không đảm bảo.' },
-        { t:'Cọc dài xuyên hết L3 xấu, cắm sâu đủ vào cát chặt L4', e:'✅ Đúng! T-T-X-T, tải lớn → cọc dài xuyên hoàn toàn qua L3 cát rời, cắm đủ sâu vào L4. Chiều dài cọc phụ thuộc chiều dày L3.' },
+        { t:'Cọc ngắn xuyên L1-L2, dừng ngay đầu L3 xấu',  e:'❌ Sai. Mũi cọc ở đầu cát rời L3 → SCT mũi thấp. Tải lớn cần cọc xuyên hết L3 vào cát chặt L4.' },
+        { t:'Cọc xuyên L3 nhưng chỉ ngàm nông vào L4',     e:'❌ Sai. Tải lớn → cần chiều dài ngàm vào L4 đủ lớn để phát huy đủ ma sát và SCT mũi. Ngàm nông không đảm bảo.' },
+        { t:'Cọc xuyên hết L3 xấu, ngàm đủ sâu vào cát chặt L4', e:'✅ Đúng! T-T-X-T, tải lớn → cọc xuyên hoàn toàn qua L3 cát rời, ngàm đủ sâu vào L4. Chiều dài cọc phụ thuộc chiều dày L1-L3.' },
         { t:'Móng nông mở rộng đáy đến L3 hoặc L4',         e:'❌ Sai. Đặt đáy móng vào L3 xấu → không đảm bảo. Đặt vào L4 thì quá sâu, không khả thi như móng nông thông thường.' }
       ]}
     },
     'X-X-X-T': {
       nho: { correct:0, opts: [
-        { t:'Cọc xuyên hết 3 lớp L1-L2-L3 xấu, mũi cắm vào L4 tốt', e:'✅ Đúng! 3 lớp đầu đều xấu → không có móng nông nào khả thi. Dù tải nhỏ vẫn PHẢI dùng cọc xuyên qua cả 3 lớp vào L4 cát chặt.' },
-        { t:'Móng đơn nông trong L1 dẻo chảy/chảy',         e:'❌ Sai! 3 lớp đầu đều xấu. Bất kỳ móng nào trong L1/L2/L3 đều không đủ SCT.' },
+        { t:'Cọc xuyên hết 3 lớp L1-L2-L3 xấu, mũi ngàm vào L4 tốt', e:'✅ Đúng! 3 lớp đầu đều xấu và dày → không có móng nông khả thi, gia cố xuyên cả 3 lớp không kinh tế. Dù tải nhỏ vẫn dùng cọc xuyên qua cả 3 lớp vào L4 cát chặt.' },
+        { t:'Móng đơn nông trong L1 dẻo chảy/chảy',         e:'❌ Sai! 3 lớp đầu đều xấu. Móng nông trong L1/L2/L3 không xử lý đều không đủ SCT.' },
         { t:'Gia cố L1 bằng cọc vôi, dùng móng bè',         e:'❌ Sai. Chỉ gia cố L1 không đủ khi L2 và L3 bên dưới cũng xấu. Ứng suất vẫn lan xuống L2/L3 xấu.' },
-        { t:'Móng băng kết hợp giằng siêu cứng',            e:'❌ Sai. Giằng cứng không giải quyết 3 lớp đất xấu. Không có cách nào tránh tải truyền vào đất yếu.' }
+        { t:'Móng băng kết hợp giằng siêu cứng',            e:'❌ Sai. Giằng cứng không giải quyết 3 lớp đất xấu. Tải vẫn truyền vào đất yếu.' }
       ]},
       tb: { correct:1, opts: [
         { t:'Cọc ngắn dừng trong L2 xấu',                   e:'❌ Sai. L3 cũng xấu → cọc dừng trong L2 xấu = mũi cọc trong đất yếu. Phải xuyên cả 3 lớp.' },
-        { t:'Cọc dài ≥ 25m xuyên hết L1-L2-L3 xấu, cắm vào cát chặt L4', e:'✅ Đúng! X-X-X-T, tải TB → chiều dài cọc ≥25m (tùy chiều dày từng lớp). SCT hầu hết từ mũi cọc và ma sát trong L4 tốt.' },
-        { t:'Cọc trung bình dừng ở L3 cát rời xấu',         e:'❌ Sai. Cọc dừng trong L3 xấu (cát rời) → mũi cọc SCT thấp. Phải xuyên vào L4 cát chặt.' },
-        { t:'Móng bè gia cường toàn bộ L1-L3',              e:'❌ Sai. Gia cường đồng thời 3 lớp xấu phức tạp, đắt, khó kiểm soát chất lượng. Cọc hiệu quả hơn.' }
+        { t:'Cọc xuyên hết L1-L2-L3 xấu, ngàm vào cát chặt L4', e:'✅ Đúng! X-X-X-T, tải trung bình → cọc xuyên cả 3 lớp xấu (chiều dài = tổng chiều dày L1-L3 + đoạn ngàm). SCT chủ yếu từ mũi cọc và ma sát trong L4 tốt.' },
+        { t:'Cọc trung bình dừng ở L3 cát rời xấu',         e:'❌ Sai. Cọc dừng trong L3 xấu (cát rời) → SCT mũi thấp. Phải xuyên vào L4 cát chặt.' },
+        { t:'Móng bè trên nền L1-L3 không xử lý',           e:'❌ Sai. Cả 3 lớp xấu → bè lún lớn và không đều. Gia cố đồng thời 3 lớp phức tạp, đắt; cọc hiệu quả hơn.' }
       ]},
       lon: { correct:2, opts: [
-        { t:'Cọc đóng L=20m, dừng trong L2 xấu',            e:'❌ Sai. L2 và L3 đều xấu, tải lớn → cọc 20m có thể chưa qua L3. Phải xuyên vào L4 cát chặt.' },
-        { t:'Nhiều cọc ngắn khoảng cách dày đặc',            e:'❌ Sai. Nhiều cọc ngắn trong đất xấu không hiệu quả. Mỗi cọc phải cắm vào đất tốt mới phát huy SCT.' },
-        { t:'Cọc khoan nhồi D≥800mm hoặc cọc barrette xuyên hết L1-L3 vào L4', e:'✅ Đúng! X-X-X-T, tải lớn → đây là điều kiện phức tạp nhất. Cọc nhồi lớn hoặc barrette xuyên qua 3 lớp xấu, cắm sâu vào L4 đảm bảo SCT cọc đơn và nhóm.' },
-        { t:'Móng nổi (floating foundation) giảm ứng suất tổng', e:'❌ Sai. Móng nổi giảm ứng suất hiệu quả nhưng không thể chịu tải lớn trên 3 lớp xấu. Không phải giải pháp.' }
+        { t:'Cọc đóng dừng trong L2 xấu',        e:'❌ Sai. L3 cũng xấu, tải lớn → cọc dừng trong L2 có mũi trong đất yếu, không đủ. Phải xuyên vào L4 cát chặt.' },
+        { t:'Nhiều cọc ngắn khoảng cách dày đặc',            e:'❌ Sai. Nhiều cọc ngắn trong đất xấu không hiệu quả. Mỗi cọc phải ngàm vào đất tốt mới phát huy SCT.' },
+        { t:'Cọc khoan nhồi D ≥ 800 mm hoặc barrette xuyên hết L1-L3 vào L4', e:'✅ Đúng! X-X-X-T, tải lớn → điều kiện phức tạp nhất. Cọc nhồi lớn hoặc barrette xuyên qua 3 lớp xấu, ngàm sâu vào L4 đảm bảo SCT cọc đơn và nhóm.' },
+        { t:'Móng nổi (floating foundation) giảm ứng suất tổng', e:'❌ Sai. Móng nổi chỉ bù bớt ứng suất, không đủ chịu tải lớn trên 3 lớp xấu; kém phù hợp hơn cọc.' }
       ]}
     }
   };
 
   var rec = DB[pattern] || DB['T-T-T-T'];
   var lev = rec[loadLevel] || rec['nho'];
-  return { correct: lev.correct, opts: lev.opts.map(function(o){ return { text:o.t, explain:o.e }; }) };
+  // Xáo thứ tự đáp án theo seed (mỗi sinh viên một thứ tự); không có seed thì giữ nguyên
+  var order = [0, 1, 2, 3];
+  if (seed != null) {
+    var rs = seededRng(seed * 31 + (loadLevel === 'nho' ? 1 : loadLevel === 'tb' ? 2 : 3) * 7 + pattern.length);
+    for (var i = 3; i > 0; i--) { var j = Math.floor(rs() * (i + 1)); var t = order[i]; order[i] = order[j]; order[j] = t; }
+  }
+  return { correct: order.indexOf(lev.correct), opts: order.map(function(k){ return { text:lev.opts[k].t, explain:lev.opts[k].e }; }) };
 }
 
 // ── Sinh số liệu CLO1 Dạng A (T-T-T-T guaranteed) ────────────
@@ -586,29 +596,29 @@ function getFoundationAdvice(pattern, loadLevel) {
       lon: { text:'Cọc ngắn (L < 20 m)',        explain:'T-T-T-T, tải lớn → cọc đóng/ép cắm vào cát chặt L3/L4.' }
     },
     'X-T-T-T': {
-      nho: { text:'Móng bè trên L1 hoặc cải tạo L1', explain:'L1 xấu, L2-L4 tốt → tải nhỏ dùng bè hoặc cải tạo L1.' },
+      nho: { text:'Xử lý nền L1 rồi đặt móng nông', explain:'L1 xấu, L2-L4 tốt → tải nhỏ xử lý L1 (đệm cát, cọc cát, CDM) rồi móng nông.' },
       tb:  { text:'Cọc ngắn xuyên qua L1',      explain:'L1 xấu → cọc xuyên L1 tựa vào L2 tốt.' },
       lon: { text:'Cọc dài xuyên qua L1-L2',    explain:'L1 xấu, tải lớn → cọc dài cắm vào L3/L4.' }
     },
     'T-X-T-T': {
-      nho: { text:'Móng nông đặt trong L1', explain:'L2 xấu nhưng L1 tốt → tải nhỏ dùng móng nông đặt trong L1.' },
+      nho: { text:'Móng nông đặt trong L1', explain:'L1 tốt-L2 xấu → móng nông trong L1, chọn kích thước đáy để L2 đủ SCT.' },
       tb:  { text:'Cọc ngắn xuyên L1-L2',   explain:'L2 xấu → cọc xuyên L1 và L2 tựa vào L3.' },
       lon: { text:'Cọc dài cắm vào L3-L4',  explain:'Tải lớn → cọc xuyên L2 tựa vào cát chặt L3/L4.' }
     },
     'X-X-T-T': {
-      nho: { text:'Cọc ngắn xuyên L1-L2',    explain:'2 lớp đầu xấu → cần cọc dù tải nhỏ.' },
+      nho: { text:'Cọc ngắn xuyên L1-L2 hoặc gia cố sâu', explain:'2 lớp đầu xấu → cọc ngắn hoặc gia cố sâu (cọc cát, CDM) dù tải nhỏ.' },
       tb:  { text:'Cọc xuyên qua L1-L2',     explain:'X-X-T-T → cọc xuyên 2 lớp xấu tựa vào L3/L4.' },
-      lon: { text:'Cọc dài ≥ 20 m',          explain:'Tải lớn + 2 lớp xấu → cọc dài xuyên hết L2 vào L3/L4.' }
+      lon: { text:'Cọc xuyên L1-L2, ngàm sâu L3/L4', explain:'Tải lớn + 2 lớp xấu → cọc dài xuyên hết L2 vào L3/L4.' }
     },
     'T-T-X-T': {
-      nho: { text:'Móng nông đặt trong L1/L2', explain:'L3 xấu nhưng tải nhỏ → móng nông trong L1/L2 tốt.' },
+      nho: { text:'Móng nông đặt trong L1/L2', explain:'L3 xấu, tải nhỏ → móng nông trong L1/L2, chọn kích thước đáy để L3 đủ SCT.' },
       tb:  { text:'Cọc xuyên qua L3 xấu',      explain:'L3 xấu → cọc xuyên L3 tựa vào L4 tốt.' },
       lon: { text:'Cọc dài xuyên L3 vào L4',   explain:'L3 xấu, tải lớn → cọc cắm sâu vào L4.' }
     },
     'X-X-X-T': {
       nho: { text:'Cọc xuyên qua 3 lớp xấu',   explain:'3 lớp xấu → bắt buộc dùng cọc xuyên vào L4.' },
-      tb:  { text:'Cọc dài ≥ 25 m',             explain:'X-X-X-T → cọc dài xuyên hết L1-L3 vào L4.' },
-      lon: { text:'Cọc khoan nhồi đường kính lớn', explain:'3 lớp xấu + tải lớn → cọc khoan nhồi lớn.' }
+      tb:  { text:'Cọc xuyên L1-L3 vào L4',      explain:'X-X-X-T → cọc dài xuyên hết L1-L3 vào L4.' },
+      lon: { text:'Cọc nhồi D ≥ 800 / barrette', explain:'3 lớp xấu + tải lớn → cọc khoan nhồi lớn.' }
     }
   };
 

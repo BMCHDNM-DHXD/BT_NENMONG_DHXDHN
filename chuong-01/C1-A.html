@@ -474,7 +474,7 @@ function renderStep4(d) {
   var html = '';
   lvlKeys.forEach(function(lk, li) {
     var qname = 'pa_' + lk;
-    var mcq = getFoundationMCQ(pattern, lk);
+    var mcq = getFoundationMCQ(pattern, lk, d.seed);
     ANS['mcq_' + qname] = null;
     updateProg();
 
