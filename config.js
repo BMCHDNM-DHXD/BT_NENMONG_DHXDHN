@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════
 // BT NỀN MÓNG — config.js   (GV sửa file này mỗi học kỳ)
 // ═══════════════════════════════════════════════════════
 
@@ -47,6 +47,6 @@ window.CLASS_LIST = [
 window.CHAPTER_SCHEDULE = {
   c1: { active: true,  open: null, close: null },   // CLO1 — Phương án móng
   c2: { active: true,  open: null, close: null },   // CLO2 — Móng nông
-  c3: { active: false, open: null, close: null },   // CLO3 — Móng cọc
+  c3: { active: true,  open: null, close: null },   // CLO3 — Móng cọc
   c4: { active: true,  open: null, close: null },   // CLO4 — Cấu tạo
 };
