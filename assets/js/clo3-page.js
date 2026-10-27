@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // BT NỀN MÓNG — clo3-page.js : dựng trang bài CLO3 Móng cọc (dạng A/B/C) + nộp bài
 // Trang gọi:  CLO3PAGE.start({ dang:'A', mode:'A', dangIdx:1 })
-//   A: công thức + điền số + trắc nghiệm, phản hồi ngay · B: công thức, số phản hồi ngay, trắc nghiệm im đến khi nộp
-//   C: không công thức, mọi câu là trắc nghiệm, im đến khi nộp
+//   A: công thức + điền số + trắc nghiệm · B: không công thức, điền số + trắc nghiệm · C: mọi câu là trắc nghiệm
+//   Cả ba dạng: không phản hồi đúng/sai cho đến khi nộp (không có nút Kiểm tra)
 // Dùng pm/ANS/updateProg/regQ/cf/revealAllMCQ của engine.js (không override).
 // Phụ thuộc: config.js, engine.js, clo3.js
 // ═══════════════════════════════════════════════════════════════
@@ -29,14 +29,22 @@ function mcqHtml(id, title, opts, expl, r) {
   return h + '<div class="me" id="me-' + id + '">✓ ' + expl + '</div></div>';
 }
 
+// Không có nút kiểm tra: đáp án được ghi nhận im lặng, chỉ báo đúng/sai sau khi nộp
 function fillIn(it) {
   regQ(it.id, it.ans, it.tol);
   return '<div class="mw"><div class="mq"><span class="mn">' + it.id + '</span>' + it.q + '</div>' +
-    '<div class="fill"><input class="fi" id="f-' + it.id + '" inputmode="decimal" placeholder="…" onchange="cf(\'' + it.id + '\')" onkeydown="if(event.key===\'Enter\')cf(\'' + it.id + '\')">' +
+    '<div class="fill"><input class="fi" id="f-' + it.id + '" inputmode="decimal" placeholder="…" oninput="cs(\'' + it.id + '\')" onchange="cs(\'' + it.id + '\')">' +
     (it.unit ? '<span class="unit">' + it.unit + '</span>' : '') +
-    '<button class="btn btn-sub" style="border:1px solid var(--brd)" onclick="cf(\'' + it.id + '\')">Kiểm tra</button>' +
     '<span class="fb" id="fb-' + it.id + '"></span></div></div>';
 }
+window.cs = function (id) {
+  var rec = _Q[id], inp = document.getElementById('f-' + id);
+  if (!rec || !inp) return;
+  var v = parseFloat(inp.value.replace(',', '.'));
+  if (isNaN(v)) { ANS[id] = null; updateProg(); return; }
+  ANS[id] = Math.abs(v - rec.ans) <= Math.max(rec.tol, Math.abs(rec.ans) * 0.02, 0.005);   // cùng dung sai với engine.cf
+  updateProg();
+};
 
 function formulaBox() {
   var h = '<div class="fml"><div class="ftl">Công thức (giáo trình Nền móng V08, TCVN 10304)</div><ul>';
@@ -53,7 +61,7 @@ function render() {
   MCQ = {}; ANS = {};
   var h = '';
   h += '<div class="de-bai"><div class="de-hd">Đề bài — ' + C.EX_LBL[exIdx] + '</div><div class="de-body"><p>' + S.intro + '</p>' + figBox() + '</div></div>';
-  if (dang !== 'C') h += formulaBox();
+  if (dang === 'A') h += formulaBox();   // A: có công thức · B: điền số, không công thức · C: toàn trắc nghiệm
   h += tablesBox();
 
   var hdA = true, hdB = true;
@@ -85,7 +93,17 @@ function nav(n) { return 'C3-' + CFG.dang + '.html?ex=' + n + (PREVIEW ? '&previ
 function showSolutions() {
   var h = '<div class="grp-hd">Lời giải</div><div class="sol">';
   S.items.forEach(function (it) {
-    h += '<div class="sol-i"><span class="mn">' + it.id + '</span> ' + it.q + '<br><span class="sol-a">' + it.expl +
+    var mark = '';
+    if (it.type === 'num') {
+      var inp = document.getElementById('f-' + it.id), ok = ANS[it.id] === true, fb = document.getElementById('fb-' + it.id);
+      if (inp) { inp.disabled = true; inp.className = 'fi ' + (inp.value === '' ? '' : (ok ? 'ok' : 'no')); }
+      if (fb) fb.textContent = inp && inp.value === '' ? '' : (ok ? '✓' : '✗ Đáp án: ' + C.f(it.ans, it.dec));
+      mark = inp && inp.value !== '' ? (ok ? ' <b style="color:#2E7D32">✓ đúng</b>' : ' <b style="color:#C62828">✗ bạn nhập ' + inp.value + '</b>') : ' <b style="color:#C62828">✗ chưa làm</b>';
+    } else {
+      var r = ANS['mcq_' + it.id];
+      mark = r === true ? ' <b style="color:#2E7D32">✓ đúng</b>' : (r === false ? ' <b style="color:#C62828">✗ sai</b>' : ' <b style="color:#C62828">✗ chưa làm</b>');
+    }
+    h += '<div class="sol-i"><span class="mn">' + it.id + '</span> ' + it.q + mark + '<br><span class="sol-a">' + it.expl +
       (it.type === 'num' ? ' → <b>' + C.f(it.ans, it.dec) + (it.unit ? ' ' + it.unit : '') + '</b>' : '') + '</span></div>';
   });
   document.getElementById('sol').innerHTML = h + '</div>';
@@ -128,7 +146,7 @@ window.doSubmit = function () {
 
 window.CLO3PAGE = {
   start: function (cfg) {
-    CFG = cfg; CHAPTER_ID = 'C3-' + cfg.dang; window.FEEDBACK_MODE = cfg.mode;
+    CFG = cfg; CHAPTER_ID = 'C3-' + cfg.dang; window.FEEDBACK_MODE = 'C';   // im lặng đến khi nộp
     var sp = new URLSearchParams(location.search);
     EX_NUM = Math.max(1, Math.min(6, parseInt(sp.get('ex')) || 1));
     PREVIEW = sp.get('preview') === '1' && (!location.hostname || location.hostname === 'localhost' || location.hostname === '127.0.0.1');   // chỉ xem thử trên máy

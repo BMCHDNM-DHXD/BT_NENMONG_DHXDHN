@@ -169,6 +169,82 @@ function layoutFig(piles, o) {
   return s + '</g></svg>';
 }
 
+// ── hình mặt cắt ─────────────────────────────────────────────
+function dimH(x1, x2, y, txt) {   // kích thước ngang
+  return '<line x1="' + x1 + '" y1="' + y + '" x2="' + x2 + '" y2="' + y + '" stroke="#37474F" marker-start="url(#ar)" marker-end="url(#ar)"/>' +
+    '<text x="' + ((x1 + x2) / 2) + '" y="' + (y - 4) + '" text-anchor="middle" fill="#263238">' + txt + '</text>';
+}
+function dimV(x, y1, y2, txt, right) {   // kích thước đứng; chữ bên trái, hoặc bên phải nếu right
+  return '<line x1="' + x + '" y1="' + y1 + '" x2="' + x + '" y2="' + y2 + '" stroke="#37474F" marker-start="url(#ar)" marker-end="url(#ar)"/>' +
+    '<text x="' + (right ? x + 5 : x - 5) + '" y="' + ((y1 + y2) / 2 + 4) + '" text-anchor="' + (right ? 'start' : 'end') + '" fill="#263238">' + txt + '</text>';
+}
+var SVG_DEFS = '<defs><marker id="ar" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z" fill="#37474F"/></marker></defs>';
+
+// Ex6: mặt cắt đài theo phương x, tháp đâm thủng 45°, c1, h, h0
+function sectionFig6(d, o) {
+  var W = 520, H = 330, sc = Math.min(300 / o.Ld, 110), cx = 260, yt = 96, h = d.h * sc, h0 = o.h0 * sc;
+  function X(x) { return cx + x * sc; }
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px;font-family:sans-serif;font-size:11px">' + SVG_DEFS;
+  s += '<text x="' + (W / 2) + '" y="14" text-anchor="middle" font-weight="700" fill="#0D47A1">Mặt cắt đài theo phương x</text>';
+  s += '<rect x="' + X(-o.Ld / 2) + '" y="' + yt + '" width="' + (o.Ld * sc) + '" height="' + h + '" fill="#ECEFF1" stroke="#455A64" stroke-width="1.5"/>';
+  s += '<rect x="' + X(-d.lc / 2) + '" y="' + (yt - 46) + '" width="' + (d.lc * sc) + '" height="46" fill="#B0BEC5" stroke="#263238"/><text x="' + X(0) + '" y="' + (yt - 20) + '" text-anchor="middle" fill="#263238">cột</text>';
+  [-d.a, 0, d.a].forEach(function (x, i) {
+    s += '<rect x="' + X(x - d.dp / 2) + '" y="' + (yt + h) + '" width="' + (d.dp * sc) + '" height="58" fill="#FFCC80" stroke="#E65100"/>';
+    s += '<text x="' + X(x) + '" y="' + (yt + h + 34) + '" text-anchor="middle" font-weight="700" fill="#BF360C">' + (i === 2 ? '3,6' : (i === 0 ? '1,4' : '2,5')) + '</text>';
+  });
+  s += '<line x1="' + X(-d.lc / 2) + '" y1="' + yt + '" x2="' + (X(-d.lc / 2) - h0) + '" y2="' + (yt + h0) + '" stroke="#C62828" stroke-dasharray="5 3" stroke-width="1.4"/>';
+  s += '<line x1="' + X(d.lc / 2) + '" y1="' + yt + '" x2="' + (X(d.lc / 2) + h0) + '" y2="' + (yt + h0) + '" stroke="#C62828" stroke-dasharray="5 3" stroke-width="1.4"/>';
+  s += '<text x="' + (X(d.lc / 2) + h0 * 0.35) + '" y="' + (yt + h0 * 0.35 - 4) + '" fill="#C62828">tháp 45°</text>';
+  s += '<line x1="' + X(-o.Ld / 2 + 0.05) + '" y1="' + (yt + h0) + '" x2="' + X(o.Ld / 2 - 0.05) + '" y2="' + (yt + h0) + '" stroke="#1565C0" stroke-width="2.5"/>';
+  s += '<text x="' + X(o.Ld / 2 - 0.05) + '" y="' + (yt + h0 - 4) + '" text-anchor="end" fill="#1565C0">lưới thép (tâm cách đáy a)</text>';
+  s += dimV(X(-o.Ld / 2) - 16, yt, yt + h, 'h = ' + f(d.h, 2));
+  s += dimV(X(o.Ld / 2) + 16, yt, yt + h0, 'h₀ = ' + f(o.h0, 2), true);
+  s += dimH(X(-d.lc / 2), X(d.lc / 2), yt - 56, 'l<tspan font-size="8" dy="2">c</tspan><tspan dy="-2"> = ' + nz(d.lc) + '</tspan>');
+  s += dimH(X(d.lc / 2), X(d.a - d.dp / 2), yt + h + 76, 'c₁ = ' + f(o.c1r, 2));
+  s += dimH(X(0), X(d.a), yt + h + 96, 'a = ' + nz(d.a));
+  return s + '</svg>';
+}
+
+// Ex5: mặt cắt đài – cọc: tải, cọc và chiều dài làm việc
+function sectionFig5(d) {
+  var W = 470, H = 320, sc = 110, cx = 250, yt = 90, hd = 30, Lx = 2 * d.a2 + 0.6;
+  function X(x) { return cx + x * sc; }
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px;font-family:sans-serif;font-size:11px">' + SVG_DEFS;
+  s += '<text x="' + (W / 2) + '" y="14" text-anchor="middle" font-weight="700" fill="#0D47A1">Sơ đồ đài – cọc (nhìn theo phương x)</text>';
+  s += '<rect x="' + X(-0.2) + '" y="' + (yt - 38) + '" width="' + (0.4 * sc) + '" height="38" fill="#B0BEC5" stroke="#263238"/>';
+  s += '<line x1="' + X(0) + '" y1="' + (yt - 72) + '" x2="' + X(0) + '" y2="' + (yt - 40) + '" stroke="#C62828" stroke-width="2.5" marker-end="url(#ar)"/>';
+  s += '<text x="' + (X(0) + 8) + '" y="' + (yt - 54) + '" fill="#C62828" font-weight="700">N<tspan font-size="8" dy="2">d1</tspan><tspan dy="-2"> = ' + d.N + ' kN</tspan></text>';
+  s += '<path d="M ' + (X(0) - 46) + ' ' + (yt - 22) + ' A 24 24 0 0 1 ' + (X(0) - 22) + ' ' + (yt - 46) + '" fill="none" stroke="#6A1B9A" stroke-width="2" marker-end="url(#ar)"/>';
+  s += '<text x="' + (X(0) - 52) + '" y="' + (yt - 50) + '" text-anchor="end" fill="#6A1B9A" font-weight="700">M<tspan font-size="8" dy="2">x</tspan><tspan dy="-2">, M</tspan><tspan font-size="8" dy="2">y</tspan></text>';
+  s += '<rect x="' + X(-Lx / 2) + '" y="' + yt + '" width="' + (Lx * sc) + '" height="' + hd + '" fill="#ECEFF1" stroke="#455A64" stroke-width="1.5"/>';
+  s += '<text x="' + (X(-Lx / 2) + 6) + '" y="' + (yt + 19) + '" fill="#546E7A">đài (tải đã gồm trọng lượng đài, đất)</text>';
+  [-d.a2, 0, d.a2].forEach(function (x) {
+    s += '<rect x="' + X(x - d.dp / 2) + '" y="' + (yt + hd) + '" width="' + (d.dp * sc) + '" height="120" fill="#FFCC80" stroke="#E65100"/>';
+  });
+  s += '<line x1="' + (X(-Lx / 2) - 8) + '" y1="' + (yt + hd) + '" x2="' + (X(-Lx / 2) + 16) + '" y2="' + (yt + hd) + '" stroke="#37474F"/>';
+  s += dimV(X(-Lx / 2) - 14, yt + hd, yt + hd + 120, 'L = ' + d.L + ' m');
+  s += '<text x="' + X(0) + '" y="' + (yt + hd + 138) + '" text-anchor="middle" fill="#607D8B" font-size="10">(cọc vẽ không theo tỉ lệ chiều dài)</text>';
+  s += dimH(X(0), X(d.a2), yt + hd + 160, 'a₂ = ' + nz(d.a2) + ' (PA2)');
+  s += '<text x="' + X(0) + '" y="' + (yt + hd + 186) + '" text-anchor="middle" fill="#37474F">cọc ' + f(d.dp * 100, 0) + ' × ' + f(d.dp * 100, 0) + ' cm · R<tspan font-size="8" dy="2">c,d</tspan><tspan dy="-2"> = ' + d.Rcd + ' kN</tspan></text>';
+  return s + '</svg>';
+}
+
+// Ex4: tiết diện ngang cọc cho hai phương án vật liệu
+function sectionFig4(d, o) {
+  var sc = 230, W = 470, H = 250, s = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px;font-family:sans-serif;font-size:11px">' + SVG_DEFS;
+  s += '<text x="' + (W / 2) + '" y="14" text-anchor="middle" font-weight="700" fill="#0D47A1">Tiết diện ngang cọc ' + f(d.dp * 100, 0) + ' × ' + f(d.dp * 100, 0) + ' cm (4 thanh thép dọc ở góc)</text>';
+  [d.c1, d.c2].forEach(function (c, k) {
+    var x0 = 40 + k * 230, y0 = 40, w = d.dp * sc, cv = 0.035 * sc, r = Math.max(4, c.d / 1000 / 2 * sc * 1.6);
+    s += '<rect x="' + x0 + '" y="' + y0 + '" width="' + w + '" height="' + w + '" fill="#CFD8DC" stroke="#37474F" stroke-width="1.5"/>';
+    s += '<rect x="' + (x0 + cv * 0.6) + '" y="' + (y0 + cv * 0.6) + '" width="' + (w - cv * 1.2) + '" height="' + (w - cv * 1.2) + '" fill="none" stroke="#1565C0" stroke-dasharray="3 2"/>';
+    [[cv, cv], [w - cv, cv], [cv, w - cv], [w - cv, w - cv]].forEach(function (p) { s += '<circle cx="' + (x0 + p[0]) + '" cy="' + (y0 + p[1]) + '" r="' + r + '" fill="#C62828"/>'; });
+    s += dimH(x0, x0 + w, y0 + w + 22, f(d.dp * 100, 0) + ' cm');
+    s += '<text x="' + (x0 + w / 2) + '" y="' + (y0 + w + 42) + '" text-anchor="middle" font-weight="700" fill="#263238">PA' + (k + 1) + ': bê tông ' + c.B + '</text>';
+    s += '<text x="' + (x0 + w / 2) + '" y="' + (y0 + w + 58) + '" text-anchor="middle" fill="#C62828">' + c.n + 'Ф' + c.d + ' · ' + c.st + '-V</text>';
+  });
+  return s + '</svg>';
+}
+
 // ── bảng tra hiển thị cho sinh viên ──────────────────────────
 function tableHtml(title, head, rows, note) {
   var h = '<div class="fml"><div class="ftl">' + title + '</div><div class="tbl-scroll"><table class="atb"><tr>';
@@ -490,7 +566,7 @@ function gen4(r) {
     'bảng tra <b>' + d.Ru1 + ' kN</b>, SPT <b>' + d.Ru2 + ' kN</b>, CPT <b>' + d.Ru3 + ' kN</b>. SCT huy động chủ yếu ở lớp đất <b>' + (d.roi ? 'rời' : 'dính') + '</b>. ' +
     'Để cọc không vỡ đầu khi thi công, sức chịu tải theo vật liệu phải đáp ứng R<sub>c,m</sub> = (' + f(kmin, 1) + ' ÷ ' + f(kmax, 1) + ')·R<sub>c,d</sub> (hệ số kinh nghiệm TCVN 9393/9394). ' +
     'Kiểm tra hai phương án vật liệu: ' + candTxt(d.c1, 1) + '; ' + candTxt(d.c2, 2) + '. Lấy m = 1,0; đạt khi R<sub>c,m</sub> ≥ R<sub>c,m,min</sub>.';
-  return { d: d, o: o, items: it, intro: intro, formulas: F_VL(), tables: [], fig: '' };
+  return { d: d, o: o, items: it, intro: intro, formulas: F_VL(), tables: [], fig: '<div class="figrow">' + sectionFig4(d, o) + '</div>' };
 }
 
 // ═════════ Ex5: Phản lực đầu cọc, kiểm tra P_max ≤ R_c,d ═════════
@@ -560,7 +636,7 @@ function gen5(r) {
   var intro = 'Móng cọc đài thấp. Tải trọng tính toán TTGH1 tại tâm đáy đài (đã gồm trọng lượng đài và đất): <b>N<sub>d1</sub> = ' + d.N + ' kN</b>; <b>M<sub>x</sub> = ' + d.Mx + ' kN·m</b> (làm tăng tải cọc phía y > 0); <b>M<sub>y</sub> = ' + d.My + ' kN·m</b> (làm tăng tải cọc phía x > 0). ' +
     'Cọc vuông <b>' + f(d.dp * 100, 0) + ' × ' + f(d.dp * 100, 0) + ' cm</b>, chiều dài làm việc <b>L = ' + d.L + ' m</b>, SCT nén tính toán theo đất nền <b>R<sub>c,d</sub> = ' + d.Rcd + ' kN</b>. ' +
     'Xét hai phương án bố trí cọc (hình bên dưới, tọa độ tính bằng m, gốc ở tâm nhóm cọc): PA1 gồm 4 cọc, PA2 gồm 6 cọc. Kiểm tra điều kiện cọc chịu nén lớn nhất trong giai đoạn sử dụng P<sub>tt,max</sub> = P<sub>max</sub> + γ<sub>f</sub>W<sub>p,k</sub> ≤ R<sub>c,d</sub> (γ<sub>n</sub> = 1,0).';
-  var fig = '<div class="figrow">' + layoutFig(o.pa, { dp: d.dp, Lx: 2 * d.a1 + 0.9, Ly: 2 * d.b1 + 0.9, tag: 'PA1 — 4 cọc' }) + layoutFig(o.pb, { dp: d.dp, Lx: 2 * d.a2 + 0.9, Ly: 2 * d.b2 + 0.9, tag: 'PA2 — 6 cọc' }) + '</div>';
+  var fig = '<div class="figrow">' + layoutFig(o.pa, { dp: d.dp, Lx: 2 * d.a1 + 0.9, Ly: 2 * d.b1 + 0.9, tag: 'PA1 — 4 cọc' }) + layoutFig(o.pb, { dp: d.dp, Lx: 2 * d.a2 + 0.9, Ly: 2 * d.b2 + 0.9, tag: 'PA2 — 6 cọc' }) + '</div><div class="figrow">' + sectionFig5(d) + '</div>';
   return { d: d, o: o, items: it, intro: intro, formulas: F_PL(), tables: [], fig: fig };
 }
 
@@ -630,7 +706,7 @@ function gen6(r) {
     'Chiều cao đài <b>h = ' + f(d.h * 100, 0) + ' cm</b>, lớp bảo vệ tính đến trọng tâm thép a = 10 cm; bê tông <b>' + d.conc + '</b>, thép <b>CB400-V</b>. ' +
     'Tải trọng tính toán TTGH1 tại cốt mặt đất: <b>N<sub>0,d1</sub> = ' + d.N + ' kN</b>; <b>M<sub>x</sub> = ' + d.Mx + ' kN·m</b>; <b>M<sub>y</sub> = ' + d.My + ' kN·m</b>. Không kể trọng lượng đài và đất. ' +
     '<br>(1) Kiểm tra chiều cao đài theo điều kiện chống đâm thủng 2 phương. (2) Tính cốt thép chịu lực phương cạnh dài (phương x) của đài và nhận xét lượng thép <b>' + d.n + 'Ф' + d.ds + '</b> bố trí.';
-  var fig = '<div class="figrow">' + layoutFig(o.p, { dp: d.dp, lc: d.lc, bc: d.bc, Lx: o.Ld, Ly: o.Bd, tag: 'Mặt bằng đài ' + f(o.Ld, 2) + ' × ' + f(o.Bd, 2) + ' m' }) + '</div>';
+  var fig = '<div class="figrow">' + layoutFig(o.p, { dp: d.dp, lc: d.lc, bc: d.bc, Lx: o.Ld, Ly: o.Bd, tag: 'Mặt bằng đài ' + f(o.Ld, 2) + ' × ' + f(o.Bd, 2) + ' m' }) + '</div><div class="figrow">' + sectionFig6(d, o) + '</div>';
   return { d: d, o: o, items: it, intro: intro, formulas: F_DAI(), tables: [], fig: fig };
 }
 
