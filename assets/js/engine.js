@@ -119,6 +119,26 @@ function cf(id, ans, tol) {
   updateProg();
 }
 
+// Chấm im lặng khi nhập: chỉ ghi ANS (không báo đúng/sai, không lộ đáp án)
+function sc(id) {
+  var rec = _Q[id], inp = document.getElementById('f-' + id);
+  if (!rec || !inp) return;
+  var v = parseFloat(inp.value.replace(',', '.'));
+  ANS[id] = isNaN(v) ? null : Math.abs(v - rec.ans) <= Math.max(rec.tol, Math.abs(rec.ans) * 0.02, 0.005);
+  updateProg();
+}
+
+// Khi nộp: hiện đúng/sai + đáp án cho mọi ô điền, rồi khóa ô
+function revealAllFill() {
+  Object.keys(_Q).forEach(function(id) {
+    var inp = document.getElementById('f-' + id), fb = document.getElementById('fb-' + id);
+    if (!inp) return;
+    if (inp.value.trim() !== '') cf(id);
+    else if (fb) fb.textContent = 'Chưa làm · đáp án: ' + _Q[id].ans;
+    inp.readOnly = true;
+  });
+}
+
 // ── MCQ ────────────────────────────────────────────────────────
 // window.FEEDBACK_MODE: 'A' (full), 'B' (no explain, no reveal), 'C' (silent until submit)
 var _MCQ_DONE    = {};

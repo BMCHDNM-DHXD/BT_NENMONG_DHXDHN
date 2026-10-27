@@ -248,16 +248,14 @@ function renderStep1(d) {
           + ' <span class="eq">=</span>'
           + ' <span class="hint">(tra bảng)</span>'
           + ' <span class="eq">=</span>'
-          + ' <input id="f-A' + i + '" class="fi" type="number" step="any" placeholder="?" oninput="cf(\'A' + i + '\')">'
-          + ' <button class="fbt" onclick="cf(\'A' + i + '\')">✓</button>'
+          + ' <input id="f-A' + i + '" class="fi" type="number" step="any" placeholder="?" oninput="sc(\'A' + i + '\')">'
           + ' <span id="fb-A' + i + '" class="ffb"></span></div>';
     html += '<div class="fr"><span class="lbl">B<sub>' + i + '</sub></span><span class="eq">=</span>'
           + ' (w<sub>' + i + '</sub> – w<sub>P' + i + '</sub>) / A<sub>' + i + '</sub>'
           + ' <span class="eq">=</span>'
           + ' <span class="hint">(tra bảng)</span>'
           + ' <span class="eq">=</span>'
-          + ' <input id="f-B' + i + '" class="fi" type="number" step="any" placeholder="?" oninput="cf(\'B' + i + '\')">'
-          + ' <button class="fbt" onclick="cf(\'B' + i + '\')">✓</button>'
+          + ' <input id="f-B' + i + '" class="fi" type="number" step="any" placeholder="?" oninput="sc(\'B' + i + '\')">'
           + ' <span id="fb-B' + i + '" class="ffb"></span></div>';
     html += '</div>';
   });
@@ -351,6 +349,7 @@ function doSubmit() {
   var scorePct   = total > 0 ? Math.round(correct  / total * 100) : 0;
   var minPct = window.MIN_ATTEMPT_PCT || 80;
   if (attemptPct < minPct) {
+    window._nm_submitting = false;
     document.getElementById('rq-txt').textContent = 'Cần làm ít nhất ' + minPct + '% (' + attempted + '/' + total + ' câu). Hiện tại: ' + attemptPct + '%.';
     showToast('Chưa đủ ' + minPct + '% câu hỏi!', 'err'); return;
   }
@@ -363,6 +362,7 @@ function doSubmit() {
     document.getElementById('rq-msg').style.display = 'none';
     showToast('Nộp thành công! ' + scorePct + '%', 'ok');
     revealAllMCQ();
+    revealAllFill();
     showNextLink();
   };
 
