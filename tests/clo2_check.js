@@ -4,6 +4,7 @@ const eng = fs.readFileSync(path.join(__dirname, '../assets/js/engine.js'), 'utf
 const m = eng.match(/function seededRng[\s\S]*?\r?\n}\r?\n/);
 const seededRng = new Function(m[0] + '; return seededRng;')();
 const C = require('../assets/js/clo2.js');
+require('../assets/js/clo2-fig.js');
 const max = parseInt(process.argv[2]) || 200;
 let n = 0, bad = 0, log = [];
 const stat = {};
@@ -12,6 +13,8 @@ for (let stt = 1; stt <= max; stt++) for (let ex = 0; ex < 6; ex++) for (let d =
   const S = C.gen(stt, ex, d, seededRng); n++;
   const tag = [stt, ex, d].join('/');
   if (S.d._fail) err('không tìm được đề ' + tag);
+  const fig = C.fig(S);
+  if (/NaN|undefined|Infinity/.test(fig)) err('SVG hỏng ' + tag);
   const txt = JSON.stringify(S.items) + S.intro + S.formulas.join('');
   if (/NaN|undefined|Infinity/.test(txt)) err('NaN/undefined ' + tag);
   S.items.forEach(it => {

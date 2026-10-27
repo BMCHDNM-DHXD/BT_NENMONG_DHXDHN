@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // BT NỀN MÓNG — clo2-page.js : dựng trang bài CLO2 (dạng A/B/C) + nộp bài
 // Trang gọi:  CLO2PAGE.start({ dang:'A', mode:'A', dangIdx:1 })
-//   A: công thức + điền số + trắc nghiệm, phản hồi ngay · B: công thức, số phản hồi ngay, trắc nghiệm im đến khi nộp
-//   C: không công thức, mọi câu là trắc nghiệm, im đến khi nộp
+//   A: công thức + điền số + trắc nghiệm; trắc nghiệm báo đúng/sai ngay · B: công thức, mọi câu chấm khi nộp
+//   C: không công thức, mọi câu là trắc nghiệm, chấm khi nộp. Ô điền số không có nút kiểm tra (chỉ lộ đáp án khi nộp).
 // Dùng pm/ANS/updateProg/regQ/cf/revealAllMCQ của engine.js (không override).
 // Phụ thuộc: config.js, engine.js, clo2.js
 // ═══════════════════════════════════════════════════════════════
@@ -32,10 +32,28 @@ function mcqHtml(id, title, opts, expl, r) {
 function fillIn(it) {
   regQ(it.id, it.ans, it.tol);
   return '<div class="mw"><div class="mq"><span class="mn">' + it.id + '</span>' + it.q + '</div>' +
-    '<div class="fill"><input class="fi" id="f-' + it.id + '" inputmode="decimal" placeholder="…" onchange="cf(\'' + it.id + '\')" onkeydown="if(event.key===\'Enter\')cf(\'' + it.id + '\')">' +
+    '<div class="fill"><input class="fi" id="f-' + it.id + '" inputmode="decimal" placeholder="…" oninput="sc(\'' + it.id + '\')">' +
     (it.unit ? '<span class="unit">' + it.unit + '</span>' : '') +
-    '<button class="btn btn-sub" style="border:1px solid var(--brd)" onclick="cf(\'' + it.id + '\')">Kiểm tra</button>' +
     '<span class="fb" id="fb-' + it.id + '"></span></div></div>';
+}
+
+// Chấm im lặng khi nhập (không báo đúng/sai, không lộ đáp án): chỉ ghi ANS để tính tiến độ và điểm
+window.sc = function (id) {
+  var rec = _Q[id], inp = document.getElementById('f-' + id);
+  if (!rec || !inp) return;
+  var v = parseFloat(inp.value.replace(',', '.'));
+  ANS[id] = isNaN(v) ? null : Math.abs(v - rec.ans) <= Math.max(rec.tol, Math.abs(rec.ans) * 0.02, 0.005);
+  updateProg();
+};
+// Khi nộp: hiện đúng/sai và đáp án cho mọi ô điền rồi khóa ô
+function revealAllFill() {
+  Object.keys(_Q).forEach(function (id) {
+    var inp = document.getElementById('f-' + id), fb = document.getElementById('fb-' + id);
+    if (!inp) return;
+    if (inp.value.trim() !== '') cf(id);
+    else if (fb) fb.textContent = 'Chưa làm · đáp án: ' + C.f(_Q[id].ans, 3).replace(/,?0+$/, '');
+    inp.readOnly = true;
+  });
 }
 
 function formulaBox() {
@@ -57,7 +75,7 @@ function render() {
   var r = seededRng(sv.stt * 1009 + exIdx * 100 + CFG.dangIdx + 500);   // rng riêng cho thứ tự đáp án
   MCQ = {}; ANS = {};
   var h = '';
-  h += '<div class="de-bai"><div class="de-hd">Đề bài — ' + C.EX_LBL[exIdx] + '</div><div class="de-body"><p>' + S.intro + '</p></div></div>';
+  h += '<div class="de-bai"><div class="de-hd">Đề bài — ' + C.EX_LBL[exIdx] + '</div><div class="de-body"><p>' + S.intro + '</p><div class="figwrap">' + C.fig(S) + '</div></div></div>';
   if (dang !== 'C') h += formulaBox();
   if (S.table) h += alphaBox();
 
@@ -110,6 +128,7 @@ window.doSubmit = function () {
   var subKey = 'nm_sub_' + CHAPTER_ID + EX_NUM + '_' + sv.maSV;
   if (localStorage.getItem(subKey)) { window._nm_submitting = false; toast('Đã nộp bài này rồi!', 'warn-t'); return; }
   revealAllMCQ();
+  revealAllFill();
   var correct = Object.values(ANS).filter(function (v) { return v === true; }).length;
   var scorePct = total > 0 ? Math.round(correct / total * 100) : 0;
   var btn = document.getElementById('sub-btn');

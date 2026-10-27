@@ -8,3 +8,4 @@
 .sol{border:1px solid var(--brd);border-radius:var(--r);background:var(--sur);overflow:hidden}
 .sol-i{padding:8px 13px;border-top:1px solid var(--Plt);font-size:12.5px;line-height:1.7}.sol-i:first-child{border-top:none}
 .sol-a{color:var(--Gdk)}
+.figwrap{margin:10px 0 2px;border:1px solid var(--brd);border-radius:8px;overflow:hidden;background:#fff}.fig{display:block;width:100%;max-width:560px;height:auto;margin:0 auto}
