@@ -25,6 +25,15 @@ window.CLASS_LIST = [
   { id: "XD8",  name: "XD8"  },
   { id: "XD9",  name: "XD9"  },
   { id: "XD10", name: "XD10" },
+  // Xây dựng chuyên ngành XDC
+  { id: "XDC1", name: "XDC1" },
+  { id: "XDC2", name: "XDC2" },
+  { id: "XDC3", name: "XDC3" },
+  { id: "XDC4", name: "XDC4" },
+  { id: "XDC5", name: "XDC5" },
+  { id: "XDC6", name: "XDC6" },
+  { id: "XDC7", name: "XDC7" },
+  { id: "XDC8", name: "XDC8" },
   // Xây dựng đặc biệt
   { id: "XE1",  name: "XE1"  },
   { id: "XE2",  name: "XE2"  },
