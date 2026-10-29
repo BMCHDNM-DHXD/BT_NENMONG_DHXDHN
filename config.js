@@ -34,6 +34,10 @@ window.CLASS_LIST = [
   { id: "XDC6", name: "XDC6" },
   { id: "XDC7", name: "XDC7" },
   { id: "XDC8", name: "XDC8" },
+  // Nguyện vọng
+  { id: "NV1", name: "NV1" },
+  { id: "NV2", name: "NV2" },
+  { id: "NV3", name: "NV3" },
   // Xây dựng đặc biệt
   { id: "XE1",  name: "XE1"  },
   { id: "XE2",  name: "XE2"  },

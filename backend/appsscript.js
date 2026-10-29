@@ -13,6 +13,7 @@ const SECRET_TOKEN = PropertiesService.getScriptProperties().getProperty("SECRET
 const ALLOWED_CLASSES = new Set([
   "XD1","XD2","XD3","XD4","XD5","XD6","XD7","XD8","XD9","XD10",
   "XDC1","XDC2","XDC3","XDC4","XDC5","XDC6","XDC7","XDC8",
+  "NV1","NV2","NV3",
   "XE1","XE2","XF",
   "CD1","CD2","CD3","CDS",
   "TH1","TH2","TH3",
